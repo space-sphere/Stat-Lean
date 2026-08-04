@@ -1,0 +1,80 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Minimaxity.EstimationToTesting</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="StatLean.Minimaxity.EstimationToTesting";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">EstimationToTesting</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/EstimationToTesting.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././StatLean/Minimaxity/Defs.html">StatLean.Minimaxity.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Minimaxity.EstimationToTesting" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.minimax_ge_testing_error"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_ge_testing_error</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="From-estimation-to-testing-Proposition-15-1" class="markdown-heading">From estimation to testing (Proposition 15.1) <a class="hover-link" href="#From-estimation-to-testing-Proposition-15-1">#</a></h1><p>The fundamental reduction underlying every minimax lower bound in the chapter: the minimax
+risk is lower bounded by $\Phi(\delta)$ times the error probability of an $M$-ary hypothesis
+test built from a $2\delta$-separated family.</p><p>Fix an increasing distortion function $\Phi$ and a finite family of parameters
+$\{\theta^1,\dots,\theta^M\}$ that is <strong>$2\delta$-separated</strong> in the semimetric $\rho$ on the
+functional values, i.e. $\rho\big(g(\theta^j), g(\theta^k)\big) \ge 2\delta$ for all $j \ne k$.
+Let $J$ be uniform on $\{1,\dots,M\}$ and, given $J$, draw $Z$ from $P_{\theta^J}$, and write
+$\mathbb{Q}$ for the joint law of $(Z, J)$. Then the minimax risk for estimating the functional
+$g(\theta)$ under the distortion loss $\Phi\circ\rho$ satisfies
+$$ \mathfrak{M}\big(g(\theta);\,\Phi\circ\rho\big) \;\ge\; \Phi(\delta)\,\cdot\, \inf_{\psi}\; \mathbb{Q}\big[\psi(Z) \ne J\big], \qquad (\text{Eq. } (15.3)) $$
+where the infimum runs over all (randomized) tests $\psi$. In the Lean statement the right-hand
+testing error is <code>multiwayTestingError</code>, the loss is <code>distortionLoss Φ g</code>, the family is
+<code>θfam : <a href="../.././Init/Prelude.html#Fin">Fin</a> M → Θ</code>, separation is the hypothesis <code>IsSeparatedFamily g θfam δ</code>, and &quot;increasing&quot;
+is <code><a href="../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a> Φ</code>; the semimetric $\rho$ is taken to be the extended distance <code>edist</code> on the
+functional values $g(\theta)$.</p><p><strong>Reference.</strong> M. J. Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.1.2, Proposition 15.1,
+Eq. (15.3).</p><p><strong>Proof formalization notes.</strong> Restricting the supremum over <code>𝒫</code> to the finite subfamily can only
+decrease it (<code>minimaxRisk_precomp_le</code>), and the maximum over the subfamily dominates the uniform
+average — the Bayes risk — via <code>bayesRisk_le_avgRisk</code>. The geometric core (Wainwright Figure 15.1)
+is that the nearest-point test $\psi(Z) = \arg\min_\ell \rho\big(\hat\theta, g(\theta^\ell)\big)$
+errs only when $\rho\big(\hat\theta, g(\theta^J)\big) \ge \delta$: by the triangle inequality and
+$2\delta$-separation, a wrong test answer forces $\rho \ge \delta$, so by monotonicity of $\Phi$,
+$\mathbb{E}\big[\Phi(\rho(\hat\theta, g(\theta^J)))\big] \ge \Phi(\delta)\,\mathbb{P}[\psi \ne J]$.
+Measurability of the $\arg\min$ selector is supplied by <code>exists_measurable_nearestPoint</code> under the
+<code>[OpensMeasurableSpace Ω]</code> instance, which makes each distance $y \mapsto \mathrm{edist}(g(\theta^\ell), y)$
+continuous, hence measurable.</p><p><strong>Bibliographic comments.</strong> This estimation-to-testing reduction is <strong>folklore</strong> with no single
+seminal origin: it is the common abstract scaffold behind the classical Le Cam, Assouad, and Fano
+lower-bound methods. The idea of reducing estimation to a multiple-hypothesis testing problem and
+bounding the minimax risk by a separation $\times$ testing-error product traces to L. Le Cam,
+<em>Convergence of estimates under dimensionality restrictions</em>, Annals of Statistics 1 (1973),
+38–53, and to I. A. Ibragimov and R. Z. Has'minskii, <em>Statistical Estimation: Asymptotic Theory</em>
+(Springer, 1981). The packaging used here — increasing distortion $\Phi$, $2\delta$-separated
+family, and the nearest-point test — follows Wainwright's Proposition 15.1 and the survey
+exposition of B. Yu, <em>Assouad, Fano, and Le Cam</em>, in <em>Festschrift for Lucien Le Cam</em> (Springer,
+1997), 423–435. No original research paper states exactly Eq. (15.3) in this form; it is textbook
+synthesis.</p></div><div class="decl" id="StatLean.Minimaxity.minimax_ge_testing_error"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/EstimationToTesting.lean#L178-L200">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././StatLean/Minimaxity/EstimationToTesting.html#StatLean.Minimaxity.minimax_ge_testing_error"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_ge_testing_error</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΩ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/EMetricSpace/Defs.html#PseudoEMetricSpace">PseudoEMetricSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#OpensMeasurableSpace">OpensMeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <a href="../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Init/Data/NeZero.html#NeZero">NeZero</a> <span class="fn">M</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Φ</span> : <span class="fn"><a href="../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a> → <a href="../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn">Ω</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">θfam</span> : <span class="fn"><span class="fn"><a href="../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">M</span></span> → <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hθ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">θfam</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">δ</span> : <a href="../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hΦ</span> : <span class="fn"><a href="../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a> <span class="fn">Φ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hsep</span> : <span class="fn"><a href="../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.IsSeparatedFamily">IsSeparatedFamily</a> <span class="fn">g</span> <span class="fn">θfam</span> <span class="fn">δ</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">Φ</span> <span class="fn">δ</span></span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.multiwayTestingError">multiwayTestingError</a> <span class="fn">(<span class="fn"><span class="fn">P</span>.<a href="../.././Mathlib/Probability/Kernel/Composition/MapComap.html#ProbabilityTheory.Kernel.comap">comap</a></span> <span class="fn">θfam</span> <span class="fn">hθ</span>)</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.minimaxRiskDist">minimaxRiskDist</a> <span class="fn">Φ</span> <span class="fn">g</span> <span class="fn">P</span></span></div></div><p><strong>From estimation to testing</strong> (Wainwright Proposition 15.1, Eq. (15.3)): for any increasing
+distortion <code>Φ</code> and any <code>2δ</code>-separated family <code>θfam : <a href="../.././Init/Prelude.html#Fin">Fin</a> M → Θ</code> in the semimetric <code>ρ = edist</code> on
+the functional values, the minimax risk is lower bounded by <code>Φ(δ)</code> times the M-ary testing error
+of the induced sub-model <code>j ↦ P_{θfam j}</code>.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.1.2, Eq. (15.3).</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

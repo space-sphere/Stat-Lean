@@ -1,0 +1,375 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.AsymptoticStatistics.StrictModel.EfficientScore</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.AsymptoticStatistics.StrictModel.EfficientScore";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/Core/EIF.html">StatLean.AsymptoticStatistics.Core.EIF</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.AsymptoticStatistics.StrictModel.EfficientScore" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">OrdinaryScore</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">NuisanceTangentSpace</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientInformation</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">eif_from_efficientScore</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_nuisance_eq_zero"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_inner_nuisance_eq_zero</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_smul"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_smul</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_ordinary_eq_self"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_inner_ordinary_eq_self</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore'"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">eif_from_efficientScore'</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Efficient-score-for-strict-θ-η-semiparametric-models" class="markdown-heading">Efficient score for strict <code>(θ, η)</code> semiparametric models <a class="hover-link" href="#Efficient-score-for-strict-θ-η-semiparametric-models">#</a></h1><p>This file develops the ordinary score, nuisance tangent space, efficient
+score, and efficient information for classical <code>(θ, η)</code> semiparametric
+models, culminating in the 1-dimensional form of the efficient-score
+characterization of the efficient influence function (van der Vaart,
+Lemma 25.25): the normalized efficient score is an efficient influence
+function for a linear functional of <code>θ</code>.</p><p>In standard notation, for a model <code>\{P_{\theta,\eta}\}</code> with finite-dimensional
+parameter <code>\theta</code> and infinite-dimensional nuisance <code>\eta</code>, let
+<code>\dot\ell_\theta</code> be the ordinary score for <code>\theta</code> and let <code>\dot{\mathcal P}_\eta</code>
+denote the nuisance tangent space (the closed linear span in <code>L^2_0(P)</code> of the
+nuisance scores). The <strong>efficient score</strong> in direction <code>v</code> is the residual of
+the ordinary score after projecting out the nuisance directions,
+<code>\tilde\ell_{\theta,v} = \dot\ell_\theta v - \Pi(\dot\ell_\theta v \mid \dot{\mathcal P}_\eta)</code>,
+and the <strong>efficient information</strong> is <code>\tilde I_v = \lVert \tilde\ell_{\theta,v}\rVert_{L^2(P)}^2</code>.
+The lemma states that, whenever <code>\tilde I_v \neq 0</code>, the function
+<code>\tilde I_v^{-1}\,\tilde\ell_{\theta,v}</code> is the efficient influence function for the
+real-valued functional <code>\psi(P_{\theta,\eta}) = \langle v, \theta\rangle</code>, i.e. the
+estimator achieving the semiparametric efficiency bound for that functional.</p><p>The 1-dim restriction (a linear functional of <code>θ</code> in a single direction
+<code>v</code>) keeps the API inside the abstract EIF framework's derivative form
+<code>dψ : T →L[ℝ] ℝ</code>; the multivariate version replaces <code>\tilde I_v</code> by the
+efficient information matrix <code>\tilde I = \langle\tilde\ell_{\theta,i},\tilde\ell_{\theta,j}\rangle</code>
+and the candidate by <code>\tilde I^{-1}\tilde\ell_\theta</code>.</p><p>Headline declaration: <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore">eif_from_efficientScore</a></code>.</p><p><strong>Reference.</strong> A. W. van der Vaart, <em>Asymptotic Statistics</em>, Cambridge Series
+in Statistical and Probabilistic Mathematics, Cambridge University Press,
+1998, Chapter 25 (Semiparametric Models), §25.4 (Score and Information
+Operators), Lemma 25.25.</p><p><strong>Proof formalization notes.</strong> The 1-dim restriction (linear functional of
+<code>θ</code> in a single direction <code>v</code>) keeps the API inside the abstract EIF
+framework's <code>dψ : T →L[ℝ] ℝ</code> form. The headline theorem reduces to the
+abstract <code>eif_of_representation_and_membership</code> by checking two conditions on
+the candidate <code>IF := (1/I_eff(v)) • S_eff(v)</code>: (1) membership <code>IF ∈ T</code>,
+supplied as the hypothesis <code>h_mem</code> (assumes the ambient tangent space <code>T</code> is
+large enough to contain the efficient score residual); and (2) the
+influence-function representation, supplied as <code>h_dψ</code>, which passes <code>dψ</code>
+already evaluated as <code>dψ g = (1/I_eff(v)) ⟪S_eff(v), g⟫</code> for every <code>g ∈ T</code>.
+The orthogonality used in the informal derivation — <code>⟪S_eff(v), g_η⟫ = 0</code> for
+nuisance directions <code>g_η ∈ T_nuis</code>, since the efficient score is by
+construction the orthogonal residual of the ordinary score — is built into
+the definition of <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a></code> via <code>starProjection</code>. Edge behavior: when
+the ordinary score <code>S_θ v</code> already lies in the nuisance tangent space the
+efficient score vanishes, <code>I_eff(v) = 0</code>, and the non-degeneracy needed for
+the conclusion fails.</p><p><strong>Bibliographic comments.</strong> The efficient score as the projection of the
+score onto the orthocomplement of the nuisance tangent space, and the
+resulting efficient influence function <code>\tilde I^{-1}\tilde\ell_\theta</code>, are the
+central organizing concepts of modern semiparametric efficiency theory; van
+der Vaart's Lemma 25.25 is a synthesis rather than a single seminal
+result. The geometric/projection formulation traces back to C. Stein,
+&quot;Efficient nonparametric testing and estimation,&quot; <em>Proc. Third Berkeley
+Symp. Math. Statist. Probab.</em>, vol. 1 (1956), 187–195, and was developed into
+a full tangent-space theory by P. J. Bickel, C. A. J. Klaassen, Y. Ritov and
+J. A. Wellner, <em>Efficient and Adaptive Estimation for Semiparametric Models</em>,
+Johns Hopkins University Press, 1993 (reprinted Springer, 1998) — see their
+Chapters 2–3, where the efficient score function and information bound for
+<code>(θ, η)</code> models are constructed exactly as the score residual orthogonal to
+the nuisance scores. Van der Vaart's §25.4 presents this material in the
+score/information-operator language adopted here.</p></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L84-L94">source</a></div><div class="attributes">@[reducible, inline]</div>
+<div class="decl_header"><span class="decl_kind">abbrev</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">OrdinaryScore</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Type</a> (max u_2 u_1)</div></div><p><em>Ordinary score operator</em> for the parameter <code>θ</code> at <code>θ₀</code>.</p><p>A continuous linear map from the parameter Hilbert space <code>Θ</code> into
+<code>↥(L²₀(P))</code>. For a parametric family <code>t ↦ P_{θ₀ + t·v, η₀}</code>, evaluating
+the score operator at <code>v</code> yields the QMD score function (vdV §25.4).</p><p>Reference: vdV §25.4.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   (<span class="fn">Θ</span> <a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">→L[</a><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a><a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">]</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">AsymptoticStatistics.Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>)</li></ul></details><details id="instances-for-list-AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L96-L104">source</a></div><div class="attributes">@[reducible, inline]</div>
+<div class="decl_header"><span class="decl_kind">abbrev</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">NuisanceTangentSpace</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Type</a> u_1</div></div><p><em>Nuisance tangent space</em>: a closed submodule of <code>↥(L²₀(P))</code>
+representing the scores reachable by perturbing the nuisance parameter
+<code>η</code>.</p><p>Reference: vdV §25.4. The specific submodule depends on the nuisance
+model; we take it as a user-supplied input rather than fixing a
+particular construction.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace</a> <span class="fn">P</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">AsymptoticStatistics.Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></span></li></ul></details><details id="instances-for-list-AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.efficientScore"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L109-L128">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></div></div><p><em>Efficient score</em> for the parameter direction <code>v</code> at <code>θ₀</code>: the
+ordinary score <code>S_θ v</code> minus its orthogonal projection onto the
+nuisance tangent space. The residual is, by construction, orthogonal
+to every nuisance direction.</p><p><code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> S_θ T_nuis v := S_θ v - T_nuis.starProjection (S_θ v)</code>.</p><p>Reference: vdV §25.4. The efficient score captures the part of the
+ordinary score that <em>cannot</em> be explained by perturbing the nuisance
+parameter.</p><p>Edge behavior: when <code>S_θ v ∈ T_nuis</code>, <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> = 0</code> (no
+direction-<code>v</code> information remains after the nuisance projection);
+the corresponding <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore">eif_from_efficientScore</a></code> hypothesis
+<code>I_eff(v) ≠ 0</code> then fails.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">AsymptoticStatistics.StrictModel.EfficientScore.efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><span class="fn">S_θ</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">(<a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.starProjection">Submodule.starProjection</a> <span class="fn">T_nuis</span>)</span> <span class="fn">(<span class="fn">S_θ</span> <span class="fn">v</span>)</span></span></li></ul></details><details id="instances-for-list-AsymptoticStatistics.StrictModel.EfficientScore.efficientScore" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L130-L145">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientInformation</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></div></div><p><em>Efficient information</em> for parameter direction <code>v</code>: the squared
+<code>L²(P)</code>-norm of the efficient score.</p><p><code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> S_θ T_nuis v := ‖efficientScore S_θ T_nuis v‖²</code>.</p><p>Reference: vdV §25.4. In the multi-dim setting (k-dim θ), this
+generalises to the <em>efficient information matrix</em> with entries
+<code>⟪S_eff(eᵢ), S_eff(eⱼ)⟫</code>; the 1-dim form here is its single diagonal
+entry along direction <code>v</code>.</p><p>Edge behavior: zero iff <code>S_θ v ∈ T_nuis</code>.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#Norm.norm">‖</a><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">AsymptoticStatistics.StrictModel.EfficientScore.efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#Norm.norm">‖</a> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span></li></ul></details><details id="instances-for-list-AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L147-L195">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">eif_from_efficientScore</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_mem</span> : (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>) <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">dψ</span> : <span class="fn">↥<span class="fn">T</span></span> <a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">→L[</a><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a><a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">]</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_dψ</span> : <span class="fn">∀ (<span class="fn">g</span> : <span class="fn">↥<span class="fn">T</span></span>), <span class="fn"><span class="fn">dψ</span> <span class="fn">g</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">1</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span>)</span> <span class="fn">↑<span class="fn">g</span></span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.IsEfficientInfluenceFunction">Core.Pathwise.IsEfficientInfluenceFunction</a> <span class="fn">P</span> <span class="fn">T</span> <span class="fn">dψ</span>
+  ((<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>) <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>)</span></div></div><p><em>vdV lem:25.25 (1-dim form).</em> Under non-degenerate efficient
+information, <code>(1 / I_eff(v)) • S_eff(v)</code> is an efficient influence
+function for the linear-functional derivative <code>dψ</code> whose action on the
+score range is <code>dψ (S_θ u) = ⟪v, u⟫</code>.</p><p>Reference: vdV §25.4, lem:25.25. The k-dim form
+<code>EIF = I_eff⁻¹ S_eff</code> (with <code>I_eff</code> the efficient information matrix)
+generalises this; the 1-dim form here is its slice along direction <code>v</code>.</p><p>The hypothesis <code>h_dψ</code> encodes the parameter derivative shape: for a
+linear functional <code>ψ(P_{θ, η}) := ⟨v, θ⟩</code> of the parameter, the
+pathwise derivative on the score-range submodule of <code>T</code> matches
+<code>u ↦ ⟪v, u⟫_Θ</code>. Concrete consumers prove this via
+<code>PathwiseDifferentiableAt</code>.</p><p>Proof: reduce to <code>eif_of_representation_and_membership</code> by checking
+two conditions on the candidate <code>IF := (1/I_eff(v)) • S_eff(v)</code>:
+(1) <code>IF ∈ T</code> (membership): assumes <code>T</code> is large enough to contain
+<code>S_eff(v)</code>. We add <code>h_mem : (1/I_eff(v)) • S_eff(v) ∈ T</code> directly.
+(2) <code>IsInfluenceFunction P T dψ IF</code>: for any <code>g ∈ T</code>,
+<code>⟪IF, g⟫ = (1/I_eff(v)) ⟪S_eff(v), g⟫</code>. Splitting <code>g = g_θ + g_η</code>
+with <code>g_θ ∈ range(S_θ)</code> and <code>g_η ∈ T_nuis</code>:
+- <code>⟪S_eff(v), g_η⟫ = 0</code> since <code>S_eff(v) ⊥ T_nuis</code> by construction.
+- <code>⟪S_eff(v), g_θ⟫ = ⟪S_θ v, g_θ⟫ - ⟪proj S_θ v, g_θ⟫</code>.
+The cleanest formulation passes <code>dψ</code> already evaluated: we
+require <code>dψ g = (1/I_eff(v)) ⟪S_eff(v), g⟫</code> for every <code>g ∈ T</code>,
+which is the influence-function condition we want to prove.</p></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_nuisance_eq_zero"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L197-L215">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_nuisance_eq_zero"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_inner_nuisance_eq_zero</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">g</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hg</span> : <span class="fn">g</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T_nuis</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span>)</span> <span class="fn">g</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></div></div><p><em>Efficient score is orthogonal to the nuisance tangent space.</em> By
+construction <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> S_θ T_nuis v = S_θ v - proj_{T_nuis}(S_θ v)</code>
+is the residual of <code>S_θ v</code> after projecting onto <code>T_nuis</code>, hence lies in
+<code>T_nuisᗮ</code>. Therefore its inner product against any <code>g ∈ T_nuis</code> is zero.</p><p>Reference: vdV §25.4, p.368 — <code>ℓ̃_{θ,η} = ℓ̇_{θ,η} - Π_{η}ℓ̇_{θ,η}</code>, the
+defining orthogonality of the efficient score to the nuisance scores.</p></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_smul"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L217-L225">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_smul"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_smul</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">c</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> (<span class="fn">c</span> <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn">v</span>)</span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">c</span> <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span></div></div><p>The efficient score is homogeneous in the direction: it is the image
+of a continuous-linear map (ordinary score minus its nuisance projection),
+so it commutes with scalars.</p></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_ordinary_eq_self"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L227-L250">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_ordinary_eq_self"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">efficientScore_inner_ordinary_eq_self</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v </span><span class="fn">u</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span>)</span> <span class="fn">(<span class="fn">S_θ</span> <span class="fn">u</span>)</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span>)</span> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">u</span>)</span></span></div></div><p><em>Efficient-score inner products only see the efficient part.</em> Because
+<code>S_θ u = S̃_eff(u) + Π_{T_nuis}(S_θ u)</code> and <code>S̃_eff(v) ⊥ T_nuis</code>, the inner
+product of the efficient score <code>S̃_eff(v)</code> against the <strong>ordinary</strong> score
+<code>S_θ u</code> coincides with its inner product against the <strong>efficient</strong> score
+<code>S̃_eff(u)</code>: the nuisance projection drops out.</p><p>This is the Pythagorean identity underlying the efficient-information
+matrix <code>⟪ℓ̃(v), ℓ̇_θ(u)⟫ = ⟪ℓ̃(v), ℓ̃(u)⟫</code> (vdV §25.4, p.368). Internalizing
+it lets <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore'">eif_from_efficientScore'</a></code> require only the coordinate-normalization
+identity in efficient-score form, keeping the orthogonality half out of the
+hypothesis surface.</p></div></div><div class="decl" id="AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore'"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/StrictModel/EfficientScore.lean#L252-L342">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore'"><span class="name">AsymptoticStatistics</span>.<span class="name">StrictModel</span>.<span class="name">EfficientScore</span>.<span class="name">eif_from_efficientScore'</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">S_θ</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.OrdinaryScore">OrdinaryScore</a> <span class="fn">P</span> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T_nuis</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.NuisanceTangentSpace">NuisanceTangentSpace</a> <span class="fn">P</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">Submodule.HasOrthogonalProjection</a> <span class="fn">T_nuis</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">v</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ψ</span> : <span class="fn"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hpd</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.PathwiseDifferentiableAt">Core.Pathwise.PathwiseDifferentiableAt</a> <span class="fn">P</span> <span class="fn">T</span> <span class="fn">ψ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_decomp</span> : <span class="fn">∀ (<span class="fn">g</span> : <span class="fn">↥<span class="fn">T</span></span>), <span class="fn">∃ (<span class="fn">u</span> : <span class="fn">Θ</span>), <span class="fn">∃ <span class="fn">g_nuis</span> ∈ <span class="fn">T_nuis</span>, <span class="fn">↑<span class="fn">g</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn">S_θ</span> <span class="fn">u</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">g_nuis</span></span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_deriv_eq</span> :
+  <span class="fn">∀ (<span class="fn">u</span> : <span class="fn">Θ</span>), <span class="fn">∀ <span class="fn">g_nuis</span> ∈ <span class="fn">T_nuis</span>, <span class="fn">∀ (<span class="fn">hmem</span> : <span class="fn"><span class="fn">S_θ</span> <span class="fn">u</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">g_nuis</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>), <span class="fn"><span class="fn"><span class="fn">hpd</span>.<a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.PathwiseDifferentiableAt.derivative">derivative</a></span> <a href="../../.././Init/Prelude.html#Subtype.mk">⟨</a><span class="fn"><span class="fn">S_θ</span> <span class="fn">u</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">g_nuis</span>, <span class="fn">hmem</span><a href="../../.././Init/Prelude.html#Subtype.mk">⟩</a></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">v</span> <span class="fn">u</span></span></span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_gram</span> :
+  <span class="fn">∀ (<span class="fn">u</span> : <span class="fn">Θ</span>),
+    <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span>)</span> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">u</span>)</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>       <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">v</span> <span class="fn">u</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hI_pos</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_mem</span> : (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>) <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.IsEfficientInfluenceFunction">Core.Pathwise.IsEfficientInfluenceFunction</a> <span class="fn">P</span> <span class="fn">T</span> <span class="fn"><span class="fn">hpd</span>.<a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.PathwiseDifferentiableAt.derivative">derivative</a></span>
+  ((<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientInformation">efficientInformation</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>) <a href="../../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore">efficientScore</a> <span class="fn">S_θ</span> <span class="fn">T_nuis</span> <span class="fn">v</span></span>)</span></div></div><p><em>vdV lem:25.25 (1-dim form), derived version.</em> This is the
+<strong>derived</strong> counterpart of <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore">eif_from_efficientScore</a></code>: instead of
+assuming the influence-function representation <code>h_dψ</code> as a hypothesis,
+it <em>derives</em> that representation from the book's path-existence content
+(25.26) and the efficient-information cross identity, then concludes via
+<code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore">eif_from_efficientScore</a></code>.</p><p>The derived-vs-assumed distinction: <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.eif_from_efficientScore">eif_from_efficientScore</a></code> takes
+<code>h_dψ : ∀ g, dψ g = (1/Ĩ)⟪ℓ̃, g⟫</code> directly (the influence-function
+identity packaged as a hypothesis, as the <code>*Assumptions</code> bundles in
+<code>Asymptotics/</code> supply it). The present theorem shows that field is not a
+free input: it follows from</p><ul><li><code>h_decomp</code> — every tangent direction splits as <code>S_θ u + g_nuis</code> with
+<code>g_nuis ∈ T_nuis</code>. This is the book's tangent-set structure
+<code>Ṗ_{P_{θ,η}} = lin(ℓ̇_θ) + η̇Ṗ</code> (vdV §25.4, p.368, the tangent set in
+the conclusion of lem:25.25). Legitimate external input: it pins down
+<em>which</em> model <code>T</code> corresponds to.</li><li><code>h_deriv_eq</code> — along a path with score <code>S_θ u + g_nuis</code>, the
+difference quotient of <code>ψ</code> tends to <code>⟪v, u⟫_Θ</code>. This is the book's
+statement that <code>ψ(P_{θ,η}) = ⟨v, θ⟩</code> is the θ-coordinate functional,
+whose derivative reads off the <code>S_θ</code>-component <code>u</code>. The path-existence
+hypothesis (25.26) is what makes <code>dψ</code> well-defined on the whole
+<code>S_θ '' univ + T_nuis</code>; here we consume its consequence directly via
+the pathwise derivative <code>hpd.derivative</code>.</li><li><code>h_gram</code> — the efficient-information <strong>self</strong>-identity in efficient-score
+form <code>⟪ℓ̃(v), ℓ̃(u)⟫ = Ĩ · ⟪v, u⟫_Θ</code>, the <code>(v,u)</code> entry of the efficient
+information matrix (its diagonal <code>Ĩ</code> at <code>u = v</code>). This is only the
+coordinate-normalization half: the orthogonality half
+<code>⟪ℓ̃(v), ℓ̇_θ(u)⟫ = ⟪ℓ̃(v), ℓ̃(u)⟫</code> (the nuisance projection drops out) is
+now <strong>derived internally</strong> via <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_ordinary_eq_self">efficientScore_inner_ordinary_eq_self</a></code>,
+not part of the hypothesis surface. We take the 1-dim slice of the
+self-identity as an input rather than rebuild the matrix.</li></ul><p>Given these, <code>dψ g = ⟪v, u⟫ = (1/Ĩ)·Ĩ·⟪v, u⟫ = (1/Ĩ)·⟪ℓ̃(v), ℓ̃(u)⟫ = (1/Ĩ)·⟪ℓ̃(v), S_θ u⟫ = (1/Ĩ)·⟪ℓ̃(v), S_θ u + g_nuis⟫ = (1/Ĩ)·⟪ℓ̃(v), g⟫</code>,
+where <code>⟪ℓ̃(v), ℓ̃(u)⟫ = ⟪ℓ̃(v), S_θ u⟫</code> is <code><a href="../../.././StatLean/AsymptoticStatistics/StrictModel/EfficientScore.html#AsymptoticStatistics.StrictModel.EfficientScore.efficientScore_inner_ordinary_eq_self">efficientScore_inner_ordinary_eq_self</a></code>
+and the last step uses <code>⟪ℓ̃(v), g_nuis⟫ = 0</code>. The <code>hI_pos : 0 &lt; Ĩ</code> hypothesis is the
+book's nonsingularity of <code>Ĩ</code> (mandatory: at <code>Ĩ = 0</code> the functional is
+not differentiable, vdV p.369).</p><p>Reference: vdV §25.4 Lemma 25.25 + eq (25.26), p.368-369.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

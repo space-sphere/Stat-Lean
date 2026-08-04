@@ -1,0 +1,87 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.AsymptoticStatistics.EmpiricalProcess.DonskerBracketing</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.AsymptoticStatistics.EmpiricalProcess.DonskerBracketing";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">DonskerBracketing</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/EmpiricalProcess/DonskerBracketing.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Bracketing.html">StatLean.AsymptoticStatistics.EmpiricalProcess.Bracketing</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/ChainingAssembly.html">StatLean.AsymptoticStatistics.EmpiricalProcess.ChainingAssembly</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Donsker.html">StatLean.AsymptoticStatistics.EmpiricalProcess.Donsker</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/EquicontinuityChaining.html">StatLean.AsymptoticStatistics.EmpiricalProcess.EquicontinuityChaining</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/LocalizedClass.html">StatLean.AsymptoticStatistics.EmpiricalProcess.LocalizedClass</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Maximal.html">StatLean.AsymptoticStatistics.EmpiricalProcess.Maximal</a></li><li><a href="../../.././Mathlib/MeasureTheory/Integral/Lebesgue/Basic.html">Mathlib.MeasureTheory.Integral.Lebesgue.Basic</a></li><li><a href="../../.././Mathlib/MeasureTheory/Measure/Lebesgue/Basic.html">Mathlib.MeasureTheory.Measure.Lebesgue.Basic</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.AsymptoticStatistics.EmpiricalProcess.DonskerBracketing" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.EmpiricalProcess.isPDonsker_of_finite_bracketing_entropy_integral"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">isPDonsker_of_finite_bracketing_entropy_integral</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Donsker-theorem-via-bracketing-entropy-integral" class="markdown-heading">Donsker theorem via bracketing entropy integral <a class="hover-link" href="#Donsker-theorem-via-bracketing-entropy-integral">#</a></h1><p>Let $\mathcal{F}$ be a class of measurable functions $f : \Omega \to \mathbb{R}$ on a
+probability space $(\Omega, P)$. Define the $L_2(P)$-bracketing entropy integral
+$$ J_{[\,]}(1, \mathcal{F}, L_2(P)) = \int_0^1 \sqrt{\log N_{[\,]}\!\big(\varepsilon, \mathcal{F}, L_2(P)\big)}\; d\varepsilon, $$
+where $N_{[\,]}(\varepsilon, \mathcal{F}, L_2(P))$ is the minimal number of
+$\varepsilon$-brackets in $L_2(P)$ needed to cover $\mathcal{F}$. If
+$J_{[\,]}(1, \mathcal{F}, L_2(P)) &lt; \infty$, then $\mathcal{F}$ is $P$-Donsker: the
+empirical process $\{\mathbb{G}_n f : f \in \mathcal{F}\}$, with
+$\mathbb{G}_n f = \sqrt{n}\,(P_n - P)f$, converges in distribution in
+$\ell^\infty(\mathcal{F})$ to a tight, mean-zero Gaussian process with the
+$L_2(P)$ covariance of $\mathcal{F}$.</p><p>Being $P$-Donsker is decomposed here as the conjunction of two properties: the
+<strong>marginal central limit theorem</strong> (every finite-dimensional projection converges,
+which requires $f \in L_2(P)$ for each $f \in \mathcal{F}$) and <strong>asymptotic
+equicontinuity</strong> of the empirical process with respect to the $L_2(P)$ seminorm.</p><p><strong>Reference.</strong> A. W. van der Vaart, <em>Asymptotic Statistics</em>, Cambridge Series in
+Statistical and Probabilistic Mathematics, Cambridge University Press, 1998,
+Chapter 19 (Empirical Processes), §19.2 (Donsker Theorems), Theorem 19.5.</p><p><strong>Proof formalization notes.</strong>
+The headline declaration is <code><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/DonskerBracketing.html#AsymptoticStatistics.EmpiricalProcess.isPDonsker_of_finite_bracketing_entropy_integral">isPDonsker_of_finite_bracketing_entropy_integral</a></code>.
+The proof splits <code>IsPDonsker = IsMarginalCLT ∧ IsAsymptoticallyEquicontinuous</code>:</p><ul><li><strong>Marginal-CLT half.</strong> From $J_{[\,]}(1, \mathcal{F}, L_2(P)) &lt; \infty$ extract a
+single $\varepsilon$-bracket from the finite cover at a scale where the bracketing
+number is finite (<code>exists_finite_bracketingNumber_of_integral_lt_top</code>); for each
+$f \in \mathcal{F}$ find a containing bracket $[l, u]$ and bound
+$|f| \le |l| + |u|$ pointwise to deduce $f \in L_2(P)$ via <code>MemLp.of_le_mul</code>
+from <code>IsEpsBracket.memLp_lower</code>/<code>memLp_upper</code>. This half is fully closed
+(<code>marginalCLT_of_finite_bracketing_entropy_integral_aux</code>).</li><li><strong>Equicontinuity half.</strong> The textbook chaining argument (vdV §19.2) controls
+$\int^* \sup_{f \in \mathcal{F}_\delta} \mathbb{G}_n f$ via the localized form of
+the bracketing maximal inequality (Lemma 19.34). The measurable-majorant theorem
+<code>localizedChainBound_measurableMajorant_of_finiteEntropy</code> in
+<code>ChainingAssembly.lean</code> bounds <code>localizedDifferenceClass F P δ</code> by
+$K\,(J_{[\,]}(\delta, \mathcal{F}, L_2) + \sqrt{n}\cdot \text{envelope tail})$, with one constant uniform in the localization scale and
+sample size. Its implementation assembles the per-level finite-class estimates,
+dyadic entropy comparison, and envelope-tail correction developed in
+<code>Maximal.lean</code>. A diagonal sequence $\delta_q \downarrow 0$ drives the entropy
+term to zero, while the envelope tail vanishes at its growing truncation
+threshold; the proof then applies the ENNReal Markov bound inline to obtain the
+outer-probability modulus. The difference class $\mathcal{F}-\mathcal{F}$ inherits
+finite bracketing entropy through the localized-class development (vdV Lemma
+19.31). Mutual independence (<code>iIndepFun X μ</code>) is exposed directly because the
+per-level variance factorisation genuinely consumes it.</li></ul><p>Positivity of $J_{[\,]}(\delta', \mathcal{F}, L_2(P))$ at positive scales is
+derived internally from <code>F.<a href="../../.././Init/Prelude.html#Nonempty">Nonempty</a></code>: the regularized entropy integrand uses
+<code>log (1 + N)</code>, so no separate <code>hJ_pos</code> hypothesis is required.</p><p><strong>Bibliographic comments.</strong>
+The bracketing-entropy Donsker theorem originates with M. Ossiander, &quot;A Central
+Limit Theorem Under Metric Entropy with $L_2$ Bracketing,&quot; <em>The Annals of
+Probability</em> <strong>15</strong> (1987), no. 3, 897–919. Ossiander proved an empirical-process
+central limit theorem under exactly the integrability condition
+$\int_0^1 \sqrt{\log N_{[\,]}(\varepsilon, \mathcal{F}, L_2(P))}\,d\varepsilon &lt; \infty$ on the $L_2$-bracketing metric entropy, generalizing earlier
+uniform-entropy results of Dudley (1978, 1981) and Jain–Marcus (1975); the
+tightness argument combined with Andersen–Dobrić (1987) yields the CLT. The form
+stated here is van der Vaart's Theorem 19.5, a textbook synthesis of Ossiander's
+result.</p></div><div class="decl" id="AsymptoticStatistics.EmpiricalProcess.isPDonsker_of_finite_bracketing_entropy_integral"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/EmpiricalProcess/DonskerBracketing.lean#L615-L655">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/DonskerBracketing.html#AsymptoticStatistics.EmpiricalProcess.isPDonsker_of_finite_bracketing_entropy_integral"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">isPDonsker_of_finite_bracketing_entropy_integral</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">F</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">(<span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hF_ne</span> : <span class="fn"><span class="fn">F</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hF_meas</span> : <span class="fn">∀ <span class="fn">f</span> ∈ <span class="fn">F</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">f</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_int</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Bracketing.html#AsymptoticStatistics.EmpiricalProcess.bracketingEntropyIntegral">bracketingEntropyIntegral</a> <span class="fn">1</span> <span class="fn">F</span> <span class="fn">P</span></span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Donsker.html#AsymptoticStatistics.EmpiricalProcess.IsPDonsker">IsPDonsker</a> <span class="fn">F</span> <span class="fn">P</span></span></div></div><p><strong>Theorem 19.5 (Donsker via bracketing entropy integral)</strong>.</p><p>Every class <code>F</code> of measurable functions with <code>J_{[]}(1, F, L_2(P)) &lt; ⊤</code>
+is <code>P</code>-Donsker.</p><p>vdV §19.2 Theorem 19.5.</p><p>The marginal-CLT half extracts a finite bracket cover at one positive scale and
+uses its <code>L²(P)</code> endpoints to prove <code>MemLp f 2 P</code> for every <code>f ∈ F</code>.  For the
+equicontinuity half, close pairs determine elements of
+<code>localizedDifferenceClass F P δq</code>.  The measurable-majorant form of
+<code>localizedChainBound_of_finiteEntropy</code> bounds the corresponding localized
+supremum by the shrinking entropy integral and an envelope tail.
+<code>equicontinuity_chaining_assembly_brick</code> then applies Markov's inequality and
+the envelope-tail limit to obtain the outer-probability modulus.</p><p>On the <code>L²</code>-good event, the random difference lies in
+<code>localizedDifferenceClass F P δq</code>, so the integrand is bounded by the localized
+class supremum. The corresponding bound follows from
+<code>localizedChainBound_of_finiteEntropy</code> (vdV Lemma 19.34).</p><p>The positivity <code>0 &lt; J(δ')</code> is derived from <code>F.<a href="../../.././Init/Prelude.html#Nonempty">Nonempty</a></code>
+because the entropy integrand is <code>√(log (1 + N_{[]}(ε, F, L²(P))))</code> — the <code>1 +</code>
+regularizer makes a nonempty class (<code>N ≥ 1</code>) have integrand <code>≥ √(log 2) &gt; 0</code>
+pointwise, hence <code>J(δ') &gt; 0</code> for every <code>δ' &gt; 0</code>
+(<code>bracketingEntropyIntegral_pos_of_nonempty</code>).  The localized chaining bound
+derives <code>0 &lt; J(δq)</code> internally from <code>hF_ne</code>, so no separate positivity
+hypothesis is required.</p><p>Both halves (marginal CLT + asymptotic equicontinuity) are genuinely sound; the
+headline carries vdV Theorem 19.5's assumptions: <code>hF_ne</code> (F nonempty — F = ∅ is
+vacuously Donsker), <code>hF_meas</code> (measurability, vdV Thm 19.5 p.270), and <code>h_int</code>
+(finite bracketing entropy integral <code>J_{[]}(1, F, L²(P)) &lt; ⊤</code>).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

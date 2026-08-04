@@ -1,0 +1,75 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Optimization.GradientDescent</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="StatLean.Optimization.GradientDescent";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">GradientDescent</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Optimization/GradientDescent.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././StatLean/Optimization/ForMathlib/FirstOrderConvex.html">StatLean.Optimization.ForMathlib.FirstOrderConvex</a></li><li><a href="../.././StatLean/Optimization/ForMathlib/GradientCalc.html">StatLean.Optimization.ForMathlib.GradientCalc</a></li><li><a href="../.././StatLean/Optimization/Smoothness/CoCoercive.html">StatLean.Optimization.Smoothness.CoCoercive</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Optimization.GradientDescent" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Optimization.gradientDescent_rate"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">gradientDescent_rate</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Convergence-of-gradient-descent-O-1-t-rate" class="markdown-heading">Convergence of gradient descent (O(1/t) rate) <a class="hover-link" href="#Convergence-of-gradient-descent-O-1-t-rate">#</a></h1><p>Let $f : E \to \mathbb{R}$ be a convex, $L$-smooth function on a real Hilbert
+space (its gradient is $L$-Lipschitz). Run gradient descent with the constant
+step size $1/L$, i.e. the iterates
+$$x_{t+1} = x_t - \tfrac{1}{L}\,\nabla f(x_t),$$
+and suppose $x^\*$ is a global minimizer of $f$. Then for every $t \ge 1$,
+$$f(x_t) - f(x^\*) \;\le\; \frac{2L\,\lVert x_0 - x^\*\rVert^2}{t},$$
+so the optimality gap decays at the rate $O(1/t)$.</p><p>The iteration is supplied abstractly: a sequence $x : \mathbb{N} \to E$ with the
+recurrence <code>hrec</code>, and $x^\*$ is a global minimizer (<code>hmin</code>), from which
+$\nabla f(x^\*) = 0$ is derived (<code>gradient_eq_zero_of_forall_le</code>). The proof
+goes through co-coercivity: the distance $\lVert x_t - x^\*\rVert$
+is non-increasing, and a telescoping/recursive bound on
+$\delta_t = f(x_t) - f(x^\*)$ yields the rate.</p><p><strong>Reference.</strong> Junwei Lu, <em>Big Data Analysis</em>, Springer Nature Switzerland,
+2025 (ISBN 978-3-032-03160-0), Chapter 13 (Gradient Descent), §13.1
+(Gradient Descent), Theorem 13.1 (Convergence of Gradient Descent). The
+co-coercivity step is in §13.1 (Gradient Descent); the smoothness helper is
+Lemma 13.1.</p><p><strong>Proof formalization notes.</strong></p><p><em>Constant.</em> The book writes the bound $2L\lVert x_0 - x^\*\rVert^2/t$. The
+constant $2L$ is in fact <strong>looser</strong> than what our telescoping proves: setting
+$\omega := 1/(2L\lVert x_0 - x^\*\rVert^2)$, the recursion
+$\delta_{t+1} \le \delta_t - \omega\,\delta_t^2$ together with $\delta_0 \ge 0$
+gives $1/\delta_t \ge \omega t$, hence
+$\delta_t \le 1/(\omega t) = 2L\lVert x_0 - x^\*\rVert^2 / t$. We therefore keep
+the book constant $2L$; the bound stated here matches the book exactly.</p><p><em>Outline.</em></p><ul><li><code>gd_descent_step</code> — smoothness at consecutive iterates gives
+<code>f(x_{t+1}) ≤ f(x_t) - (1/(2L))‖∇f(x_t)‖²</code>.</li><li><code>gd_distance_step</code> / <code>gd_distance_bound</code> — co-coercivity at <code>(x_t, x*)</code>
+with <code>∇f(x*) = 0</code> gives <code>‖x_{t+1} - x*‖² ≤ ‖x_t - x*‖²</code>, and by induction
+<code>‖x_t - x*‖² ≤ ‖x_0 - x*‖²</code>.</li><li><code>gd_gap_quad_bound</code> — convexity + Cauchy–Schwarz + distance bound give
+<code>(f(x_t) - f(x*))² ≤ ‖∇f(x_t)‖² · ‖x_0 - x*‖²</code>.</li><li><code>gd_iterate_eq_xstar_of_start</code> — handles the degenerate case <code>x_0 = x*</code>.</li><li><code>gd_inv_gap_bound</code> — telescoping induction on the recursive bound
+<code>δ_{t+1} ≤ δ_t - ω δ_t²</code>.</li></ul><p><strong>Bibliographic comments.</strong> This $O(1/t)$ rate for gradient descent on convex
+smooth functions is classical folklore in convex optimization with no single
+seminal paper. The canonical modern reference
+is Y. Nesterov, <em>Introductory Lectures on Convex Optimization: A Basic Course</em>,
+Applied Optimization 87, Kluwer Academic Publishers, 2004 (cf. Corollary 2.1.2
+and the surrounding §2.1.5 analysis of the gradient method for the class
+$\mathcal{F}_L^{1,1}$ of convex $L$-smooth functions). The co-coercivity
+inequality underlying the distance-monotonicity step is itself attributed to
+the Baillon–Haddad theorem: J.-B. Baillon and G. Haddad, &quot;Quelques propriétés
+des opérateurs angle-bornés et n-cycliquement monotones,&quot; <em>Israel Journal of
+Mathematics</em> 26 (1977), 137–150.</p></div><div class="decl" id="StatLean.Optimization.gradientDescent_rate"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Optimization/GradientDescent.lean#L318-L361">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././StatLean/Optimization/GradientDescent.html#StatLean.Optimization.gradientDescent_rate"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">gradientDescent_rate</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/UniformSpace/Cauchy.html#CompleteSpace">CompleteSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">E</span> → <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/Analysis/Convex/Function.html#ConvexOn">ConvexOn</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <a href="../.././Mathlib/Data/Set/Defs.html#Set.univ">Set.univ</a> <span class="fn">f</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hdiff</span> : <span class="fn"><a href="../.././Mathlib/Analysis/Calculus/FDeriv/Defs.html#Differentiable">Differentiable</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">f</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">L</span> : <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hL</span> : <span class="fn">0</span> <a href="../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">L</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hsmooth</span> : <span class="fn"><a href="../.././StatLean/Optimization/Smoothness/Defs.html#StatLean.Optimization.IsLSmooth">IsLSmooth</a> <span class="fn">f</span> <span class="fn">L</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn"><a href="../.././Init/Prelude.html#Nat">ℕ</a> → <span class="fn">E</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hrec</span> : <span class="fn">∀ (<span class="fn">t</span> : <a href="../.././Init/Prelude.html#Nat">ℕ</a>), <span class="fn"><span class="fn">x</span> (<span class="fn">t</span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">1</span>)</span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn">x</span> <span class="fn">t</span></span> <a href="../.././Init/Prelude.html#HSub.hSub">-</a> (<span class="fn">1</span> <a href="../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">L</span>) <a href="../.././Init/Prelude.html#HSMul.hSMul">•</a> <span class="fn"><a href="../.././Mathlib/Analysis/Calculus/Gradient/Basic.html#gradient">gradient</a> <span class="fn">f</span> <span class="fn">(<span class="fn">x</span> <span class="fn">t</span>)</span></span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">xstar</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hmin</span> : <span class="fn">∀ (<span class="fn">y</span> : <span class="fn">E</span>), <span class="fn"><span class="fn">f</span> <span class="fn">xstar</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><span class="fn">f</span> <span class="fn">y</span></span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">t</span> : <a href="../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">0</span> <a href="../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">t</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">f</span> <span class="fn">(<span class="fn">x</span> <span class="fn">t</span>)</span></span> <a href="../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">f</span> <span class="fn">xstar</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">2</span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">L</span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <a href="../.././Mathlib/Analysis/Normed/Group/Defs.html#Norm.norm">‖</a><span class="fn"><span class="fn">x</span> <span class="fn">0</span></span> <a href="../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn">xstar</span><a href="../.././Mathlib/Analysis/Normed/Group/Defs.html#Norm.norm">‖</a> <a href="../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">↑<span class="fn">t</span></span></div></div><p>Lu-BDA Theorem 13.1 (Convergence of Gradient Descent). Convex <code>L</code>-smooth <code>f</code>,
+step <code>1/L</code>, global minimizer <code>x*</code>: <code>f(x_t) - f(x*) ≤ 2L‖x_0 - x*‖²/t</code> for
+<code>t ≥ 1</code>. The constant matches the book exactly (the proof goes through a
+slightly tighter pre-bound that is then loosened to match the book).</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

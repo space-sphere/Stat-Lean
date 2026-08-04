@@ -1,0 +1,232 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.ConcentrationInequalities.Chaining.DiscreteDudley</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.ConcentrationInequalities.Chaining.DiscreteDudley";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">Chaining</span>.<span class="name">DiscreteDudley</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/DyadicNets.html">StatLean.ConcentrationInequalities.Chaining.DyadicNets</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/EntropySum.html">StatLean.ConcentrationInequalities.Chaining.EntropySum</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/FinsetMaximal.html">StatLean.ConcentrationInequalities.Chaining.FinsetMaximal</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/PsiTwoMaximal.html">StatLean.ConcentrationInequalities.Chaining.PsiTwoMaximal</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html">StatLean.ConcentrationInequalities.Chaining.SubGaussianIncrements</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubsetChaining.html">StatLean.ConcentrationInequalities.Chaining.SubsetChaining</a></li><li><a href="../../.././Mathlib/Analysis/Real/Pi/Bounds.html">Mathlib.Analysis.Real.Pi.Bounds</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.ConcentrationInequalities.Chaining.DiscreteDudley" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.discrete_dudley_of_finite"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_of_finite</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.integrable_biSup_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">integrable_biSup_sub</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.discrete_dudley_abs_of_finite"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_abs_of_finite</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.discrete_dudley"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.discrete_dudley_abs"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_abs</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Discrete-Dudley-inequality-Theorem-8-1-4" class="markdown-heading">Discrete Dudley inequality (Theorem 8.1.4) <a class="hover-link" href="#Discrete-Dudley-inequality-Theorem-8-1-4">#</a></h1><p>The chaining workhorse: for a process with sub-gaussian increments
+(parameter $K$) on a finite index set $T$,
+$$ \mathbb{E}\Bigl[\max_{t \in T} X_t\Bigr] \;\le\; 6\sqrt{3}\; K \sum_{k \in \mathbb{Z}} 2^{-k} \sqrt{\log \mathcal{N}(T, d, 2^{-k})} $$
+under mean-zero coordinates, and the no-mean-zero absolute deviation form
+$$ \mathbb{E}\Bigl[\sup_{t \in T} |X_t - X_{t_0}|\Bigr] \;\le\; 20\, K \sum_{k \in \mathbb{Z}} 2^{-k} \sqrt{\log \mathcal{N}(T, d, 2^{-k})}. $$
+Assembly file.</p><p><strong>Reference.</strong> Roman Vershynin, <em>High-Dimensional Probability</em>, 2nd ed.,
+Cambridge University Press, §8.1, Theorem 8.1.4 and Eq. (8.2); the absolute
+form is the discrete Remark 8.1.5 (the book stresses no mean-zero is needed
+for the <code>|X_t − X_{t₀}|</code> forms).</p><p><strong>Proof formalization notes.</strong> Book constant <code>C</code> frozen to <code>6√3</code> for the
+mean-zero form: per level, the increment MGF bridge (B2 normalization
+<code>C = 3</code>) gives each close-pair increment variance proxy <code>3·(3K·2^{−k})²</code>,
+the pair count over <code>closePairs</code> is <code>≤ N_k²</code>, and
+<code>expectation_max_finset_le</code> yields per-level cost
+<code>√(3·(3K·2^{−k})²)·√(2·log N_k²) = 6√3·K·2^{−k}·√(log N_k)</code>; summing gives
+<code>6√3·K·dudleySum</code>. (The per-link radius is <code>ε_k + ε_{k−1} = 3·2^{−k}</code>,
+sharper than the book's rounding to <code>4·2^{−k}</code>.) The abs form re-anchors the
+chain at the finest scale <code>κ'</code> with covering number <code>1</code> (so every window
+level has <code>N_k ≥ 2</code>, killing spurious <code>√log 2</code> terms) and reconnects <code>t₀</code> by
+ONE first-moment bound <code>E|X_{t₀'} − X_{t₀}| ≤ √π·K·diam T</code>
+(<code>integral_abs_le_of_subGaussianNorm_le</code>), absorbed via
+<code>diam·√log2 ≤ 4·dudleySum</code>; total frozen to <code>20</code> (<code>6√3 ≈ 10.4</code> chaining +
+<code>4√π/√log 2 ≈ 8.52</code> re-anchoring, with slack). The mean-zero form carries
+the LEAN-ONLY hypothesis <code>hint : ∀ t ∈ T, Integrable (X t) μ</code> ruling out
+Bochner-junk means (a non-integrable <code>X t</code> satisfies <code>∫ X t = 0</code> vacuously);
+increment means are then derived. The pseudometric chain end is identified
+a.e. via <code>ae_eq_zero_of_subGaussianNorm_eq_zero</code> over the finitely many
+points. Named-sorry fallback of this work item: <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_abs_of_finite">discrete_dudley_abs_of_finite</a></code>
+(the mean-zero headline <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_of_finite">discrete_dudley_of_finite</a></code> lands first).</p><p><strong>Bibliographic comments.</strong> Dudley's bound is from R. M. Dudley, &quot;The sizes
+of compact subsets of Hilbert space and continuity of Gaussian processes,&quot;
+<em>J. Funct. Anal.</em> 1 (1967), 290–330 (for Gaussian processes; the
+sub-gaussian extension is folklore).</p></div><div class="decl" id="StatLean.ConcentrationInequalities.discrete_dudley_of_finite"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean#L73-L372">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_of_finite"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_of_finite</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hfin</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Finite/Defs.html#Set.Finite">Finite</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hne</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hint</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Function/L1Space/Integrable.html#MeasureTheory.Integrable">MeasureTheory.Integrable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmean</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hinc</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn"><span class="fn"><span class="fn">hfin</span>.<a href="../../.././Mathlib/Data/Set/Finite/Basic.html#Set.Finite.toFinset">toFinset</a></span>.<a href="../../.././Mathlib/Data/Finset/Lattice/Fold.html#Finset.sup'">sup'</a></span> <span class="fn">⋯</span> <span class="fn">fun (<span class="fn">t</span> : <span class="fn">E</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span></span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">6</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <a href="../../.././Mathlib/Data/Real/Sqrt.html#Real.sqrt">√</a><span class="fn">3</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/EntropySum.html#StatLean.ConcentrationInequalities.dudleySum">dudleySum</a> <span class="fn">T</span></span></div></div><p><strong>Discrete Dudley inequality, mean-zero form</strong> (HDP §8.1, Theorem 8.1.4,
+Eq. (8.2)): <code>E max_{t ∈ T} X_t ≤ 6√3 · K · dudleySum T</code>. Book's unnamed
+absolute constant <code>C</code> frozen to <code>6√3</code> (see file notes for the derivation).</p><p>Carrier note (statement fix at the debt gate): the finite maximum is stated
+with the junk-free <code><a href="../../.././Mathlib/Data/Finset/Lattice/Fold.html#Finset.sup'">Finset.sup'</a></code> over <code>hfin.toFinset</code> — the honest
+<code>max_{t ∈ T} X_t</code> of the book. The previous set-bounded <code>⨆ t ∈ T, X t ω</code> form
+was <strong>false</strong>: for <code>ι ⊋ T</code> that biSup equals <code>(max_{t ∈ T} X t ω)⁺</code>, and at
+<code>|T| = 1</code> the left side degenerates to <code>∫ (X_c)⁺ &gt; 0</code> while the right side is
+<code>0</code> (all covering numbers are <code>1</code>). The <code>|·|</code>-valued forms
+(<code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_abs_of_finite">discrete_dudley_abs_of_finite</a></code> and downstream) keep the biSup carrier, which is
+junk-free there since the family is nonnegative.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.integrable_biSup_sub"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean#L374-L412">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.integrable_biSup_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">integrable_biSup_sub</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hfin</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Finite/Defs.html#Set.Finite">Finite</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hne</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hinc</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">t₀</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ht₀</span> : <span class="fn">t₀</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Function/L1Space/Integrable.html#MeasureTheory.Integrable">MeasureTheory.Integrable</a> <span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn">⨆ <span class="fn">t</span> ∈ <span class="fn">T</span>, <a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">t₀</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a></span>)</span> <span class="fn">μ</span></span></div></div><p>Integrability of the anchored supremum, exported for <code><a href="../../.././Chaining/Dudley.html">Chaining/Dudley.lean</a></code>
+and the countable lift (derived from the increment tails, never
+hypothesized).</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.discrete_dudley_abs_of_finite"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean#L414-L850">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_abs_of_finite"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_abs_of_finite</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hfin</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Finite/Defs.html#Set.Finite">Finite</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hne</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hinc</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">t₀</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ht₀</span> : <span class="fn">t₀</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn">⨆ <span class="fn">t</span> ∈ <span class="fn">T</span>, <a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">t₀</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">20</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/EntropySum.html#StatLean.ConcentrationInequalities.dudleySum">dudleySum</a> <span class="fn">T</span></span></div></div><p><strong>Discrete Dudley inequality, absolute form</strong> (HDP §8.1, Remark 8.1.5,
+discrete): <code>E sup_{t ∈ T} |X_t − X_{t₀}| ≤ 20 · K · dudleySum T</code>, with NO
+mean-zero hypothesis (as the book stresses for Eq. (8.13)). Book constant
+frozen to <code>20</code> (<code>6√3</code> chaining + <code>4√π/√log 2</code> re-anchoring, slack).</p></div></div><div class="mod_doc"><h3 id="Faithful-general-forms-arbitrary-T-HDP-Remark-7-2-1" class="markdown-heading">Faithful general forms (arbitrary <code>T</code>; HDP Remark 7.2.1) <a class="hover-link" href="#Faithful-general-forms-arbitrary-T-HDP-Remark-7-2-1">#</a></h3><p>HDP states Theorem 8.1.4 for a process on a general metric space <code>(T, d)</code>,
+reading <code>E sup_{t∈T} X_t</code> per Remark 7.2.1 (p. 199) as the supremum over all
+finite subsets <code>T₀ ⊆ T</code> of <code>E max_{t∈T₀} X_t</code>. The faithful Lean statements
+therefore quantify over a finite subset <code>F ⊆ T</code> while measuring the entropy
+on the FULL <code>T</code>; finiteness of <code>T</code> is replaced by finiteness of the covering
+numbers (<code>hcov</code>, the totally-bounded package), and the RHS is carried in
+<code>ℝ≥0∞</code> (<code>dudleyLSum</code>) so that a divergent entropy series is an honest <code>⊤</code>
+(the real <code>dudleySum</code> tsum would junk to <code>0</code>). The chain runs through nets
+of <code>T</code> and is truncated at an arbitrary level; the truncation residual over
+the fixed finite <code>F</code> vanishes (<code>SubsetChaining.residual_expectation_le</code>),
+replacing the finite-<code>T</code> fine-scale stop of <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_of_finite">discrete_dudley_of_finite</a></code>.</p></div><div class="decl" id="StatLean.ConcentrationInequalities.discrete_dudley"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean#L866-L1254">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hcov</span> : <span class="fn">∀ (<span class="fn">ε</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>), <span class="fn"><span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">ε</span> → <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Maximal/CoveringNumbers.html#StatLean.ConcentrationInequalities.coveringNumber">coveringNumber</a> <span class="fn">T</span> <span class="fn">ε</span></span> <a href="../../.././Init/Core.html#Ne">≠</a> <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hne</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hint</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Function/L1Space/Integrable.html#MeasureTheory.Integrable">MeasureTheory.Integrable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmean</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hinc</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">F</span> : <span class="fn"><a href="../../.././Mathlib/Data/Finset/Defs.html#Finset">Finset</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hF</span> : <span class="fn">↑<span class="fn">F</span></span> <a href="../../.././Init/Core.html#HasSubset.Subset">⊆</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hFne</span> : <span class="fn"><span class="fn">F</span>.<a href="../../.././Mathlib/Data/Finset/Empty.html#Finset.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn"><span class="fn">F</span>.<a href="../../.././Mathlib/Data/Finset/Lattice/Fold.html#Finset.sup'">sup'</a></span> <span class="fn">hFne</span> <span class="fn">fun (<span class="fn">t</span> : <span class="fn">E</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span></span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span>)</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> (<span class="fn">6</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <a href="../../.././Mathlib/Data/Real/Sqrt.html#Real.sqrt">√</a><span class="fn">3</span>)</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/EntropySum.html#StatLean.ConcentrationInequalities.dudleyLSum">dudleyLSum</a> <span class="fn">T</span></span></div></div><p><strong>Discrete Dudley inequality</strong> (HDP §8.1, Theorem 8.1.4, Eq. (8.2);
+faithful general-<code>T</code> form): for every finite subset <code>F ⊆ T</code>,
+<code>E max_{t∈F} X_t ≤ 6√3 · K · dudleyLSum T</code> — the Remark 7.2.1 reading of
+<code>E sup_{t∈T} X_t ≤ CK Σ_k 2^{−k}√(log 𝒩(T,d,2^{−k}))</code>, with <code>C</code> frozen to
+<code>6√3</code> exactly as in the finite form.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.discrete_dudley_abs"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.lean#L1256-L1818">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/DiscreteDudley.html#StatLean.ConcentrationInequalities.discrete_dudley_abs"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">discrete_dudley_abs</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hcov</span> : <span class="fn">∀ (<span class="fn">ε</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>), <span class="fn"><span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">ε</span> → <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Maximal/CoveringNumbers.html#StatLean.ConcentrationInequalities.coveringNumber">coveringNumber</a> <span class="fn">T</span> <span class="fn">ε</span></span> <a href="../../.././Init/Core.html#Ne">≠</a> <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hne</span> : <span class="fn"><span class="fn">T</span>.<a href="../../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hinc</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">t₀</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ht₀</span> : <span class="fn">t₀</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">F</span> : <span class="fn"><a href="../../.././Mathlib/Data/Finset/Defs.html#Finset">Finset</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hF</span> : <span class="fn">↑<span class="fn">F</span></span> <a href="../../.././Init/Core.html#HasSubset.Subset">⊆</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hFne</span> : <span class="fn"><span class="fn">F</span>.<a href="../../.././Mathlib/Data/Finset/Empty.html#Finset.Nonempty">Nonempty</a></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn"><span class="fn">F</span>.<a href="../../.././Mathlib/Data/Finset/Lattice/Fold.html#Finset.sup'">sup'</a></span> <span class="fn">hFne</span> <span class="fn">fun (<span class="fn">t</span> : <span class="fn">E</span>) =&gt; <a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">t₀</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a></span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span>)</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">20</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/EntropySum.html#StatLean.ConcentrationInequalities.dudleyLSum">dudleyLSum</a> <span class="fn">T</span></span></div></div><p><strong>Discrete Dudley inequality, absolute form</strong> (HDP §8.1, Remark 8.1.5
+discrete; faithful general-<code>T</code> form): for every finite subset <code>F ⊆ T</code> and any
+anchor <code>t₀ ∈ T</code> (not necessarily in <code>F</code>),
+<code>E max_{t∈F} |X_t − X_{t₀}| ≤ 20 · K · dudleyLSum T</code>, with NO mean-zero
+hypothesis. Constant <code>20</code> as in the finite form.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

@@ -1,0 +1,99 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.MultipleTesting.ForMathlib.EmpiricalProcessSup</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.MultipleTesting.ForMathlib.EmpiricalProcessSup";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ForMathlib</span>.<span class="name">EmpiricalProcessSup</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././Mathlib/Probability/Independence/Basic.html">Mathlib.Probability.Independence.Basic</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Bounded.html">StatLean.ConcentrationInequalities.SubGaussian.Bounded</a></li><li><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalCDF.html">StatLean.MultipleTesting.ForMathlib.EmpiricalCDF</a></li><li><a href="../../.././StatLean/MultipleTesting/ForMathlib/OrderStatistics.html">StatLean.MultipleTesting.ForMathlib.OrderStatistics</a></li><li><a href="../../.././StatLean/MultipleTesting/PValues/Defs.html">StatLean.MultipleTesting.PValues.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.MultipleTesting.ForMathlib.EmpiricalProcessSup" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.MultipleTesting.ksPlus"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ksPlus</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.MultipleTesting.ksPlus_tail_union"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ksPlus_tail_union</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="One-sided-Kolmogorov-Smirnov-statistic-and-Massart-s-inequality" class="markdown-heading">One-sided Kolmogorov–Smirnov statistic and Massart's inequality <a class="hover-link" href="#One-sided-Kolmogorov-Smirnov-statistic-and-Massart-s-inequality">#</a></h1><p>Let $p_1,\dots,p_n$ be $n$ p-values with empirical distribution function
+$\hat F_n(t) = \tfrac1n \#\{i : p_i \le t\}$, and define the <strong>one-sided Kolmogorov–Smirnov
+statistic</strong> as the supremum of the empirical process above the diagonal,
+$$ \mathrm{KS}^{+} \;=\; \sup_{t} \bigl(\hat F_n(t) - t\bigr). $$
+Since $\hat F_n(t) - t$ is right-continuous and strictly decreasing between jumps, its supremum
+over $[0,1]$ is attained at one of the $n$ jump points of $\hat F_n$, so it equals the finite
+maximum over the order statistics $p_{(1)} \le \dots \le p_{(n)}$,
+$$ \mathrm{KS}^{+} \;=\; \max_{1 \le i \le n} \Bigl( \tfrac{i}{n} - p_{(i)} \Bigr). $$
+We take that finite maximum as the definition. Under the global null the p-values are independent
+with super-uniform marginals (i.e. $\Pr(p_i \le t) \le t$), which is exactly the regime needed for
+the <strong>upper</strong> tail of $\hat F_n(t) - t$.</p><p><strong>Massart's inequality</strong> then controls the upper tail of $\mathrm{KS}^{+}$. The textbook (sharp)
+form is, for $u \ge \sqrt{\log 2 / (2n)}$,
+$$ \Pr\bigl(\mathrm{KS}^{+} \ge u\bigr) \;\le\; 2\,e^{-2 n u^2}. $$
+This file states the provable union-bound form (requiring $n \ge 1$; the $n = 0$ case is
+degenerate, see below):</p><ul><li><code><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus">ksPlus</a> p ω</code> — the one-sided KS statistic $\max_{i}\bigl(\tfrac{i+1}{n} - p_{(i+1)}\bigr)$
+(<code><a href="../../.././Init/Prelude.html#Fin">Fin</a></code>-indexed, so the displayed indices are $0,\dots,n-1$).</li><li><code><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus_tail_union">ksPlus_tail_union</a></code> — the <strong>provable union-bound</strong> form $\Pr(\mathrm{KS}^{+} \ge u) \le n\,e^{-2nu^2}$
+for $u \ge 0$. Deviates from the book's sharp constant; see the deviation note below and on the
+declaration.</li></ul><p>This is a theorem-agnostic <code>ForMathlib</code> brick; it is consumed by the goodness-of-fit assembly
+(the Kolmogorov–Smirnov test in <code>GoodnessOfFit.KolmogorovSmirnov</code>).</p><p><strong>Reference.</strong> E. J. Candès, <em>STAT 300C: Theory of Statistics</em>, Lecture Notes, Stanford University,
+2023, Lecture 3 (Goodness-of-fit testing and the empirical process), §3.3.1, Theorem 2 (Massart's
+inequality).</p><p><strong>Proof formalization notes.</strong> The structural reduction: the sup-event
+$\{\mathrm{KS}^{+} \ge u\}$ decomposes into a union of per-order-statistic events
+$\{\tfrac{k}{n} - p_{(k)} \ge u\}$, and each of these equals the threshold-count event
+$\{\#\{j : p_j \le \tfrac{k}{n} - u\} \ge k\}$ via the order-statistic ↔ count duality. Each count
+event is bounded by $e^{-2nu^2}$ by Hoeffding on the bounded $[0,1]$-indicators (sub-Gaussian proxy
+$1/4$), whose mean is $\le \tfrac{k}{n} - u$ by super-uniformity; the $\tfrac{k}{n} - u &lt; 0$ edge is
+a null event.</p><ul><li><code><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus_tail_union">ksPlus_tail_union</a></code> is a complete theorem: it takes the union over the $n$ order statistics,
+giving the $n\,e^{-2nu^2}$ bound.</li><li><strong>Deviation from the book (CLAUDE.md §1).</strong> Candès states the <em>sharp</em> constant $2$ (Massart 1990).
+The sharp constant requires an empirical-process exponential-supermartingale / reflection argument
+not available in Mathlib: the $n$-fold union of the positively-correlated count events cannot be
+Bonferroni-shaved to a constant, and the McDiarmid route's $e^{4nuE}$ cross-term is unbounded in
+$u$. The provable union bound $n\,e^{-2nu^2}$ is what the KS test actually consumes — with
+$u_\alpha = \sqrt{\log(n/\alpha)/(2n)}$ it gives $n\,e^{-2nu_\alpha^2} = \alpha$, controlling the
+test level.</li><li>The sharp constant $2$ (Massart 1990) is not formalized here: collapsing the $n$-fold union of
+the positively-correlated count events to a constant requires an empirical-process reflection /
+exponential-supermartingale argument not yet in Mathlib, for which neither the union bound,
+McDiarmid, nor the maximal inequalities suffice.</li><li>The hypothesis $n \ge 1$ is genuinely required: at $n = 0$ the empirical sup is $\sup \emptyset = 0$,
+so for $u = 0$ the event is all of $\Omega$ (measure $1$) while the right-hand side is $0$. The book
+statement is implicitly about $n \ge 1$ samples.</li></ul><p><strong>Bibliographic comments.</strong> The inequality originates with A. Dvoretzky, J. Kiefer and J. Wolfowitz,
+&quot;Asymptotic minimax character of the sample distribution function and of the classical multinomial
+estimator,&quot; <em>Annals of Mathematical Statistics</em> <strong>27</strong> (1956), no. 3, 642–669, who proved the bound
+$\Pr(\sup_t |\hat F_n(t) - F(t)| &gt; \varepsilon) \le C\, e^{-2 n \varepsilon^2}$ with an unspecified
+universal constant $C$. The tight constant was obtained by P. Massart, &quot;The tight constant in the
+Dvoretzky–Kiefer–Wolfowitz inequality,&quot; <em>Annals of Probability</em> <strong>18</strong> (1990), no. 3, 1269–1283:
+the two-sided inequality holds with $C = 2$ for all $\varepsilon$, and the one-sided bound
+$\Pr(\sup_t (\hat F_n(t) - F(t)) &gt; \varepsilon) \le e^{-2 n \varepsilon^2}$ holds for
+$e^{-2n\varepsilon^2} \le 1/2$ (the Birnbaum–McCarty conjecture). Candès's Theorem 2 states the
+one-sided statistic with the (looser but valid) two-sided constant $2$ under the same
+$u \ge \sqrt{\log 2/(2n)}$ threshold, which is the form formalized here.</p></div><div class="decl" id="StatLean.MultipleTesting.ksPlus"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.lean#L86-L89">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ksPlus</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">p</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ω</span> : <span class="fn">Ω</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></div></div><p>The <strong>one-sided Kolmogorov–Smirnov statistic</strong> <code>KS⁺ = maxᵢ ((i+1)/n − p₍ᵢ₊₁₎)</code>, the supremum
+of the empirical process <code>F̂ₙ(t) − t</code> (attained at the order statistics).</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus">StatLean.MultipleTesting.ksPlus</a> <span class="fn">p</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn">⨆ (<span class="fn">i</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>), (<span class="fn">↑<span class="fn">↑<span class="fn">i</span></span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">1</span>) <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><a href="../../.././StatLean/MultipleTesting/ForMathlib/OrderStatistics.html#StatLean.MultipleTesting.orderStat">StatLean.MultipleTesting.orderStat</a> <span class="fn">(fun (<span class="fn">j</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>) =&gt; <span class="fn"><span class="fn">p</span> <span class="fn">j</span> <span class="fn">ω</span></span>)</span> <span class="fn">i</span></span></span></li></ul></details><details id="instances-for-list-StatLean.MultipleTesting.ksPlus" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="StatLean.MultipleTesting.ksPlus_tail_union"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.lean#L230-L312">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus_tail_union"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ksPlus_tail_union</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">p</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ (<span class="fn">j</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>), <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hindep</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Independence/Basic.html#ProbabilityTheory.iIndepFun">ProbabilityTheory.iIndepFun</a> <span class="fn">p</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hnull</span> : <span class="fn">∀ (<span class="fn">j</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>), <span class="fn"><a href="../../.././StatLean/MultipleTesting/PValues/Defs.html#StatLean.MultipleTesting.SuperUniform">SuperUniform</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hn</span> : <span class="fn">1</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">n</span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">u</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hu</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">u</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">μ</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">{</a><span class="fn">ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">:</a> <span class="fn">Ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">|</a> <span class="fn">u</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus">ksPlus</a> <span class="fn">p</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Data/Set/Defs.html#setOf">}</a></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> (<span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Analysis/Complex/Exponential.html#Real.exp">Real.exp</a> (<span class="fn">-<span class="fn">2</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">u</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>)</span>)</span></div></div><p><strong>Massart's inequality — provable union-bound form</strong> (Candès, Lecture 3, §3.3.1, Theorem 2,
+STAT 300C). For independent super-uniform null p-values, <code>μ{ KS⁺ ≥ u } ≤ n · e^{−2nu²}</code> (<code>u ≥ 0</code>,
+<code>n ≥ 1</code>). Proof: <code>KS⁺ ≥ u ⟺ ∃ k, (k/n) − p₍ₖ₎ ≥ u</code>, and <code>{(k/n) − p₍ₖ₎ ≥ u} = {countLE (k/n − u) ≥ k}</code>,
+each bounded by <code>e^{−2nu²}</code> (Hoeffding on the bounded indicators with mean <code>≤ k/n − u</code>); union over
+the <code>n</code> order statistics.</p><blockquote><p><strong>Deviation from the book (CLAUDE.md §1).</strong> Candès states the <em>sharp</em> <code>2·e^{−2nu²}</code> (Massart 1990).
+The sharp constant requires an empirical-process exponential-supermartingale / reflection argument
+not available in Mathlib: the <code>n</code>-fold union of the positively-correlated count events
+<code>{countLE(k/n−u) ≥ k}</code> cannot be Bonferroni-shaved to a constant, and the McDiarmid route's
+<code>e^{4nuE}</code> cross-term is unbounded in <code>u</code>. We therefore state the <strong>provable</strong> union bound
+<code>n·e^{−2nu²}</code> — which is exactly what the Kolmogorov–Smirnov test
+(<code>GoodnessOfFit.KolmogorovSmirnov</code>) consumes: with <code>u_α = √(log(n/α)/(2n))</code>, <code>n·e^{−2nu_α²} = α</code>,
+so the test level is controlled by this form, not the sharp constant.</p></blockquote><p>The hypothesis <code>1 ≤ n</code> is genuinely required: at <code>n = 0</code> the empirical sup is <code>⨆∅ = 0</code>, so for
+<code>u = 0</code> the event is all of <code>Ω</code> (measure <code>1</code>) while the right-hand side is <code>n · … = 0</code>. The book
+statement is implicitly about <code>n ≥ 1</code> samples.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

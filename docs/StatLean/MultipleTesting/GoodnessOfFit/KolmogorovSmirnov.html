@@ -1,0 +1,65 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.MultipleTesting.GoodnessOfFit.KolmogorovSmirnov</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.MultipleTesting.GoodnessOfFit.KolmogorovSmirnov";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">GoodnessOfFit</span>.<span class="name">KolmogorovSmirnov</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/GoodnessOfFit/KolmogorovSmirnov.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html">StatLean.MultipleTesting.ForMathlib.EmpiricalProcessSup</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.MultipleTesting.GoodnessOfFit.KolmogorovSmirnov" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.MultipleTesting.ks_test_level"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ks_test_level</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Kolmogorov-Smirnov-test-level-guarantee" class="markdown-heading">Kolmogorov–Smirnov test — level guarantee <a class="hover-link" href="#Kolmogorov-Smirnov-test-level-guarantee">#</a></h1><p>The one-sided Kolmogorov–Smirnov test of the global null hypothesis rejects when the one-sided KS
+statistic
+$$ \mathrm{KS}^{+} \;=\; \sup_{t} \bigl(F_n(t) - t\bigr) $$
+exceeds the threshold $u_\alpha = \sqrt{\log(n/\alpha) / (2n)}$, where $F_n$ is the empirical CDF of
+$n$ p-values. Under the global null — that the $n$ p-values are jointly independent and each is
+super-uniform (its CDF lies below the uniform CDF) — the test has <strong>level</strong> $\alpha$, i.e. its
+type-I error is controlled:
+$$ \mu\bigl\{\, \mathrm{KS}^{+} \ge u_\alpha \,\bigr\} \;\le\; \alpha . $$
+This follows immediately from the one-sided KS union-bound tail inequality (formalized in
+<code>ForMathlib/EmpiricalProcessSup.ksPlus_tail_union</code>): substituting the threshold $u_\alpha$ makes the
+union tail equal to $n\,e^{-2n\,u_\alpha^{2}} = n\cdot(\alpha/n) = \alpha$.</p><p>The sharp Dvoretzky–Kiefer–Wolfowitz–Massart constant would let the threshold improve to
+$\sqrt{\log(2/\alpha)/(2n)}$; the version proved here uses the (weaker) union-bound tail, which is the
+inequality actually available in the library.</p><p><strong>Reference.</strong> E. J. Candès, <em>STAT 300C: Theory of Statistics</em>, Lecture Notes, Stanford University,
+2023. Lecture 3, §3.3.1 (Kolmogorov–Smirnov goodness-of-fit test).</p><p><strong>Proof formalization notes.</strong> The main result (<code><a href="../../.././StatLean/MultipleTesting/GoodnessOfFit/KolmogorovSmirnov.html#StatLean.MultipleTesting.ks_test_level">ks_test_level</a></code>): under the global null (jointly
+independent, super-uniform p-values), $\mu\{\mathrm{KS}^{+} \ge u_\alpha\} \le \alpha$. The proof
+plugs the threshold $u = u_\alpha$ (which is $\ge 0$) into the one-sided union-bound KS tail
+<code>ksPlus_tail_union</code>, then simplifies the resulting bound $n\,e^{-2n u_\alpha^{2}} = \alpha$ using
+$u_\alpha^{2} = \log(n/\alpha)/(2n)$ and $e^{-\log(n/\alpha)} = \alpha/n$. The library uses the
+union-bound tail rather than the sharp Massart constant, hence the threshold $\sqrt{\log(n/\alpha)/(2n)}$
+in place of the sharper $\sqrt{\log(2/\alpha)/(2n)}$.</p><p><strong>Bibliographic comments.</strong> The two-sided KS statistic and its limiting distribution originate with
+A. N. Kolmogorov, &quot;Sulla determinazione empirica di una legge di distribuzione,&quot; <em>Giornale
+dell'Istituto Italiano degli Attuari</em> <strong>4</strong> (1933), 83–91, who derived the asymptotic distribution of
+$\sqrt{n}\,\sup_t |F_n(t) - F(t)|$ for continuous $F$. N. V. Smirnov, &quot;Table for estimating the
+goodness of fit of empirical distributions,&quot; <em>Annals of Mathematical Statistics</em> <strong>19</strong> (1948),
+279–281, tabulated the limiting distribution and studied the two-sample form. The <em>non-asymptotic</em>
+exponential tail bound used here (and the underlying finite-$n$ control of the empirical process
+supremum) is the Dvoretzky–Kiefer–Wolfowitz inequality — A. Dvoretzky, J. Kiefer, and J. Wolfowitz,
+&quot;Asymptotic minimax character of the sample distribution function and of the classical multinomial
+estimator,&quot; <em>Annals of Mathematical Statistics</em> <strong>27</strong> (1956), 642–669 — with the sharp leading
+constant established by P. Massart, &quot;The tight constant in the Dvoretzky–Kiefer–Wolfowitz
+inequality,&quot; <em>Annals of Probability</em> <strong>18</strong> (1990), 1269–1283. The specific level-$\alpha$ KS test
+calibration formalized here is the textbook synthesis presented in Candès's STAT 300C notes; the
+union-bound threshold $\sqrt{\log(n/\alpha)/(2n)}$ is a standard pedagogical simplification rather
+than a separately seminal result.</p></div><div class="decl" id="StatLean.MultipleTesting.ks_test_level"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/GoodnessOfFit/KolmogorovSmirnov.lean#L57-L89">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/MultipleTesting/GoodnessOfFit/KolmogorovSmirnov.html#StatLean.MultipleTesting.ks_test_level"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">ks_test_level</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hn</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">n</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">p</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ (<span class="fn">j</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>), <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hindep</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Independence/Basic.html#ProbabilityTheory.iIndepFun">ProbabilityTheory.iIndepFun</a> <span class="fn">p</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hnull</span> : <span class="fn">∀ (<span class="fn">j</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span>), <span class="fn"><a href="../../.././StatLean/MultipleTesting/PValues/Defs.html#StatLean.MultipleTesting.SuperUniform">SuperUniform</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">α</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hα0</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">α</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hα1</span> : <span class="fn">α</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">1</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">μ</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">{</a><span class="fn">ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">:</a> <span class="fn">Ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">|</a> <a href="../../.././Mathlib/Data/Real/Sqrt.html#Real.sqrt">√</a>(<span class="fn"><a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> (<span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">α</span>)</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> (<span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">n</span></span>)) <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././StatLean/MultipleTesting/ForMathlib/EmpiricalProcessSup.html#StatLean.MultipleTesting.ksPlus">ksPlus</a> <span class="fn">p</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Data/Set/Defs.html#setOf">}</a></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">α</span></span></div></div><p><strong>Kolmogorov–Smirnov test level</strong> (Candès, Lecture 3, §3.3.1, STAT 300C). Rejecting the global
+null when <code>KS⁺ ≥ u_α</code> with <code>u_α = √(log(n/α)/(2n))</code> has type-I error at most <code>α</code>: directly from the
+one-sided KS tail <code>ksPlus_tail_union</code>, since <code>n·e^{−2n u_α²} = α</code>.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

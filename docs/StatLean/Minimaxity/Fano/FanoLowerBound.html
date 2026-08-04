@@ -1,0 +1,111 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Minimaxity.Fano.FanoLowerBound</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.Minimaxity.Fano.FanoLowerBound";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">Fano</span>.<span class="name">FanoLowerBound</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/Fano/FanoLowerBound.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/Minimaxity/EstimationToTesting.html">StatLean.Minimaxity.EstimationToTesting</a></li><li><a href="../../.././Mathlib/Analysis/SpecialFunctions/BinaryEntropy.html">Mathlib.Analysis.SpecialFunctions.BinaryEntropy</a></li><li><a href="../../.././StatLean/Minimaxity/Fano/MutualInformation.html">StatLean.Minimaxity.Fano.MutualInformation</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Minimaxity.Fano.FanoLowerBound" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.fano_inequality"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">fano_inequality</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.minimax_fano_lower_bound"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_fano_lower_bound</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Fano-s-method-for-minimax-lower-bounds" class="markdown-heading">Fano's method for minimax lower bounds <a class="hover-link" href="#Fano-s-method-for-minimax-lower-bounds">#</a></h1><p><strong>Fano's inequality.</strong> Consider an $M$-ary hypothesis-testing problem in which an index
+$J$ is drawn uniformly from $\{1, \dots, M\}$ and an observation $Z$ is generated from the
+$J$-th distribution. For any test $\psi$ that guesses $J$ from $Z$, the error probability is
+lower bounded by the mutual information $I(Z; J)$ between the observation and the index:
+$$ \inf_{\psi} \mathbb{P}\bigl[\psi(Z) \neq J\bigr] \;\ge\; 1 - \frac{I(Z; J) + \log 2}{\log M}. $$
+Here $\log$ denotes the natural logarithm, and the bound is nontrivial when $M \ge 2$
+(so that $\log M &gt; 0$).</p><p><strong>Fano minimax lower bound.</strong> Combining Fano's inequality with the estimation-to-testing
+reduction (the same Proposition 15.1 reduction used elsewhere in this module) gives a lower
+bound on the minimax risk. For an increasing distortion function $\Phi$ and a family of
+parameters $\theta_1, \dots, \theta_M$ that is $2\delta$-separated under the (pseudo)metric on
+the target space, the minimax risk for the distortion loss $\Phi \circ \rho$ satisfies
+$$ \mathfrak{M}\bigl(\theta(\mathcal{P}); \Phi \circ \rho\bigr) \;\ge\; \Phi(\delta)\left(1 - \frac{I(Z; J) + \log 2}{\log M}\right), $$
+where $I(Z; J)$ is the mutual information of the sub-model induced by restricting to the
+$M$ candidate parameters.</p><p>This file formalizes both statements: <code><a href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html#StatLean.Minimaxity.fano_inequality">fano_inequality</a></code> (the $M$-ary error bound) and
+<code><a href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html#StatLean.Minimaxity.minimax_fano_lower_bound">minimax_fano_lower_bound</a></code> (the minimax consequence). Notation alignment with the Lean
+statements: the error probability $\inf_\psi \mathbb{P}[\psi(Z) \neq J]$ is the M-ary Bayes
+risk of the 0–1 loss under the uniform prior, written <code>multiwayTestingError Q</code>; the mutual
+information $I(Z; J)$ is <code>mutualInformation Q</code>; and the natural-log constants enter through
+<code><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> (Real.log ·)</code> to keep the inequality in the extended nonnegative reals.</p><p><strong>Reference.</strong> M. J. Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.3.2,
+Eq. (15.31) (Fano's inequality), Proposition 15.12 with Eq. (15.32) (Fano minimax lower
+bound), via the Shannon-entropy form Eq. (15.61).</p><p><strong>Proof formalization notes.</strong> The proof of Fano's inequality (Eq. (15.31)) goes through the
+Shannon-entropy form (Eq. (15.61)) supported by the entropy appendix <code><a href="../../.././ForMathlib/Entropy.html">ForMathlib/Entropy.lean</a></code>.
+The chain is assembled in stages: the mutual-information identity
+$I(Z; J) = \log M - H(J \mid Z)$ under the uniform prior (<code>mutualInformation_toReal_eq</code>, a pure
+Radon–Nikodym computation) and the conditional-entropy bound
+$H(J \mid Z) \le \log 2 + q\,\log M$ with $q$ the testing error (<code>condEntropy_le_fano</code>, the
+information-theoretic crux, built from the pointwise discrete Fano inequality
+<code>discrete_fano_pointwise</code>, the sub-probability entropy bound <code>negMulLog_sum_le_card</code>, and the
+MAP/Bayes-risk identity <code>mapError_integral_le</code>) combine in <code>fano_real</code> to the real-valued chain
+$\log M \le I + \log 2 + q\,\log M$. The wrapper <code>fano_entropy_continuous</code> discharges the
+<code>ℝ≥0∞</code> bookkeeping (the <code>⊤</code> cases and the <code><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a></code> push-through), and <code><a href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html#StatLean.Minimaxity.fano_inequality">fano_inequality</a></code>
+performs the division rearrangement into $1 - (I + \log 2)/\log M \le q$. The minimax bound
+multiplies through by $\Phi(\delta)$ and applies the estimation-to-testing reduction
+(<code>minimax_ge_testing_error</code>).</p><p><strong>Bibliographic comments.</strong> Fano's inequality is classical information theory, originating with
+R. M. Fano, <em>Transmission of Information: A Statistical Theory of Communications</em>, MIT Press and
+Wiley, 1961 (and standard in T. M. Cover and J. A. Thomas, <em>Elements of Information Theory</em>,
+Wiley). Its use as a device for statistical minimax lower bounds traces to R. Z. Has'minskii,
+&quot;A lower bound on the risks of nonparametric estimates of densities in the uniform metric,&quot;
+<em>Theory of Probability and Its Applications</em> 23 (1978), 794–798, and to the systematic
+development by L. Birgé, &quot;Approximation dans les espaces métriques et théorie de l'estimation,&quot;
+<em>Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete</em> 65 (1983), 181–237. The
+synthesis of the Fano, Assouad, and Le Cam methods presented in Wainwright's §15.3 follows the
+influential survey of B. Yu, &quot;Assouad, Fano, and Le Cam,&quot; in <em>Festschrift for Lucien Le Cam:
+Research Papers in Probability and Statistics</em> (D. Pollard, E. Torgersen, G. L. Yang, eds.),
+Springer, New York, 1997, pp. 423–435, which is the standard reference for the testing-reduction
+formulation of Eq. (15.31)–(15.32) formalized here.</p></div><div class="decl" id="StatLean.Minimaxity.fano_inequality"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/Fano/FanoLowerBound.lean#L711-L740">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html#StatLean.Minimaxity.fano_inequality"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">fano_inequality</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Init/Data/NeZero.html#NeZero">NeZero</a> <span class="fn">M</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Q</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">(<a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">M</span>)</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">Q</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn">2</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">M</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> (<span class="fn"><a href="../../.././StatLean/Minimaxity/Fano/MutualInformation.html#StatLean.Minimaxity.mutualInformation">mutualInformation</a> <span class="fn">Q</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">2</span>)</span></span>) <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">↑<span class="fn">M</span></span>)</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.multiwayTestingError">multiwayTestingError</a> <span class="fn">Q</span></span></div></div><p><strong>Fano's inequality</strong> (Wainwright Eq. (15.31)): the error probability of the M-ary test is
+lower bounded by <code>1 − (I(Z; J) + log 2)/log M</code>, where <code>I(Z; J)</code> is the mutual information.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.3.2, Eq. (15.31).</p></div></div><div class="decl" id="StatLean.Minimaxity.minimax_fano_lower_bound"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/Fano/FanoLowerBound.lean#L742-L768">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html#StatLean.Minimaxity.minimax_fano_lower_bound"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_fano_lower_bound</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/EMetricSpace/Defs.html#PseudoEMetricSpace">PseudoEMetricSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#OpensMeasurableSpace">OpensMeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Φ</span> : <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn">Ω</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Init/Data/NeZero.html#NeZero">NeZero</a> <span class="fn">M</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">θfam</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">M</span></span> → <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hθ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">θfam</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">δ</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn">2</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">M</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hΦ</span> : <span class="fn"><a href="../../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a> <span class="fn">Φ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hsep</span> : <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.IsSeparatedFamily">IsSeparatedFamily</a> <span class="fn">g</span> <span class="fn">θfam</span> <span class="fn">δ</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">Φ</span> <span class="fn">δ</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> (<span class="fn"><a href="../../.././StatLean/Minimaxity/Fano/MutualInformation.html#StatLean.Minimaxity.mutualInformation">mutualInformation</a> <span class="fn">(<span class="fn"><span class="fn">P</span>.<a href="../../.././Mathlib/Probability/Kernel/Composition/MapComap.html#ProbabilityTheory.Kernel.comap">comap</a></span> <span class="fn">θfam</span> <span class="fn">hθ</span>)</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">2</span>)</span></span>) <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> <span class="fn">(<a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">↑<span class="fn">M</span></span>)</span></span>) <a href="../../.././Init/Prelude.html#LE.le">≤</a>   <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.minimaxRiskDist">minimaxRiskDist</a> <span class="fn">Φ</span> <span class="fn">g</span> <span class="fn">P</span></span></div></div><p><strong>Fano minimax lower bound</strong> (Wainwright Proposition 15.12, Eq. (15.32)): for an increasing
+distortion <code>Φ</code> and a <code>2δ</code>-separated family <code>θfam : <a href="../../.././Init/Prelude.html#Fin">Fin</a> M → Θ</code>,
+<code>M(θ(𝒫); Φ∘ρ) ≥ Φ(δ)(1 − (I(Z; J) + log 2)/log M)</code>, where <code>I(Z; J)</code> is the mutual information of the
+induced sub-model.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.3.2, Proposition 15.12.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

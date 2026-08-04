@@ -1,0 +1,84 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Minimaxity.Fano.LocalPacking</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.Minimaxity.Fano.LocalPacking";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">Fano</span>.<span class="name">LocalPacking</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/Fano/LocalPacking.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/Minimaxity/Fano/FanoLowerBound.html">StatLean.Minimaxity.Fano.FanoLowerBound</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Minimaxity.Fano.LocalPacking" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.minimax_local_packing"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_local_packing</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Lower-bounds-based-on-local-packings-generalized-Fano-method" class="markdown-heading">Lower bounds based on local packings (generalized Fano method) <a class="hover-link" href="#Lower-bounds-based-on-local-packings-generalized-Fano-method">#</a></h1><p>The &quot;generalized Fano&quot; / local-packing method packages the Fano minimax lower bound together with
+the convexity upper bound on the mutual information (Eq. (15.34)). Suppose we can exhibit a
+<code>2δ</code>-separated family of parameters <code>θ¹, …, θᴹ</code> (i.e. the induced points <code>g(θʲ)</code> are pairwise at
+distance more than <code>2δ</code> in the metric <code>ρ</code>) whose pairwise Kullback–Leibler divergences are
+uniformly controlled and whose cardinality <code>M</code> is large enough. Concretely, if both</p><ul><li>condition (15.35a): <code>√(D(P_{θʲ} ‖ P_{θᵏ})) ≤ c √n δ</code>  (equivalently <code>D(P_{θʲ} ‖ P_{θᵏ}) ≤ c² n δ²</code>), and</li><li>condition (15.35b): <code>log M ≥ 2{c² n δ² + log 2}</code>,</li></ul><p>then the minimax risk for estimating <code>θ(𝒫)</code> under the distortion <code>Φ ∘ ρ</code> is bounded below by half
+the distortion evaluated at the separation radius:</p><blockquote><p>If we can find a <code>2δ</code>-separated family of distributions satisfying (15.35a) and (15.35b), then the
+minimax risk is lower bounded as <code>𝔐(θ(𝒫); Φ∘ρ) ≥ ½ Φ(δ)</code>.</p></blockquote><p>Here <code>Φ : [0,∞] → [0,∞]</code> is an increasing distortion function, <code>n</code> is the sample size (entering
+through the <code>√n</code> factor in (15.35a)), and <code>c &gt; 0</code> is a constant. No constants are changed relative
+to the book; the Lean statement carries <code>n ≥ 0</code> as an explicit hypothesis since the <code>√n</code> in the
+book's (15.35a) presupposes a nonnegative sample size, and uses the squared, divergence-level form
+<code>D(P_{θʲ} ‖ P_{θᵏ}) ≤ c² n δ²</code> in place of the square-root form (15.35a) (these are equivalent).</p><p><strong>Reference.</strong> M. J. Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.3.3 (&quot;The local packing
+approach&quot;), conditions (15.35a)/(15.35b), building on the convexity bound (15.34) and the Fano lower
+bound (15.32).</p><p><strong>Proof formalization notes.</strong> The argument assembles four steps. Step 1 bounds the mutual
+information <code>I</code> of the packing by the cover radius <code>c² n δ²</code> via the convexity bound (15.34),
+realized here as <code>mutualInformation_le_avg_pairwise_kl</code> averaged against (15.35a). Step 2 deduces
+from (15.35b) that <code>log M &gt; 0</code>, hence <code>M ≥ 2</code>, so the Fano denominator is nondegenerate. Step 3
+shows the Fano fraction <code>(I + log 2) / log M ≤ ½</code> by combining the Step-1 bound with (15.35b). Step 4
+feeds <code>M ≥ 2</code>, monotonicity of <code>Φ</code>, and the separation hypothesis into the Fano minimax lower bound
+<code>minimax_fano_lower_bound</code> (Eq. (15.32)) and uses <code>1 - ½ = ½</code> to conclude <code>½ Φ(δ) ≤ 𝔐</code>. All
+arithmetic is carried out over <code>ℝ≥0∞</code>, with <code><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a></code> used to inject the real-valued bounds.</p><p><strong>Bibliographic comments.</strong> The local-packing / generalized-Fano scheme — combining a Fano-type
+lower bound with the convexity (mixture) bound on mutual information — originates with Y. Yang and
+A. Barron, &quot;Information-theoretic determination of minimax rates of convergence,&quot; <em>Annals of
+Statistics</em> 27(5) (1999), 1564–1599, which established the metric-entropy characterization of
+minimax rates and the key mutual-information bound used in Step 1. The broader Fano-method tradition
+for minimax lower bounds traces back to R. Z. Khas'minskii and to L. Birgé (&quot;Approximation dans les
+espaces métriques et théorie de l'estimation,&quot; <em>Z. Wahrsch. Verw. Gebiete</em> 65 (1983), 181–237);
+Wainwright's §15.3.3 is a synthesis of this line of work rather than an original result.</p></div><div class="decl" id="StatLean.Minimaxity.minimax_local_packing"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/Fano/LocalPacking.lean#L59-L148">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Minimaxity/Fano/LocalPacking.html#StatLean.Minimaxity.minimax_local_packing"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_local_packing</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/EMetricSpace/Defs.html#PseudoEMetricSpace">PseudoEMetricSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#OpensMeasurableSpace">OpensMeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Φ</span> : <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn">Ω</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Init/Data/NeZero.html#NeZero">NeZero</a> <span class="fn">M</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">θfam</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">M</span></span> → <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hθ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">θfam</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">δ</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">c </span><span class="fn">n</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hΦ</span> : <span class="fn"><a href="../../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a> <span class="fn">Φ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hsep</span> : <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.IsSeparatedFamily">IsSeparatedFamily</a> <span class="fn">g</span> <span class="fn">θfam</span> <span class="fn">δ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hn</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">n</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h35a</span> :
+  <span class="fn">∀ (<span class="fn">j </span><span class="fn">k</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">M</span></span>),
+    <span class="fn"><span class="fn">j</span> <a href="../../.././Init/Core.html#Ne">≠</a> <span class="fn">k</span> →
+      <span class="fn"><a href="../../.././Mathlib/InformationTheory/KullbackLeibler/Basic.html#InformationTheory.klDiv">InformationTheory.klDiv</a> <span class="fn">(<span class="fn">(<span class="fn"><span class="fn">P</span>.<a href="../../.././Mathlib/Probability/Kernel/Composition/MapComap.html#ProbabilityTheory.Kernel.comap">comap</a></span> <span class="fn">θfam</span> <span class="fn">hθ</span>)</span> <span class="fn">j</span>)</span> <span class="fn">(<span class="fn">(<span class="fn"><span class="fn">P</span>.<a href="../../.././Mathlib/Probability/Kernel/Composition/MapComap.html#ProbabilityTheory.Kernel.comap">comap</a></span> <span class="fn">θfam</span> <span class="fn">hθ</span>)</span> <span class="fn">k</span>)</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> (<span class="fn">c</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">n</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><span class="fn">δ</span>.<a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.toReal">toReal</a></span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h35b</span> : <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">c</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">n</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><span class="fn">δ</span>.<a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.toReal">toReal</a></span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn"><a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">2</span></span>) <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Analysis/SpecialFunctions/Log/Basic.html#Real.log">Real.log</a> <span class="fn">↑<span class="fn">M</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">2</span><a href="../../.././Init/Prelude.html#Inv.inv">⁻¹</a> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><span class="fn">Φ</span> <span class="fn">δ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.minimaxRiskDist">minimaxRiskDist</a> <span class="fn">Φ</span> <span class="fn">g</span> <span class="fn">P</span></span></div></div><p><strong>Local-packing minimax lower bound</strong> (Wainwright §15.3.3, conditions (15.35a)/(15.35b)): given a
+<code>2δ</code>-separated family <code>θfam : <a href="../../.././Init/Prelude.html#Fin">Fin</a> M → Θ</code> whose pairwise KL divergences satisfy
+<code>D(P_{θʲ} ‖ P_{θᵏ}) ≤ c²nδ²</code> (15.35a) and whose cardinality satisfies
+<code>log M ≥ 2(c²nδ² + log 2)</code> (15.35b), the minimax risk is at least <code>½ Φ(δ)</code>.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.3.3.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

@@ -1,0 +1,107 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.ConcentrationInequalities.SubGaussian.Hoeffding</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.ConcentrationInequalities.SubGaussian.Hoeffding";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussian</span>.<span class="name">Hoeffding</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/SubGaussian/Hoeffding.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html">StatLean.ConcentrationInequalities.SubGaussian.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.ConcentrationInequalities.SubGaussian.Hoeffding" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.isSubGaussian_const_mul"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">isSubGaussian_const_mul</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.hoeffding"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">hoeffding</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Hoeffding-s-inequality-for-sums-of-independent-sub-Gaussian-variables" class="markdown-heading">Hoeffding's inequality for sums of independent sub-Gaussian variables <a class="hover-link" href="#Hoeffding-s-inequality-for-sums-of-independent-sub-Gaussian-variables">#</a></h1><p>Let $X_1, \dots, X_n$ be independent random variables, each sub-Gaussian with
+variance proxy $\sigma^2$. Then for every threshold $t &gt; 0$, the centered
+sample mean obeys the one-sided tail bound
+$$ \mathbb{P}\!\left( \frac{1}{n}\sum_{i=1}^{n}\bigl(X_i - \mathbb{E}X_i\bigr) &gt; t \right) \;\le\; \exp\!\left( -\frac{n\,t^2}{2\sigma^2} \right). $$
+Equivalently, the centered sum $\sum_{i=1}^{n}(X_i - \mathbb{E}X_i)$ exceeds
+$nt$ with the same bound; this is the form we state and prove directly, since
+it matches Mathlib's sum-tail lemma applied at threshold $\varepsilon := nt$ to
+the centered variables $X_i - \mathbb{E}X_i$. Sub-Gaussianity here is the
+<code>IsSubGaussian</code> predicate of <code><a href="../../.././…/SubGaussian/Defs.html">…/SubGaussian/Defs.lean</a></code>, whose engine is exactly
+the centered sub-Gaussian moment-generating-function bound that Mathlib's lemma
+consumes.</p><p><strong>Deviation from the book statement.</strong> We state the tail with the
+non-strict inequality $nt \le \sum_i (X_i - \mathbb{E}X_i)$ rather than the
+book's strict $&gt;$; the strict event is contained in the non-strict one, so the
+non-strict bound is at least as strong. We also require $n \ge 1$ explicitly
+(the book's &quot;$X_1, \dots, X_n$&quot; presupposes at least one variable) and use a
+per-index sub-Gaussian hypothesis $X_i$ for $i &lt; n$. The Lean statement
+additionally carries measurability of each $X_i$, a purely technical
+requirement of Mathlib's independence-transfer machinery and not a
+mathematical assumption of the book.</p><p>We additionally record the <strong>scalar-multiple</strong> closure rule used downstream in
+OLS / Lasso noise bounds: if $X$ is sub-Gaussian with variance proxy
+$\sigma^2$, then $c\,X$ is sub-Gaussian with proxy $c^2\sigma^2$.</p><p><strong>Reference.</strong> Junwei Lu, <em>Big Data Analysis</em>, Springer Nature Switzerland,
+2025 (ISBN 978-3-032-03160-0), Chapter 4 (Concentration Inequalities),
+§4.2 (Sub-Gaussian Random Variables), Theorem 4.7 (Hoeffding Inequality). The
+scalar-multiple rule is the elementary closure property of sub-Gaussian
+variables recorded in the same section.</p><p><strong>Proof formalization notes.</strong> The centered-sum form is obtained directly from
+Mathlib's <code><a href="../../.././Mathlib/Probability/Moments/SubGaussian.html#ProbabilityTheory.HasSubgaussianMGF.measure_sum_range_ge_le_of_iIndepFun">ProbabilityTheory.HasSubgaussianMGF.measure_sum_range_ge_le_of_iIndepFun</a></code>
+applied at the threshold <code>ε := n t</code> to the centered variables <code>X i − E[X i]</code> —
+precisely the engine wrapped by <code>IsSubGaussian</code>. Independence of the original
+family is lifted to the centered family via <code>iIndepFun.comp</code>; each centered
+variable carries the sub-Gaussian MGF bound. The remaining step identifies
+Mathlib's RHS <code>exp(−(nt)² / (2 n σ²))</code> with the book's <code>exp(−n t² / (2 σ²))</code>:
+these agree as reals for <code>n ≥ 1</code>, including the degenerate corner <code>σ² = 0</code>
+where both collapse to <code>exp 0 = 1</code> via the <code>x / 0 = 0</code> convention. The
+scalar-multiple rule is delegated to <code><a href="../../.././Mathlib/Probability/Moments/SubGaussian.html#ProbabilityTheory.HasSubgaussianMGF.const_mul">ProbabilityTheory.HasSubgaussianMGF.const_mul</a></code>,
+with centering passing through the scalar via <code><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral_const_mul">MeasureTheory.integral_const_mul</a></code>;
+the proxy <code>c² σ²</code> is encoded as the <code>ℝ≥0</code> element <code>⟨c², <a href="../../.././Mathlib/Algebra/Order/Ring/Unbundled/Basic.html#sq_nonneg">sq_nonneg</a> c⟩ * σ²</code>,
+matching Mathlib's encoding of <code>const_mul</code>.</p><p><strong>Bibliographic comments.</strong> The seminal source is W. Hoeffding, &quot;Probability
+inequalities for sums of bounded random variables&quot;, <em>Journal of the American
+Statistical Association</em> <strong>58</strong>(301), 1963, pp. 13–30, whose Theorem 2 gives the
+exponential tail bound for sums of bounded independent variables. The
+sub-Gaussian reformulation stated here replaces the boundedness hypothesis with
+a sub-Gaussian variance proxy and follows from the Chernoff bound together with
+the moment-generating-function (Hoeffding's lemma) control of each summand; in
+this generality it is textbook synthesis / folklore rather than a single
+seminal theorem, and is presented as such in modern references (e.g. Boucheron,
+Lugosi, Massart, <em>Concentration Inequalities</em>, 2013; Vershynin,
+<em>High-Dimensional Probability</em>, 2018; Wainwright, <em>High-Dimensional Statistics</em>,
+2019).</p></div><div class="decl" id="StatLean.ConcentrationInequalities.isSubGaussian_const_mul"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/SubGaussian/Hoeffding.lean#L76-L101">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Hoeffding.html#StatLean.ConcentrationInequalities.isSubGaussian_const_mul"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">isSubGaussian_const_mul</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">σ2</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html#StatLean.ConcentrationInequalities.IsSubGaussian">IsSubGaussian</a> <span class="fn">X</span> <span class="fn">σ2</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">c</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html#StatLean.ConcentrationInequalities.IsSubGaussian">IsSubGaussian</a> <span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn">c</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><span class="fn">X</span> <span class="fn">ω</span></span>)</span> (<a href="../../.././Init/Prelude.html#Subtype.mk">⟨</a><span class="fn">c</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>, <span class="fn">⋯</span><a href="../../.././Init/Prelude.html#Subtype.mk">⟩</a> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">σ2</span>) <span class="fn">μ</span></span></div></div><p><strong>Scalar multiple of a sub-Gaussian variable, Lu-BDA §4.2.</strong>
+If <code>X</code> is sub-Gaussian with variance proxy <code>σ²</code>, then <code>c · X</code> (as
+<code>fun ω =&gt; c * X ω</code>) is sub-Gaussian with proxy <code>c² σ²</code>. Centering passes
+through the scalar via <code><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral_const_mul">MeasureTheory.integral_const_mul</a></code>, so this is a
+direct corollary of Mathlib's
+<code><a href="../../.././Mathlib/Probability/Moments/SubGaussian.html#ProbabilityTheory.HasSubgaussianMGF.const_mul">ProbabilityTheory.HasSubgaussianMGF.const_mul</a></code>. The proxy <code>c² σ²</code> is the
+<code>ℝ≥0</code> element <code>⟨c², <a href="../../.././Mathlib/Algebra/Order/Ring/Unbundled/Basic.html#sq_nonneg">sq_nonneg</a> c⟩ * σ²</code>, matching Mathlib's encoding of
+<code>const_mul</code>. Used downstream by OLS / Lasso to scale per-coordinate noise
+bounds.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.hoeffding"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/SubGaussian/Hoeffding.lean#L103-L166">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Hoeffding.html#StatLean.ConcentrationInequalities.hoeffding"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">hoeffding</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><a href="../../.././Init/Prelude.html#Nat">ℕ</a> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">σ2</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hX_meas</span> : <span class="fn">∀ (<span class="fn">i</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>), <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">i</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hX_indep</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Independence/Basic.html#ProbabilityTheory.iIndepFun">ProbabilityTheory.iIndepFun</a> <span class="fn">X</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hX_subG</span> : <span class="fn">∀ <span class="fn">i</span> &lt; <span class="fn">n</span>, <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html#StatLean.ConcentrationInequalities.IsSubGaussian">IsSubGaussian</a> <span class="fn">(<span class="fn">X</span> <span class="fn">i</span>)</span> <span class="fn">σ2</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hn</span> : <span class="fn">1</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">n</span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">t</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">t</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn"><span class="fn">μ</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure.real">real</a></span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">{</a><span class="fn">ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">:</a> <span class="fn">Ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">|</a> <span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">t</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">∑ <span class="fn">i</span> ∈ <span class="fn"><a href="../../.././Mathlib/Data/Finset/Range.html#Finset.range">Finset.range</a> <span class="fn">n</span></span>, (<span class="fn"><span class="fn">X</span> <span class="fn">i</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">x</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn">X</span> <span class="fn">i</span> <span class="fn">x</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span>)</span><a href="../../.././Mathlib/Data/Set/Defs.html#setOf">}</a></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Analysis/Complex/Exponential.html#Real.exp">Real.exp</a> (<a href="../../.././Init/Prelude.html#Neg.neg">-</a><span class="fn">↑<span class="fn">n</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">t</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> (<span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">σ2</span></span>))</span></div></div><p><strong>Hoeffding's inequality (centered-sum form), Lu-BDA §4.2 Theorem 4.7.</strong>
+If <code>X 0, …, X (n−1)</code> are jointly independent and each is sub-Gaussian with
+variance proxy <code>σ²</code> under the probability measure <code>μ</code>, then for every <code>t &gt; 0</code>,</p><p><code>P( ∑_{i&lt;n} (X i − E[X i])  ≥  n t )  ≤  exp(− n t² / (2 σ²))</code>.</p><p>Equivalently, dividing the threshold and the bound by <code>n</code> (for <code>n ≥ 1</code>):</p><p><code>P( (1/n) ∑_{i&lt;n} (X i − E[X i]) ≥ t ) ≤ exp(− n t² / (2 σ²))</code>,</p><p>which is the sample-mean form stated by Lu (the strict inequality <code>&gt;</code> is
+implied since <code>{ω | t &lt; S ω} ⊆ {ω | t ≤ S ω}</code>). Proved by feeding the
+centered variables <code>X i − E[X i]</code> — the engine of <code>IsSubGaussian</code> — into
+Mathlib's sum-tail bound
+<code>HasSubgaussianMGF.measure_sum_range_ge_le_of_iIndepFun</code> at threshold
+<code>ε := n t</code>.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

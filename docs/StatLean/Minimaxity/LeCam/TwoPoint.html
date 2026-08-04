@@ -1,0 +1,84 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Minimaxity.LeCam.TwoPoint</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.Minimaxity.LeCam.TwoPoint";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">LeCam</span>.<span class="name">TwoPoint</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/LeCam/TwoPoint.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/Minimaxity/EstimationToTesting.html">StatLean.Minimaxity.EstimationToTesting</a></li><li><a href="../../.././StatLean/Minimaxity/ForMathlib/TotalVariation.html">StatLean.Minimaxity.ForMathlib.TotalVariation</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Minimaxity.LeCam.TwoPoint" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.binary_testingError_eq_tvDist"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">binary_testingError_eq_tvDist</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Minimaxity.minimax_two_point"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_two_point</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Le-Cam-s-two-point-method-and-the-Bayes-error-total-variation-identity" class="markdown-heading">Le Cam's two-point method and the Bayes-error / total-variation identity <a class="hover-link" href="#Le-Cam-s-two-point-method-and-the-Bayes-error-total-variation-identity">#</a></h1><p>Consider a binary hypothesis-testing problem in which a label $J \in \{0,1\}$ is drawn uniformly
+and, conditionally on $J = j$, the observation $Z$ is generated from $\mathbb{P}_j$. The <strong>Bayes
+error</strong> of the optimal (possibly randomized) test equals the total-variation distance between the
+two hypotheses:
+$$ \inf_{\psi}\; \mathbb{Q}\bigl[\psi(Z) \neq J\bigr] \;=\; \tfrac{1}{2}\bigl(1 - \|\mathbb{P}_1 - \mathbb{P}_0\|_{\mathrm{TV}}\bigr), $$
+where the infimum is over all tests and $\|\cdot\|_{\mathrm{TV}}$ is the total-variation distance.
+Combining this identity with the estimation-to-testing reduction yields <strong>Le Cam's two-point lower
+bound</strong>: for an increasing distortion function $\Phi$ and any pair $\theta_0, \theta_1$ whose
+functional values $g(\theta_0), g(\theta_1)$ are $2\delta$-separated (i.e.
+$\rho\bigl(g(\theta_0), g(\theta_1)\bigr) \geq 2\delta$), the minimax risk obeys
+$$ \mathfrak{M}\bigl(\theta(\mathcal{P});\, \Phi \circ \rho\bigr) \;\geq\; \frac{\Phi(\delta)}{2}\, \bigl(1 - \|P_{\theta_0} - P_{\theta_1}\|_{\mathrm{TV}}\bigr). $$</p><p>The Lean statements are over the extended nonnegative reals $[0,\infty]$, so the distortion
+$\Phi : [0,\infty] \to [0,\infty]$ is assumed only <code><a href="../../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a></code> (increasing) and the separation and
+distance are measured by an extended pseudometric.</p><p><strong>Reference.</strong> M. J. Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.2.1, Eq. (15.13) (Bayes
+error = total variation) and Eq. (15.14) (the two-point bound); the underlying reduction is
+Proposition 15.1.</p><p><strong>Proof formalization notes.</strong>
+The Bayes-error / total-variation identity (<code><a href="../../.././StatLean/Minimaxity/LeCam/TwoPoint.html#StatLean.Minimaxity.binary_testingError_eq_tvDist">binary_testingError_eq_tvDist</a></code>, Eq. (15.13)) is proved
+by identifying the infimum over Markov-kernel tests defining <code>bayesRisk</code> with the variational
+representation <code>one_sub_tvDist_eq_iInf</code> of total variation:</p><ul><li><em>Lower bound</em> — every Markov test <code>κ</code> contributes the feasible pair $(\kappa(\cdot)\{1\}, \kappa(\cdot)\{0\})$, whose pointwise sum is $1$, to the variational infimum.</li><li><em>Upper bound</em> — conversely each feasible pair $(f_0, f_1)$ is realized, up to a value-decreasing
+truncation $a = \min(f_0, 1)$, by the explicit randomized test <code>binaryTest a</code>, which answers <code>1</code>
+with probability $a(x)$ and <code>0</code> with probability $1 - a(x)$.</li></ul><p>The two-point bound (<code><a href="../../.././StatLean/Minimaxity/LeCam/TwoPoint.html#StatLean.Minimaxity.minimax_two_point">minimax_two_point</a></code>, Eq. (15.14)) then specializes the general
+estimation-to-testing inequality <code>minimax_ge_testing_error</code> to the two-point sub-family
+$\theta\mathrm{fam} = [\theta_0, \theta_1]$ and rewrites its testing-error term via the identity
+above.</p><p><strong>Bibliographic comments.</strong>
+The reduction of estimation to two-point testing originates with L. Le Cam, &quot;Convergence of
+Estimates Under Dimensionality Restrictions,&quot; <em>The Annals of Statistics</em> <strong>1</strong> (1973), no. 1,
+38–53 (DOI 10.1214/aos/1193342380), which introduced what is now called <em>Le Cam's method</em> (or the
+<em>two-point method</em>) for minimax lower bounds. The exact identification of the optimal binary-testing
+error with the total-variation distance is the classical Neyman–Pearson consequence (the optimal
+test thresholds the likelihood ratio), and is textbook folklore rather than attributable to a single
+paper; Wainwright Eq. (15.13)–(15.14) is the synthesis used here.</p></div><div class="decl" id="StatLean.Minimaxity.binary_testingError_eq_tvDist"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/LeCam/TwoPoint.lean#L131-L190">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Minimaxity/LeCam/TwoPoint.html#StatLean.Minimaxity.binary_testingError_eq_tvDist"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">binary_testingError_eq_tvDist</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Q</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">(<a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">2</span>)</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">Q</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.multiwayTestingError">multiwayTestingError</a> <span class="fn">Q</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">2</span><a href="../../.././Init/Prelude.html#Inv.inv">⁻¹</a> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><a href="../../.././StatLean/Minimaxity/ForMathlib/TotalVariation.html#StatLean.Minimaxity.tvDist">tvDist</a> <span class="fn">(<span class="fn">Q</span> <span class="fn">0</span>)</span> <span class="fn">(<span class="fn">Q</span> <span class="fn">1</span>)</span></span>)</div></div><p><strong>Bayes error equals total variation</strong> (Wainwright Eq. (15.13)): in a binary test with equally
+weighted hypotheses <code>Q 0, Q 1</code>, the optimal (Bayes) error probability is <code>½(1 − ‖Q 0 − Q 1‖_TV)</code>.</p><p>The proof identifies the <code><a href="../../.././Mathlib/Order/SetNotation.html#iInf">iInf</a></code>-over-Markov-kernels defining <code>bayesRisk</code> with the variational
+representation <code>one_sub_tvDist_eq_iInf</code> of total variation. Each Markov test <code>κ</code> contributes the
+feasible pair <code>(κ·{1}, κ·{0})</code> (whose pointwise sum is <code>1</code>), giving the lower bound; conversely each
+feasible <code>(f₀, f₁)</code> is realized — up to a value-decreasing truncation <code>a = min f₀ 1</code> — by the
+explicit randomized test <code>binaryTest a</code>, giving the upper bound.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.2.1, Eq. (15.13).</p></div></div><div class="decl" id="StatLean.Minimaxity.minimax_two_point"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Minimaxity/LeCam/TwoPoint.lean#L192-L224">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Minimaxity/LeCam/TwoPoint.html#StatLean.Minimaxity.minimax_two_point"><span class="name">StatLean</span>.<span class="name">Minimaxity</span>.<span class="name">minimax_two_point</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/EMetricSpace/Defs.html#PseudoEMetricSpace">PseudoEMetricSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#OpensMeasurableSpace">OpensMeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">Φ</span> : <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn">Ω</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">θ₀ </span><span class="fn">θ₁</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">δ</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hΦ</span> : <span class="fn"><a href="../../.././Mathlib/Order/Monotone/Defs.html#Monotone">Monotone</a> <span class="fn">Φ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hsep</span> : <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">δ</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Topology/EMetricSpace/Defs.html#EDist.edist">edist</a> <span class="fn">(<span class="fn">g</span> <span class="fn">θ₀</span>)</span> <span class="fn">(<span class="fn">g</span> <span class="fn">θ₁</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">Φ</span> <span class="fn">δ</span></span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><a href="../../.././StatLean/Minimaxity/ForMathlib/TotalVariation.html#StatLean.Minimaxity.tvDist">tvDist</a> <span class="fn">(<span class="fn">P</span> <span class="fn">θ₀</span>)</span> <span class="fn">(<span class="fn">P</span> <span class="fn">θ₁</span>)</span></span>) <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././StatLean/Minimaxity/Defs.html#StatLean.Minimaxity.minimaxRiskDist">minimaxRiskDist</a> <span class="fn">Φ</span> <span class="fn">g</span> <span class="fn">P</span></span></div></div><p><strong>Le Cam's two-point lower bound</strong> (Wainwright Eq. (15.14)): for an increasing distortion <code>Φ</code>
+and a pair <code>θ₀, θ₁</code> whose functional values are <code>2δ</code>-separated,
+<code>M(θ(𝒫); Φ∘ρ) ≥ (Φ(δ)/2)(1 − ‖P_{θ₀} − P_{θ₁}‖_TV)</code>.</p><p><strong>Reference.</strong> Wainwright, <em>High-Dimensional Statistics: A Non-Asymptotic Viewpoint</em>,
+Cambridge University Press, 2019. Chapter 15 (Minimax Lower Bounds), §15.2.1, Eq. (15.14).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

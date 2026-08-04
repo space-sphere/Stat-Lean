@@ -1,0 +1,171 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Bayesian.Sufficiency.Factorization</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.Bayesian.Sufficiency.Factorization";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">Sufficiency</span>.<span class="name">Factorization</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/Bayesian/Dominated/PosteriorDensity.html">StatLean.Bayesian.Dominated.PosteriorDensity</a></li><li><a href="../../.././StatLean/Bayesian/GeneralizedBayes/Defs.html">StatLean.Bayesian.GeneralizedBayes.Defs</a></li><li><a href="../../.././StatLean/Bayesian/Sufficiency/Defs.html">StatLean.Bayesian.Sufficiency.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Bayesian.Sufficiency.Factorization" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.statKernel_apply"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">statKernel_apply</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.map_withDensity_comp"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">map_withDensity_comp</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.generalizedPosterior_of_factorized"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">generalizedPosterior_of_factorized</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.posterior_ae_eq_posterior_statKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">posterior_ae_eq_posterior_statKernel</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.generalizedPosterior_eq_of_likelihood_proportional"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">generalizedPosterior_eq_of_likelihood_proportional</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Factorized-likelihoods-posterior-reduction-and-the-likelihood-principle" class="markdown-heading">Factorized likelihoods: posterior reduction and the likelihood principle <a class="hover-link" href="#Factorized-likelihoods-posterior-reduction-and-the-likelihood-principle">#</a></h1><p>Consequences of the Fisher–Neyman factorization <code>p(θ, x) = g(θ, T x) · h(x)</code> for a dominated
+model:</p><ul><li>the base factor <code>h</code> <strong>cancels from the posterior</strong> — the posterior at <code>x</code> is the
+<code>g(·, T x)</code>-reweighted prior (Robert's &quot;the factor h(x) disappears,&quot; §1.3.1);</li><li>the <strong>posterior depends on the data only through the sufficient statistic</strong>:
+<code>(κ†π) x = ((statKernel κ T)†π) (T x)</code> for predictive-a.e. <code>x</code>;</li><li>the <strong>likelihood principle</strong>, dominated version: proportional likelihoods (<code>p₁(·, x₁) = c · p₂(·, x₂)</code>) give equal posteriors under the same prior (Robert §1.3.2).</li></ul><p><strong>Reference.</strong> C. P. Robert, <em>The Bayesian Choice: From Decision-Theoretic
+Foundations to Computational Implementation</em>, 2nd ed., Springer Texts in Statistics, Springer,
+2007 (ISBN 978-0-387-71598-8). §1.3.1 (Definition 1.3.1 and the factorization theorem, p. 14);
+§1.3.2 (the Likelihood Principle, stated as a boldface display, pp. 15–16, and the observation on
+p. 16 that the posterior (1.2.3) depends on <code>x</code> only through the likelihood).</p><p><strong>Proof formalization notes.</strong> The cancellation is <code>withDensity</code> algebra: at data with
+<code>h(x) ∉ {0, ∞}</code> the ratio <code>p/m</code> equals <code>g/(∫ g dπ)</code> pointwise (<code><a href="../../.././Mathlib/Data/ENNReal/Inv.html#ENNReal.mul_div_mul_right">ENNReal.mul_div_mul_right</a></code>-style).
+For the statistic reduction, the key bridge is <code><a href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.map_withDensity_comp">map_withDensity_comp</a></code> (a density factoring through
+<code>T</code> passes through <code>Measure.map T</code>), which exhibits the statistic experiment as dominated by
+<code>(ν.withDensity h).map T</code> with density <code>g</code>; both experiments' posteriors are then identified by the
+Batch-1 dominated Bayes theorem, and the exceptional sets transport because <code>h ∈ (0, ∞)</code> holds
+<code>(κ ∘ₘ π)</code>-a.e. (forced by <code>predictiveDensity_pos_ae</code>/<code>_lt_top_ae_comp</code> — not hypotheses). The
+likelihood principle is the scalar case of the same cancellation.</p><p><strong>Bibliographic comments.</strong> The Likelihood Principle was articulated by G. Barnard (1949) and
+R. A. Fisher, given its modern form by A. Birnbaum (&quot;On the foundations of statistical inference,&quot;
+<em>J. Amer. Statist. Assoc.</em> 57 (1962), 269–306), and defended at book length by J. O. Berger and
+R. L. Wolpert, <em>The Likelihood Principle</em> (IMS, 1988). That Bayesian inference automatically obeys
+it (the posterior depends only on the likelihood) is formalized here.</p></div><div class="decl" id="StatLean.Bayesian.statKernel_apply"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean#L48-L53">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.statKernel_apply"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">statKernel_apply</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">S</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mS</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">S</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">K</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><span class="fn">𝓧</span> → <span class="fn">S</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hT</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">T</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">θ</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">(<a href="../../.././StatLean/Bayesian/Sufficiency/Defs.html#StatLean.Bayesian.statKernel">statKernel</a> <span class="fn">K</span> <span class="fn">hT</span>)</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">T</span> <span class="fn">(<span class="fn">K</span> <span class="fn">θ</span>)</span></span></div></div><p>The statistic kernel is the pushforward: <code>statKernel K T hT θ = (K θ).map T</code>
+(Robert §1.3.1).</p></div></div><div class="decl" id="StatLean.Bayesian.map_withDensity_comp"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean#L55-L63">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.map_withDensity_comp"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">map_withDensity_comp</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">S</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mS</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">S</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><span class="fn">𝓧</span> → <span class="fn">S</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hT</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">T</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">S</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">f</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">𝓧</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">T</span> <span class="fn">(<span class="fn"><span class="fn">μ</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/WithDensity.html#MeasureTheory.Measure.withDensity">withDensity</a></span> <span class="fn">fun (<span class="fn">x</span> : <span class="fn">𝓧</span>) =&gt; <span class="fn"><span class="fn">f</span> <span class="fn">(<span class="fn">T</span> <span class="fn">x</span>)</span></span></span>)</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn"><span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">T</span> <span class="fn">μ</span>)</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/WithDensity.html#MeasureTheory.Measure.withDensity">withDensity</a></span> <span class="fn">f</span></span></div></div><p>A density factoring through <code>T</code> passes through the pushforward:
+<code>(μ.withDensity (f ∘ T)).map T = (μ.map T).withDensity f</code>.</p></div></div><div class="decl" id="StatLean.Bayesian.generalizedPosterior_of_factorized"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean#L65-L85">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.generalizedPosterior_of_factorized"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">generalizedPosterior_of_factorized</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">S</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mS</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">S</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">p</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓧</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><span class="fn">𝓧</span> → <span class="fn">S</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">S</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">h</span> : <span class="fn"><span class="fn">𝓧</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hfac</span> : <span class="fn"><a href="../../.././StatLean/Bayesian/Sufficiency/Defs.html#StatLean.Bayesian.IsFactorizedLikelihood">IsFactorizedLikelihood</a> <span class="fn">p</span> <span class="fn">T</span> <span class="fn">g</span> <span class="fn">h</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">x</span> : <span class="fn">𝓧</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hx0</span> : <span class="fn"><span class="fn">h</span> <span class="fn">x</span></span> <a href="../../.././Init/Core.html#Ne">≠</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hx'</span> : <span class="fn"><span class="fn">h</span> <span class="fn">x</span></span> <a href="../../.././Init/Core.html#Ne">≠</a> <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/GeneralizedBayes/Defs.html#StatLean.Bayesian.generalizedPosterior">generalizedPosterior</a> <span class="fn">p</span> <span class="fn">π</span> <span class="fn">x</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn"><span class="fn">π</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/WithDensity.html#MeasureTheory.Measure.withDensity">withDensity</a></span> <span class="fn">fun (<span class="fn">θ</span> : <span class="fn">Θ</span>) =&gt; <span class="fn"><span class="fn">g</span> <span class="fn">θ</span> <span class="fn">(<span class="fn">T</span> <span class="fn">x</span>)</span></span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Lebesgue/Basic.html#MeasureTheory.lintegral">∫⁻</a> (<span class="fn">θ'</span> : <span class="fn">Θ</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Lebesgue/Basic.html#MeasureTheory.lintegral">,</a> <span class="fn"><span class="fn">g</span> <span class="fn">θ'</span> <span class="fn">(<span class="fn">T</span> <span class="fn">x</span>)</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Lebesgue/Basic.html#MeasureTheory.lintegral">∂</a><span class="fn">π</span></span></span></span></div></div><p><strong>The base factor cancels from the posterior</strong> (Robert §1.3.1): under a Fisher–Neyman
+factorization, at any data point where <code>h(x) ∉ {0, ∞}</code> the generalized posterior is the
+<code>g(·, T x)</code>-reweighted prior.</p></div></div><div class="decl" id="StatLean.Bayesian.posterior_ae_eq_posterior_statKernel"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean#L87-L142">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.posterior_ae_eq_posterior_statKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">posterior_ae_eq_posterior_statKernel</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">S</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mS</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">S</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Constructions/Polish/Basic.html#StandardBorelSpace">StandardBorelSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Init/Prelude.html#Nonempty">Nonempty</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Finite.html#MeasureTheory.IsFiniteMeasure">MeasureTheory.IsFiniteMeasure</a> <span class="fn">π</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">κ</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsFiniteKernel">ProbabilityTheory.IsFiniteKernel</a> <span class="fn">κ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ν</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/SFinite.html#MeasureTheory.SFinite">MeasureTheory.SFinite</a> <span class="fn">ν</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">p</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓧</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><span class="fn">𝓧</span> → <span class="fn">S</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hp</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<a href="../../.././Init/Data/Function.html#Function.uncurry">Function.uncurry</a> <span class="fn">p</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hT</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">T</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">g</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">S</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hg</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<a href="../../.././Init/Data/Function.html#Function.uncurry">Function.uncurry</a> <span class="fn">g</span>)</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">h</span> : <span class="fn"><span class="fn">𝓧</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hh</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">h</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hκ</span> : <span class="fn">∀ (<span class="fn">θ</span> : <span class="fn">Θ</span>), <span class="fn"><span class="fn">κ</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn"><span class="fn">ν</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/WithDensity.html#MeasureTheory.Measure.withDensity">withDensity</a></span> <span class="fn">(<span class="fn">p</span> <span class="fn">θ</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hfac</span> : <span class="fn"><a href="../../.././StatLean/Bayesian/Sufficiency/Defs.html#StatLean.Bayesian.IsFactorizedLikelihood">IsFactorizedLikelihood</a> <span class="fn">p</span> <span class="fn">T</span> <span class="fn">g</span> <span class="fn">h</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.Eventually">∀ᵐ</a> (<span class="fn">x</span> : <span class="fn">𝓧</span>) <a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.Eventually">∂</a><span class="fn"><span class="fn"><span class="fn">π</span>.<a href="../../.././Mathlib/MeasureTheory/Measure/GiryMonad.html#MeasureTheory.Measure.bind">bind</a></span> <span class="fn">⇑<span class="fn">κ</span></span></span><a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.Eventually">,</a> <span class="fn"><span class="fn">(<a href="../../.././Mathlib/Probability/Kernel/Posterior.html#ProbabilityTheory.posterior">ProbabilityTheory.posterior</a> <span class="fn">κ</span> <span class="fn">π</span>)</span> <span class="fn">x</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn">(<a href="../../.././Mathlib/Probability/Kernel/Posterior.html#ProbabilityTheory.posterior">ProbabilityTheory.posterior</a> <span class="fn">(<a href="../../.././StatLean/Bayesian/Sufficiency/Defs.html#StatLean.Bayesian.statKernel">statKernel</a> <span class="fn">κ</span> <span class="fn">hT</span>)</span> <span class="fn">π</span>)</span> <span class="fn">(<span class="fn">T</span> <span class="fn">x</span>)</span></span></span></div></div><p><strong>The posterior depends on the data only through a sufficient statistic</strong> (Robert §1.3.1–1.3.2,
+dominated form): under a Fisher–Neyman factorization, the full-data posterior at <code>x</code> equals the
+statistic-experiment posterior at <code>T x</code>, for predictive-almost-every <code>x</code>.</p></div></div><div class="decl" id="StatLean.Bayesian.generalizedPosterior_eq_of_likelihood_proportional"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Sufficiency/Factorization.lean#L144-L161">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Sufficiency/Factorization.html#StatLean.Bayesian.generalizedPosterior_eq_of_likelihood_proportional"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">generalizedPosterior_eq_of_likelihood_proportional</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">p₁ </span><span class="fn">p₂</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓧</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">x₁ </span><span class="fn">x₂</span> : <span class="fn">𝓧</span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">c</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hc0</span> : <span class="fn">c</span> <a href="../../.././Init/Core.html#Ne">≠</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hc'</span> : <span class="fn">c</span> <a href="../../.././Init/Core.html#Ne">≠</a> <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hprop</span> : <span class="fn">∀ (<span class="fn">θ</span> : <span class="fn">Θ</span>), <span class="fn"><span class="fn">p₁</span> <span class="fn">θ</span> <span class="fn">x₁</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">c</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><span class="fn">p₂</span> <span class="fn">θ</span> <span class="fn">x₂</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/GeneralizedBayes/Defs.html#StatLean.Bayesian.generalizedPosterior">generalizedPosterior</a> <span class="fn">p₁</span> <span class="fn">π</span> <span class="fn">x₁</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././StatLean/Bayesian/GeneralizedBayes/Defs.html#StatLean.Bayesian.generalizedPosterior">generalizedPosterior</a> <span class="fn">p₂</span> <span class="fn">π</span> <span class="fn">x₂</span></span></div></div><p><strong>The likelihood principle</strong>, dominated version (Robert §1.3.2, pp. 15–16): proportional
+likelihoods yield the same posterior under the same prior.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

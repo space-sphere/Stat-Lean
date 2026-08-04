@@ -1,0 +1,68 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.MultipleTesting.BHDependence</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="StatLean.MultipleTesting.BHDependence";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">BHDependence</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/BHDependence.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././StatLean/MultipleTesting/BenjaminiHochberg.html">StatLean.MultipleTesting.BenjaminiHochberg</a></li><li><a href="../.././Mathlib/NumberTheory/Harmonic/Defs.html">Mathlib.NumberTheory.Harmonic.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.MultipleTesting.BHDependence" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.MultipleTesting.benjamini_hochberg_dependent_fdr_le"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">benjamini_hochberg_dependent_fdr_le</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Benjamini-Hochberg-FDR-control-under-arbitrary-dependence" class="markdown-heading">Benjamini–Hochberg FDR control under arbitrary dependence <a class="hover-link" href="#Benjamini-Hochberg-FDR-control-under-arbitrary-dependence">#</a></h1><p>The Benjamini–Hochberg procedure (reject the hypotheses indexed by
+$\{\, j : p_j \le \hat k\,\alpha/N \,\}$, where
+$\hat k = \max\{\, k : \#\{\, j : p_j \le k\alpha/N \,\} \ge k \,\}$) controls the false discovery
+rate <strong>without any independence assumption</strong> on the $p$-values, at the cost of a harmonic-number
+factor.</p><p><strong>Informal statement.</strong> Let $p_1,\dots,p_N$ be $p$-values with null index set $H_0$ of size
+$N_0 = |H_0|$, and suppose every null $p$-value is super-uniform, i.e.
+$\mathbb{P}(p_i \le t) \le t$ for all $t \ge 0$ and $i \in H_0$. Assume the $p$-values are otherwise
+<strong>arbitrarily dependent</strong> (no independence or PRDS condition). Then the Benjamini–Hochberg procedure
+run at level $\alpha$ satisfies
+$$\mathrm{FDR} \;\le\; \frac{N_0}{N}\,\alpha\,H_N, \qquad H_N = \sum_{k=1}^{N} \frac1k,$$
+where $H_N$ is the $N$-th harmonic number. Consequently, running BH at the deflated level
+$\alpha/H_N$ controls FDR at $(N_0/N)\,\alpha \le \alpha$ under arbitrary dependence — the
+Benjamini–Yekutieli correction.</p><p>The Lean statement (<code><a href="../.././StatLean/MultipleTesting/BHDependence.html#StatLean.MultipleTesting.benjamini_hochberg_dependent_fdr_le">benjamini_hochberg_dependent_fdr_le</a></code>) matches this exactly, with two routine
+additions: each $p$-value is assumed measurable (needed to integrate the false-discovery proportion),
+and super-uniformity is the explicit hypothesis <code>SuperUniform (p j) μ</code> on every null index. The
+constant $N_0/N \cdot \alpha \cdot H_N$ is the book constant with no deviation.</p><p><strong>Reference.</strong> E. J. Candès, <em>STAT 300C: Theory of Statistics</em>, Lecture Notes, Stanford University,
+2023, Lecture 5 §5.5 and Lecture 6 §6.6, Theorem 3 (Benjamini–Yekutieli bound under arbitrary
+dependence); cross-referenced with Junwei Lu, <em>Big Data Analysis</em>, Springer Nature Switzerland,
+2025 (ISBN 978-3-032-03160-0), Chapter 21 (Knock-Off), §21.1 (False Discovery Rate: Dependent
+P-Values).</p><p><strong>Proof formalization notes.</strong> <em>(Benjamini–Yekutieli layer-cake.)</em> Write
+$\mathrm{FDP} = \sum_{i\in H_0} \psi_i/(R\vee 1)$, where $\psi_i$ indicates that null $i$ is rejected
+and $R$ is the total number of rejections. For each null $i$, expand
+$\psi_i/(R\vee 1) = \sum_{k=1}^{N} (1/k)\,\mathbf{1}(R=k)\,\psi_i$ and use that on $\{R=k\}$ a rejected
+$i$ satisfies $p_i \le k\alpha/N$. Reorganizing the double sum into bands
+$C_j = \{(j-1)\alpha/N &lt; p_i \le j\alpha/N\}$ and applying Abel summation shows each null contributes
+at most $(\alpha/N)\,H_N$, using only super-uniformity $\mathbb{P}(p_i \le k\alpha/N) \le k\alpha/N$.
+No factorization is used, hence no independence is needed. Summing over $H_0$ gives
+$(N_0/N)\,\alpha\,H_N$.</p><p>The combinatorial / measurability infrastructure for the BH rejection set is re-derived <code>private</code>ly
+here because the corresponding lemmas in <code>BenjaminiHochberg.lean</code> are <code>private</code> to that module.</p><p><strong>Bibliographic comments.</strong> The arbitrary-dependence bound is due to Y. Benjamini and D. Yekutieli,
+&quot;The control of the false discovery rate in multiple testing under dependency,&quot; <em>Annals of
+Statistics</em> <strong>29</strong>(4) (2001), 1165–1188. Their Theorem 1.3 establishes
+$\mathrm{FDR} \le (m_0/m)\,q\,\sum_{i=1}^{m} 1/i$ for the linear step-up (BH) procedure under any
+joint distribution of the test statistics, and Theorem 1.4 gives the corresponding deflated-level
+correction; this is exactly the harmonic-factor result formalized here. The underlying BH procedure
+itself originates with Y. Benjamini and Y. Hochberg, &quot;Controlling the false discovery rate: a
+practical and powerful approach to multiple testing,&quot; <em>Journal of the Royal Statistical Society,
+Series B</em> <strong>57</strong>(1) (1995), 289–300, where it was proved to control FDR at $(m_0/m)\,q$ under
+independence (later extended to PRDS positive dependence by Benjamini–Yekutieli, Theorem 1.2).</p></div><div class="mod_doc"><h2 id="Re-derived-bhRejects-infrastructure-private-mirrors-BenjaminiHochberg-lean" class="markdown-heading">Re-derived <code>bhRejects</code> infrastructure (private; mirrors <code>BenjaminiHochberg.lean</code>) <a class="hover-link" href="#Re-derived-bhRejects-infrastructure-private-mirrors-BenjaminiHochberg-lean">#</a></h2></div><div class="mod_doc"><h2 id="Abel-summation-core-the-harmonic-number-bound" class="markdown-heading">Abel summation core (the harmonic-number bound) <a class="hover-link" href="#Abel-summation-core-the-harmonic-number-bound">#</a></h2></div><div class="mod_doc"><h2 id="Per-null-contribution-bound-bands-+-Abel" class="markdown-heading">Per-null contribution bound (bands + Abel) <a class="hover-link" href="#Per-null-contribution-bound-bands-+-Abel">#</a></h2></div><div class="mod_doc"><h2 id="FDP-decomposition-re-derived-mirrors-BenjaminiHochberg-lean" class="markdown-heading">FDP decomposition (re-derived; mirrors <code>BenjaminiHochberg.lean</code>) <a class="hover-link" href="#FDP-decomposition-re-derived-mirrors-BenjaminiHochberg-lean">#</a></h2></div><div class="decl" id="StatLean.MultipleTesting.benjamini_hochberg_dependent_fdr_le"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/BHDependence.lean#L571-L593">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././StatLean/MultipleTesting/BHDependence.html#StatLean.MultipleTesting.benjamini_hochberg_dependent_fdr_le"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">benjamini_hochberg_dependent_fdr_le</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">N</span> : <a href="../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hN</span> : <span class="fn">0</span> <a href="../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">N</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">α</span> : <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hα</span> : <span class="fn">0</span> <a href="../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">α</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">H₀</span> : <span class="fn"><a href="../.././Mathlib/Data/Finset/Defs.html#Finset">Finset</a> <span class="fn">(<a href="../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">N</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">p</span> : <span class="fn"><span class="fn"><a href="../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">N</span></span> → <span class="fn"><span class="fn">Ω</span> → <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmeas</span> : <span class="fn">∀ (<span class="fn">j</span> : <span class="fn"><a href="../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">N</span></span>), <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hnull</span> : <span class="fn">∀ <span class="fn">j</span> ∈ <span class="fn">H₀</span>, <span class="fn"><a href="../.././StatLean/MultipleTesting/PValues/Defs.html#StatLean.MultipleTesting.SuperUniform">SuperUniform</a> <span class="fn">(<span class="fn">p</span> <span class="fn">j</span>)</span> <span class="fn">μ</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././StatLean/MultipleTesting/FDP/Defs.html#StatLean.MultipleTesting.FDR">FDR</a> <span class="fn">H₀</span> <span class="fn">(<a href="../.././StatLean/MultipleTesting/BenjaminiHochberg.html#StatLean.MultipleTesting.bhRejects">bhRejects</a> <span class="fn">α</span> <span class="fn">p</span>)</span> <span class="fn">μ</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">↑<span class="fn"><span class="fn">H₀</span>.<a href="../.././Mathlib/Data/Finset/Card.html#Finset.card">card</a></span></span> <a href="../.././Init/Prelude.html#HDiv.hDiv">/</a> <span class="fn">↑<span class="fn">N</span></span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">α</span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">(<a href="../.././Mathlib/NumberTheory/Harmonic/Defs.html#harmonic">harmonic</a> <span class="fn">N</span>)</span></span></div></div><p><strong>Benjamini–Hochberg FDR control under arbitrary dependence</strong> (Candès, Lecture 5 §5.5 /
+Lecture 6 §6.6, Theorem 3, STAT 300C — Benjamini–Yekutieli). With every null p-value super-uniform
+and <strong>no independence assumption</strong>, the BH procedure at level <code>α</code> has
+<code>FDR ≤ (N₀/N)·α·Hₙ</code>, <code>Hₙ</code> the <code>N</code>-th harmonic number, <code>N₀ = |H₀|</code>.</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

@@ -1,0 +1,75 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.AsymptoticStatistics.EmpiricalProcess.GlivenkoCantelli</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.AsymptoticStatistics.EmpiricalProcess.GlivenkoCantelli";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">GlivenkoCantelli</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././Mathlib/Probability/IdentDistrib.html">Mathlib.Probability.IdentDistrib</a></li><li><a href="../../.././Mathlib/Probability/StrongLaw.html">Mathlib.Probability.StrongLaw</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Bracketing.html">StatLean.AsymptoticStatistics.EmpiricalProcess.Bracketing</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/FunctionClass.html">StatLean.AsymptoticStatistics.EmpiricalProcess.FunctionClass</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.AsymptoticStatistics.EmpiricalProcess.GlivenkoCantelli" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.EmpiricalProcess.IsPGlivenkoCantelli"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">IsPGlivenkoCantelli</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.EmpiricalProcess.isPGlivenkoCantelli_of_finite_bracketing_L1"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">isPGlivenkoCantelli_of_finite_bracketing_L1</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Glivenko-Cantelli-classes-via-finite-L-1-bracketing-Theorem-19-4" class="markdown-heading">Glivenko–Cantelli classes via finite $L_1$-bracketing (Theorem 19.4) <a class="hover-link" href="#Glivenko-Cantelli-classes-via-finite-L-1-bracketing-Theorem-19-4">#</a></h1><p>A class $\mathcal F$ of measurable functions is <strong>$P$-Glivenko–Cantelli</strong> if, for
+any i.i.d. sample $X_1, X_2, \dots$ drawn from $P$, the empirical-process
+supremum deviation
+$$\|\mathbb P_n - P\|_{\mathcal F} \;=\; \sup_{f \in \mathcal F} \Bigl| \tfrac1n \sum_{i=1}^n f(X_i) - \int f \, dP \Bigr|$$
+converges to $0$ almost surely as $n \to \infty$.</p><p>The headline result is: <em>every class $\mathcal F$ of measurable functions whose
+$L_1(P)$ bracketing numbers are finite — that is, $N_{[\,]}(\varepsilon, \mathcal F, L_1(P)) &lt; \infty$ for every $\varepsilon &gt; 0$ — is
+$P$-Glivenko–Cantelli.</em> Here a finite $\varepsilon$-bracketing cover means a
+finite collection of brackets $[l_i, u_i]$ with $\int (u_i - l_i)\, dP &lt; \varepsilon$ that together contain every $f \in \mathcal F$ (each $f$ satisfies
+$l_i \le f \le u_i$ pointwise for some $i$).</p><p><strong>Added/changed hypotheses (Lean vs. book).</strong> The Lean statement carries the
+integrability side-condition $f \in L_1(P)$ for every $f \in \mathcal F$
+(<code>h_F_int</code>); this is the only $\mathcal F$-side requirement, since
+measurability of each $f$ follows from integrability, and the only places
+$\mathcal F$-side data enters the proof are the pointwise sandwich and the
+comparison of integrals. The Glivenko–Cantelli predicate is stated
+construction-agnostically: it is universally quantified over the sample
+probability space and the i.i.d. sequence rather than committed to a single
+canonical construction of the sample.</p><p><strong>Reference.</strong> A. W. van der Vaart, <em>Asymptotic Statistics</em>, Cambridge Series in
+Statistical and Probabilistic Mathematics, Cambridge University Press, 1998,
+Chapter 19 (Empirical Processes), §19.2 (Glivenko–Cantelli Theorems),
+Theorem 19.4.</p><p><strong>Proof formalization notes.</strong> The proof generalises van der Vaart's §19.1
+argument for the classical Theorem 19.1; van der Vaart omits the proof of
+Theorem 19.4, calling it a &quot;straightforward generalization&quot; of Theorem 19.1.
+A per-$\varepsilon$ step (<code>gc_eventual_bound_per_eps</code>) applies the strong law of
+large numbers to each bracket endpoint $l_i, u_i$ and uses the bracket sandwich
+$l_i \le f \le u_i$ to bound the supremum deviation by $2\varepsilon$ eventually,
+almost surely. The full result then follows by a double-limit chase: take the
+countable intersection of the full-measure sets obtained for
+$\varepsilon = 1/(k+1)$, $k \in \mathbb N$, and let $k \to \infty$.</p><p><strong>Bibliographic comments.</strong> The classical Glivenko–Cantelli theorem — uniform
+a.s. convergence of the empirical distribution function to the true
+distribution function — originates in two companion 1933 papers in the same
+journal volume: V. Glivenko, &quot;Sulla determinazione empirica delle leggi di
+probabilità,&quot; <em>Giornale dell'Istituto Italiano degli Attuari</em> 4 (1933), 92–99
+(the continuous case), and F. P. Cantelli, &quot;Sulla determinazione empirica delle
+leggi di probabilità,&quot; <em>Giornale dell'Istituto Italiano degli Attuari</em> 4 (1933),
+421–424 (the general case). The abstract bracketing-entropy formulation
+generalised here (van der Vaart's Theorem 19.4) is part of the modern theory of
+empirical processes and is not attributable to a single seminal paper; it is
+folklore in that literature, presented systematically in A. W. van der Vaart and
+J. A. Wellner, <em>Weak Convergence and Empirical Processes</em>, Springer, 1996.</p></div><div class="decl" id="AsymptoticStatistics.EmpiricalProcess.IsPGlivenkoCantelli"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.lean#L70-L89">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.html#AsymptoticStatistics.EmpiricalProcess.IsPGlivenkoCantelli"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">IsPGlivenkoCantelli</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">F</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">(<span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p><code>F</code> is <strong>P-Glivenko–Cantelli</strong> iff, for every iid sample <code>X_i ~ P</code>
+on any probability space <code>(Ξ, μ)</code>, the empirical-deviation supremum
+<code>sup_{f ∈ F} |P_n f − P f|</code> converges to <code>0</code> almost surely.</p><p>This adopts vdV's intuitive statement (§19.2) without committing to a
+specific construction of the iid sample: the statement is universally
+quantified over the sample probability space and the iid sequence.</p><p>vdV §19.2: the abstract Glivenko–Cantelli predicate.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.EmpiricalProcess.IsPGlivenkoCantelli" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="mod_doc"><h3 id="Helper-lemmas-for-Theorem-19-4" class="markdown-heading">Helper lemmas for Theorem 19.4. <a class="hover-link" href="#Helper-lemmas-for-Theorem-19-4">#</a></h3></div><div class="decl" id="AsymptoticStatistics.EmpiricalProcess.isPGlivenkoCantelli_of_finite_bracketing_L1"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.lean#L300-L361">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.html#AsymptoticStatistics.EmpiricalProcess.isPGlivenkoCantelli_of_finite_bracketing_L1"><span class="name">AsymptoticStatistics</span>.<span class="name">EmpiricalProcess</span>.<span class="name">isPGlivenkoCantelli_of_finite_bracketing_L1</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">F</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">(<span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h_F_int</span> : <span class="fn">∀ <span class="fn">f</span> ∈ <span class="fn">F</span>, <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Function/L1Space/Integrable.html#MeasureTheory.Integrable">MeasureTheory.Integrable</a> <span class="fn">f</span> <span class="fn">P</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h_bracket</span> : <span class="fn">∀ <span class="fn">ε</span> &gt; <span class="fn">0</span>, <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/Bracketing.html#AsymptoticStatistics.EmpiricalProcess.HasFiniteBracketingCover">HasFiniteBracketingCover</a> <span class="fn">F</span> <span class="fn">ε</span> <span class="fn">1</span> <span class="fn">P</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/EmpiricalProcess/GlivenkoCantelli.html#AsymptoticStatistics.EmpiricalProcess.IsPGlivenkoCantelli">IsPGlivenkoCantelli</a> <span class="fn">F</span> <span class="fn">P</span></span></div></div><p><strong>Theorem 19.4 (Glivenko–Cantelli via finite L¹-bracketing)</strong>.</p><p>Every class <code>F</code> of measurable functions admitting a finite ε-bracketing
+cover in <code>L_1(P)</code> for every <code>ε &gt; 0</code> is <code>P</code>-Glivenko–Cantelli.</p><p>vdV §19.2 Theorem 19.4: &quot;Every class <code>F</code> of measurable functions such
+that <code>N_{[]}(ε, F, L_1(P)) &lt; ∞</code> for every <code>ε &gt; 0</code> is <code>P</code>-Glivenko–Cantelli.&quot;</p><p>vdV omits the proof, calling it a &quot;straightforward generalization&quot; of
+the classical Theorem 19.1.</p><p><code>h_F_int</code> (integrability of every <code>f ∈ F</code>) is the only F-side condition
+needed: measurability of <code>f</code> is implied via
+<code>Integrable.aestronglyMeasurable</code>, and pointwise sandwich + integral
+comparison are the only places where F-side data enters the proof.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

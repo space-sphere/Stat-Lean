@@ -1,0 +1,190 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.AsymptoticStatistics.Core.EfficiencyOperational</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.AsymptoticStatistics.Core.EfficiencyOperational";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/Core/EIF.html">StatLean.AsymptoticStatistics.Core.EIF</a></li><li><a href="../../.././Mathlib/Probability/Distributions/Gaussian/Real.html">Mathlib.Probability.Distributions.Gaussian.Real</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.AsymptoticStatistics.Core.EfficiencyOperational" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">AsymptoticallyLinearAt</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">AsymptoticallyLinearWithBiasAt</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Core.EfficiencyOperational.asympLinearWithBiasAt_zero_iff_asympLinearAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">asympLinearWithBiasAt_zero_iff_asympLinearAt</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">SemiparametricallyEfficientAt</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Core.EfficiencyOperational.estimator_semiparametricallyEfficient_of_asympLinear_eif"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">estimator_semiparametricallyEfficient_of_asympLinear_eif</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Operational-semiparametric-efficiency-asymptotic-linearity" class="markdown-heading">Operational semiparametric efficiency (asymptotic linearity) <a class="hover-link" href="#Operational-semiparametric-efficiency-asymptotic-linearity">#</a></h1><p>An estimator sequence $T_n$ for a real functional $\psi(P)$ is <em>asymptotically
+linear</em> at $P$ with influence function $\varphi$ (a mean-zero, square-integrable
+function under $P$) and centering $c$ when, as the sample size grows, the
+normalized estimation error admits the expansion
+$$\sqrt{n}\,\bigl(T_n(X) - c\bigr) = \frac{1}{\sqrt n}\sum_{i=1}^n \varphi(X_i) + o_P(1),$$
+i.e. the residual converges to $0$ in $P^n$-probability. The estimator is
+<em>semiparametrically efficient</em> at $P$, relative to a tangent space $T$ for the
+functional $\psi$, when this expansion holds with $c = \psi(P)$ and the
+influence function $\varphi$ equal to the <em>efficient influence function</em> — the
+canonical-gradient projection of $\psi$ onto the closed linear span of $T$. The
+headline result is the operational form of the efficiency criterion: an
+efficient influence function together with the asymptotically-linear expansion
+based on it certifies efficiency.</p><p>This file states this in four pieces — the predicates <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code>,
+<code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt">AsymptoticallyLinearWithBiasAt</a></code>, <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt">SemiparametricallyEfficientAt</a></code>, and the named
+theorem <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.estimator_semiparametricallyEfficient_of_asympLinear_eif">estimator_semiparametricallyEfficient_of_asympLinear_eif</a></code>. The
+bias-residual variant <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt">AsymptoticallyLinearWithBiasAt</a></code> (vdV §25.8, Theorem
+25.59) retains the deterministic bias term $\sqrt{n}\,P_{\hat\theta_n,\eta}\, \tilde\ell_{\hat\theta_n,\hat\eta_n}$ rather than absorbing it into $o_P(1)$ via
+the no-bias condition (25.52); it collapses to <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code> exactly
+when the bias is identically zero.</p><p><strong>Reference.</strong> A. W. van der Vaart, <em>Asymptotic Statistics</em>, Cambridge Series in
+Statistical and Probabilistic Mathematics, Cambridge University Press, 1998,
+Chapter 25 (Semiparametric Models), §25.3, Lemma 25.23, Eq (25.22). The
+bias-residual variant uses §25.8, Theorem 25.59 and the no-bias condition Eq
+(25.52).</p><p><strong>Proof formalization notes.</strong> The centering <code>c</code> is kept abstract (rather than
+hard-wired to <code>ψ P</code>) in <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code> so the definition does not
+depend on the <code>PathwiseDifferentiableAt</code> machinery; concrete consumers pass
+<code>c := ψ P</code>. Edge behavior: when <code>φ = 0</code> the predicate reduces to
+<code>√n · (T_n - c) →_P 0</code> (consistency at rate), and <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt">SemiparametricallyEfficientAt</a></code>
+is <code><a href="../../.././Init/Prelude.html#False">False</a></code> when no efficient influence function exists for any derivative,
+matching vdV's convention that &quot;no EIF&quot; = &quot;no operationally efficient
+estimator&quot;. The reduction lemma <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.asympLinearWithBiasAt_zero_iff_asympLinearAt">asympLinearWithBiasAt_zero_iff_asympLinearAt</a></code>
+shows the bias-residual predicate at the constantly-zero bias is literally
+<code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code> (proved by <code>simp</code> through <code><a href="../../.././Mathlib/Algebra/Group/Basic.html#sub_zero">sub_zero</a></code>); it lets the
+Theorem 25.54 bundle be recovered from a Theorem 25.59 bundle when the
+bias-residual vanishes. The main theorem
+<code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.estimator_semiparametricallyEfficient_of_asympLinear_eif">estimator_semiparametricallyEfficient_of_asympLinear_eif</a></code> is the And-intro
+under existential witnesses — definitional — and is shipped so concrete model
+files can supply the EIF and the asymptotically-linear expansion and then invoke
+it. The &quot;operational&quot; qualifier distinguishes this achievability statement from
+the lower-bound (convolution-theorem) characterization of efficiency; the two
+agree under regularity, but the operational form is what model files prove
+first.</p><p><strong>Bibliographic comments.</strong> The systematic theory of efficient influence
+functions, asymptotic linearity, and semiparametric efficiency bounds was
+developed by P. J. Bickel, C. A. J. Klaassen, Y. Ritov &amp; J. A. Wellner,
+<em>Efficient and Adaptive Estimation for Semiparametric Models</em>, Johns Hopkins
+University Press, Baltimore, 1993 (reprinted Springer, 1998), which is the
+canonical monograph for the framework van der Vaart's Chapter 25 summarizes. The
+efficiency lower bound underlying the criterion descends from the convolution
+theorem of J. Hájek, &quot;A characterization of limiting distributions of regular
+estimates&quot;, <em>Z. Wahrscheinlichkeitstheorie verw. Geb.</em> <strong>14</strong> (1970), 323–330,
+and the local asymptotic minimax theory of L. Le Cam; the influence-function
+representation of regular asymptotically linear estimators originates with
+P. J. Bickel, &quot;On adaptive estimation&quot;, <em>Ann. Statist.</em> <strong>10</strong> (1982), 647–671.
+The specific Lemma 25.23 / Eq (25.22) packaging — an estimator is efficient iff
+it is asymptotically linear with influence function equal to the efficient
+influence function — is van der Vaart's textbook synthesis of this line of work
+rather than a single seminal theorem.</p></div><div class="decl" id="AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean#L85-L111">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">AsymptoticallyLinearAt</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">T_n</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">φ</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">c</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p>An estimator sequence <code>T_n : (Fin n → Ω) → ℝ</code> is <em>asymptotically
+linear</em> at a probability measure <code>P</code> with influence function
+<code>φ ∈ ↥(L2ZeroMean P)</code> and centering <code>c : ℝ</code>, iff for every <code>ε &gt; 0</code>,
+the <code>Pⁿ</code>-probability that the residual
+<code>√n · (T_n X - c) - (1/√n) · Σᵢ φ(Xᵢ)</code> exceeds <code>ε</code> in absolute value
+tends to zero as <code>n → ∞</code>. (Convergence in <code>Pⁿ</code>-probability of the
+residual to zero.)</p><p>Reference: vdV §25.3, eq:25.22. The centering <code>c</code> is typically <code>ψ(P)</code>;
+we keep it abstract so this definition does not depend on the
+<code>PathwiseDifferentiableAt</code> machinery (concrete consumers pass <code>c := ψ P</code>).</p><p>Edge behavior: when <code>φ = 0</code>, the predicate reduces to
+<code>√n · (T_n - c) →_P 0</code>, the consistency-at-rate condition. When <code>T_n</code>
+is the constant <code>c</code>, the predicate fails unless <code>φ = 0</code> modulo
+<code>L²(P)</code>-equivalence.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean#L113-L143">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">AsymptoticallyLinearWithBiasAt</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">T_n</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">φ</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">c</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">bias</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p><em>Bias-residual variant of asymptotic linearity (vdV §25.8,
+thm:25.59).</em></p><p><code>T_n</code> is asymptotically linear at <code>P</code> with influence function
+<code>φ ∈ ↥(L2ZeroMean P)</code>, centering <code>c : ℝ</code>, and bias-residual sequence
+<code>bias : ∀ n, (Fin n → Ω) → ℝ</code>, iff for every <code>ε &gt; 0</code> the
+<code>Pⁿ</code>-probability that
+<code>√n · (T_n X − c) − (1/√n) · Σᵢ φ(Xᵢ) − bias n X</code> exceeds <code>ε</code> in
+absolute value tends to zero as <code>n → ∞</code>.</p><p>Reference: vdV §25.8, thm:25.59 (the bias-residual expansion). The
+predicate generalises <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code> by retaining the bias
+term <code>√n · P_{θ̂_n,η} ℓ̃_{θ̂_n,η̂_n}</code> rather than absorbing it into
+<code>o_P(1)</code> via the no-bias condition (25.52).</p><p>Edge behavior: when <code>bias = (fun _ _ =&gt; 0)</code>, the predicate is
+literally <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a> T_n P φ c</code> (see
+<code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.asympLinearWithBiasAt_zero_iff_asympLinearAt">asympLinearWithBiasAt_zero_iff_asympLinearAt</a></code>).</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Core.EfficiencyOperational.asympLinearWithBiasAt_zero_iff_asympLinearAt"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean#L145-L162">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.asympLinearWithBiasAt_zero_iff_asympLinearAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">asympLinearWithBiasAt_zero_iff_asympLinearAt</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">T_n</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">φ</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">c</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearWithBiasAt">AsymptoticallyLinearWithBiasAt</a> <span class="fn">T_n</span> <span class="fn">P</span> <span class="fn">φ</span> <span class="fn">c</span> <span class="fn">fun (<span class="fn">x</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) (<span class="fn">x_1</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">x</span></span> → <span class="fn">Ω</span></span>) =&gt; <span class="fn">0</span></span>)</span> <a href="../../.././Init/Core.html#Iff">↔</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a> <span class="fn">T_n</span> <span class="fn">P</span> <span class="fn">φ</span> <span class="fn">c</span></span></div></div><p><em>Reduction: thm:25.54 = thm:25.59 with vanishing bias.</em> The
+bias-residual predicate at the constantly-zero bias sequence is
+literally <code><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a></code>. Used by
+<code>EfficientScoreEqBiasResidualAssumptions.toEfficientScoreEqAssumptions</code>
+to recover the thm:25.54 bundle from a thm:25.59 bundle when the
+bias-residual is identically zero (i.e., the no-bias condition
+(25.52) holds at rate <code>o_P(n^{−1/2})</code>).</p><p>Reference: vdV §25.8, the (25.52)-collapse step in the discussion
+following thm:25.59.</p></div></div><div class="decl" id="AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean#L164-L188">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">SemiparametricallyEfficientAt</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">T_n</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ψ</span> : <span class="fn"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p>An estimator sequence <code>T_n</code> is <em>semiparametrically efficient</em> at <code>P</code>
+relative to a tangent space <code>T</code> for the functional <code>ψ : Measure Ω → ℝ</code>,
+iff there exists an efficient influence function <code>φ ∈ ↥(L2ZeroMean P)</code> and
+a derivative <code>dψ : T →L[ℝ] ℝ</code> such that <code>T_n</code> is asymptotically linear at
+<code>P</code> with influence <code>φ</code> and centering <code>ψ P</code>.</p><p>Reference: vdV §25.3, definition following lem:25.23 (operational form).
+The &quot;operational&quot; qualifier distinguishes this from the lower-bound
+characterisation: the operational form says <em>T_n achieves the
+asymptotic-linear-with-EIF expansion</em>; the lower-bound form would say
+<em>no regular estimator does asymptotically better in variance</em>. The two
+agree under regularity, but the operational form is what concrete
+model files prove first.</p><p>Edge behavior: when no EIF exists for any derivative (e.g. <code>dψ</code> outside
+<code><a href="../../.././Mathlib/Topology/Defs/Basic.html#closure">closure</a> T</code>), the predicate is <code><a href="../../.././Init/Prelude.html#False">False</a></code>. Matches vdV's convention that
+&quot;no EIF&quot; = &quot;no operationally efficient estimator&quot;.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Core.EfficiencyOperational.estimator_semiparametricallyEfficient_of_asympLinear_eif"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Core/EfficiencyOperational.lean#L190-L208">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.estimator_semiparametricallyEfficient_of_asympLinear_eif"><span class="name">AsymptoticStatistics</span>.<span class="name">Core</span>.<span class="name">EfficiencyOperational</span>.<span class="name">estimator_semiparametricallyEfficient_of_asympLinear_eif</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T_n</span> : <span class="fn">(<span class="fn">n</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>) → <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">n</span></span> → <span class="fn">Ω</span>)</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ψ</span> : <span class="fn"><span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">dψ</span> : <span class="fn">↥<span class="fn">T</span></span> <a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">→L[</a><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a><a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">]</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">φ</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Hilbert.L2ZeroMean</a> <span class="fn">P</span>)</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hEIF</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.IsEfficientInfluenceFunction">Pathwise.IsEfficientInfluenceFunction</a> <span class="fn">P</span> <span class="fn">T</span> <span class="fn">dψ</span> <span class="fn">φ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hAL</span> : <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.AsymptoticallyLinearAt">AsymptoticallyLinearAt</a> <span class="fn">T_n</span> <span class="fn">P</span> <span class="fn">φ</span> <span class="fn">(<span class="fn">ψ</span> <span class="fn">P</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/EfficiencyOperational.html#AsymptoticStatistics.Core.EfficiencyOperational.SemiparametricallyEfficientAt">SemiparametricallyEfficientAt</a> <span class="fn">T_n</span> <span class="fn">ψ</span> <span class="fn">P</span> <span class="fn">T</span></span></div></div><p><em>Operational form of vdV lem:25.23.</em> If <code>φ</code> is an efficient influence
+function for <code>dψ : T →L[ℝ] ℝ</code> at <code>P</code> relative to <code>T</code>, and <code>T_n</code> is
+asymptotically linear at <code>P</code> with influence <code>φ</code> and centering <code>ψ P</code>, then
+<code>T_n</code> is semiparametrically efficient at <code>P</code> relative to <code>T</code> for <code>ψ</code>.</p><p>Reference: vdV §25.3, lem:25.23 (operational form). The proof is the
+And-intro under existential witnesses — definitional. The named theorem
+is shipped for downstream consumers (concrete model files supply the
+EIF and the asymp-linear expansion, then invoke this theorem).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

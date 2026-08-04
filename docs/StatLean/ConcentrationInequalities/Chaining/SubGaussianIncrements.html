@@ -1,0 +1,265 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.ConcentrationInequalities.Chaining.SubGaussianIncrements</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.ConcentrationInequalities.Chaining.SubGaussianIncrements";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">Chaining</span>.<span class="name">SubGaussianIncrements</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/Attainment.html">StatLean.ConcentrationInequalities.Orlicz.Attainment</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/Defs.html">StatLean.ConcentrationInequalities.Orlicz.Defs</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/SubGaussianMGF.html">StatLean.ConcentrationInequalities.Orlicz.SubGaussianMGF</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/SubGaussianTail.html">StatLean.ConcentrationInequalities.Orlicz.SubGaussianTail</a></li><li><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html">StatLean.ConcentrationInequalities.SubGaussian.Defs</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.ConcentrationInequalities.Chaining.SubGaussianIncrements" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_set"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">mono_set</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_const"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">mono_const</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">ae_eq_zero_of_subGaussianNorm_eq_zero</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.sub_ae_eq_zero"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">sub_ae_eq_zero</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.measure_abs_sub_ge_le"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">measure_abs_sub_ge_le</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.hasSubgaussianMGF_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">hasSubgaussianMGF_sub</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.ConcentrationInequalities.SubGaussianIncrements.isSubGaussian_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">isSubGaussian_sub</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Sub-gaussian-increments-of-a-random-process" class="markdown-heading">Sub-gaussian increments of a random process <a class="hover-link" href="#Sub-gaussian-increments-of-a-random-process">#</a></h1><p>A random process $(X_t)_{t \in T}$ on a pseudo-metric space $(T, d)$ has
+<em>sub-gaussian increments</em> with parameter $K \ge 0$ if
+$$ \|X_t - X_s\|_{\psi_2} \;\le\; K\, d(s,t) \qquad \text{for all } s, t \in T. $$
+This file defines the carrier <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a></code> and derives from it the
+two probabilistic consequences every chaining argument consumes: the
+per-increment Gaussian tail
+$\mathbb{P}(|X_t - X_s| \ge \tau) \le 2\exp(-\tau^2/(K d(s,t))^2)$
+and the per-increment MGF bound
+(<code>HasSubgaussianMGF</code> with variance proxy $3 (K d(s,t))^2$).</p><p><strong>Reference.</strong> Roman Vershynin, <em>High-Dimensional Probability</em>, 2nd ed.,
+Cambridge University Press, §8.1, Definition 8.1.1, Eq. (8.1); the tail
+consequence is Eq. (8.3)-flavored and the MGF consequence is Step 2 of the
+proof of Theorem 8.1.4.</p><p><strong>Proof formalization notes.</strong> ALL consumption of the Orlicz bridge lemmas
+(B1 tail <code>measure_abs_ge_le_of_subGaussianNorm_le</code>, B2 MGF
+<code>hasSubgaussianMGF_of_subGaussianNorm_le</code>) is confined to this file and to
+<code><a href="../../.././Chaining/PsiTwoMaximal.html">Chaining/PsiTwoMaximal.lean</a></code>; downstream chaining files consume only the
+lemmas here. Constants: B1 is normalized with $c = 1$ (tail
+$2\exp(-\tau^2/L^2)$) and B2 with $C = 3$ (variance proxy $3L^2$), frozen
+numerals <code>2</code> and <code>3</code>. The index set <code>T : <a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> E</code> is an explicit argument
+(applications only control increments on the class); <code>K : ℝ≥0</code> carries <strong>no</strong>
+<code>K ≠ 0</code> hypothesis (book: &quot;∃ K ≥ 0&quot;) — the <code>K = 0</code> and <code>dist = 0</code> corners are
+handled by <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero">ae_eq_zero_of_subGaussianNorm_eq_zero</a></code>, which is a thin
+instantiation of <code>Orlicz/Attainment.orliczNorm_eq_zero_iff</code> at <code>ψ = psiTwo</code>
+(no independent derivation). The mean-zero hypothesis of
+<code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.hasSubgaussianMGF_sub">hasSubgaussianMGF_sub</a></code> is stated <strong>on the increment</strong>
+(<code>∫ (X t − X s) dμ = 0</code>), which is junk-proof for non-integrable <code>X t</code>.
+Named-sorry fallback of this work item: <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero">ae_eq_zero_of_subGaussianNorm_eq_zero</a></code>
+(the <code>psiTwo</code> instantiation plumbing), keeping the two bridge repackagings
+proved.</p><p><strong>Bibliographic comments.</strong> Processes with sub-gaussian increments as the
+natural setting for chaining go back to R. M. Dudley, &quot;The sizes of compact
+subsets of Hilbert space and continuity of Gaussian processes,&quot; <em>J. Funct.
+Anal.</em> 1 (1967), 290–330, abstracting Kolmogorov's continuity criterion
+(1930s); the ψ₂-increment formulation used here follows Talagrand, <em>Upper
+and Lower Bounds for Stochastic Processes</em>, Springer 2014, §2.2.</p></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L59-L69">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span> := by volume_tac)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p><strong>Sub-gaussian increments</strong> (HDP §8.1, Definition 8.1.1, Eq. (8.1)):
+the process <code>X</code> indexed by the pseudo-metric space <code>E</code> has sub-gaussian
+increments with parameter <code>K</code> on the index set <code>T</code> if
+<code>‖X t − X s‖_{ψ₂} ≤ K · d(s,t)</code> for all <code>s, t ∈ T</code>, stated with <code>edist</code> so
+the inequality lives in <code>ℝ≥0∞</code> (the ψ₂-norm carrier). Edge behavior: <code>K = 0</code>
+or <code>dist s t = 0</code> forces <code>subGaussianNorm = 0</code>, i.e. <code>X t = X s</code> a.e.
+(see <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero">ae_eq_zero_of_subGaussianNorm_eq_zero</a></code>); no <code>K ≠ 0</code> hypothesis is
+carried.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">StatLean.ConcentrationInequalities.SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn">∀ <span class="fn">s</span> ∈ <span class="fn">T</span>, <span class="fn">∀ <span class="fn">t</span> ∈ <span class="fn">T</span>, <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/Defs.html#StatLean.ConcentrationInequalities.subGaussianNorm">StatLean.ConcentrationInequalities.subGaussianNorm</a> <span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span>)</span> <span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Topology/EMetricSpace/Defs.html#EDist.edist">edist</a> <span class="fn">s</span> <span class="fn">t</span></span></span></span></li></ul></details><details id="instances-for-list-StatLean.ConcentrationInequalities.SubGaussianIncrements" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_set"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L71-L75">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_set"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">mono_set</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">S</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hST</span> : <span class="fn">S</span> <a href="../../.././Init/Core.html#HasSubset.Subset">⊆</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">S</span> <span class="fn">μ</span></span></div></div><p>Restriction of sub-gaussian increments to a subset of the index set.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_const"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L77-L84">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.mono_const"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">mono_const</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K'</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hK</span> : <span class="fn">K</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">K'</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K'</span> <span class="fn">T</span> <span class="fn">μ</span></span></div></div><p>Weakening the increment parameter.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L86-L100">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.ae_eq_zero_of_subGaussianNorm_eq_zero"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">ae_eq_zero_of_subGaussianNorm_eq_zero</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Y</span> : <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hm</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">Y</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Orlicz/Defs.html#StatLean.ConcentrationInequalities.subGaussianNorm">subGaussianNorm</a> <span class="fn">Y</span> <span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">Y</span> <a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.EventuallyEq">=ᵐ[</a><span class="fn">μ</span><a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.EventuallyEq">]</a> <span class="fn">0</span></div></div><p>A random variable with vanishing ψ₂-norm vanishes a.e.</p><p>Thin instantiation of <code>orliczNorm_eq_zero_iff</code> (<code><a href="../../.././Orlicz/Attainment.html">Orlicz/Attainment.lean</a></code>) at
+<code>ψ = psiTwo</code> — no independent derivation. Needed for the pseudometric
+<code>dist = 0</code> chain ends and the <code>K = 0</code> corner of chaining. Stated <em>without</em>
+<code>IsProbabilityMeasure</code>.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.sub_ae_eq_zero"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L102-L116">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.sub_ae_eq_zero"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">sub_ae_eq_zero</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">s </span><span class="fn">t</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hms</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">s</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmt</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hs</span> : <span class="fn">s</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">t</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hd</span> : <span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">s</span> <span class="fn">t</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span>)</span> <a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.EventuallyEq">=ᵐ[</a><span class="fn">μ</span><a href="../../.././Mathlib/Order/Filter/Defs.html#Filter.EventuallyEq">]</a> <span class="fn">0</span></div></div><p>Pseudometric chain-end identification: indices at distance <code>0</code> carry
+a.e.-equal process values (HDP §8.1, the <code>T_K = T</code> step in the proof of
+Theorem 8.1.4, adapted to pseudo-metric index sets).</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.measure_abs_sub_ge_le"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L118-L146">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.measure_abs_sub_ge_le"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">measure_abs_sub_ge_le</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">s </span><span class="fn">t</span> : <span class="fn">E</span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hms</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">s</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmt</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hs</span> : <span class="fn">s</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">t</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hK</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">s</span> <span class="fn">t</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">τ</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hτ</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">τ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">μ</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">{</a><span class="fn">ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">:</a> <span class="fn">Ω</span> <a href="../../.././Mathlib/Data/Set/Defs.html#setOf">|</a> <span class="fn">τ</span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span><a href="../../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><a href="../../.././Mathlib/Data/Set/Defs.html#setOf">}</a></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal.ofReal">ENNReal.ofReal</a> (<span class="fn">2</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Analysis/Complex/Exponential.html#Real.exp">Real.exp</a> (<a href="../../.././Init/Prelude.html#Neg.neg">-</a><span class="fn">τ</span> <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> (<span class="fn">↑<span class="fn">K</span></span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">s</span> <span class="fn">t</span></span>) <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>)</span>)</span></div></div><p><strong>Increment tail bound</strong> (HDP §8.1, Eq. (8.3) flavor): a sub-gaussian
+increment satisfies the Gaussian-type tail
+<code>μ {|X_t − X_s| ≥ τ} ≤ 2 exp(−τ²/(K d(s,t))²)</code>. Bridge-B1 consumption,
+normalization <code>c = 1</code> frozen.</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.hasSubgaussianMGF_sub"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L148-L182">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.hasSubgaussianMGF_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">hasSubgaussianMGF_sub</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">s </span><span class="fn">t</span> : <span class="fn">E</span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hms</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">s</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmt</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hs</span> : <span class="fn">s</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">t</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmean</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Probability/Moments/SubGaussian.html#ProbabilityTheory.HasSubgaussianMGF">ProbabilityTheory.HasSubgaussianMGF</a> <span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span>)</span> (<span class="fn">3</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">K</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#NNDist.nndist">nndist</a> <span class="fn">s</span> <span class="fn">t</span></span>) <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>) <span class="fn">μ</span></span></div></div><p><strong>Increment MGF bound</strong> (HDP §8.1, proof of Theorem 8.1.4, Step 2): a
+mean-zero sub-gaussian increment has <code>HasSubgaussianMGF</code> with variance proxy
+<code>3 (K d(s,t))²</code>. Bridge-B2 consumption, constant <code>C = 3</code> frozen. The
+mean-zero hypothesis is on the <strong>increment</strong> (junk-proof for non-integrable
+coordinates).</p></div></div><div class="decl" id="StatLean.ConcentrationInequalities.SubGaussianIncrements.isSubGaussian_sub"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.lean#L184-L200">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.isSubGaussian_sub"><span class="name">StatLean</span>.<span class="name">ConcentrationInequalities</span>.<span class="name">SubGaussianIncrements</span>.<span class="name">isSubGaussian_sub</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">mΩ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#PseudoMetricSpace">PseudoMetricSpace</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">μ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <span class="fn"><span class="fn">E</span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">K</span> : <a href="../../.././Mathlib/Data/NNReal/Defs.html#NNReal">NNReal</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T</span> : <span class="fn"><a href="../../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">E</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">s </span><span class="fn">t</span> : <span class="fn">E</span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">h</span> : <span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements">SubGaussianIncrements</a> <span class="fn">X</span> <span class="fn">K</span> <span class="fn">T</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hms</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">s</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmt</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#AEMeasurable">AEMeasurable</a> <span class="fn">(<span class="fn">X</span> <span class="fn">t</span>)</span> <span class="fn">μ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hs</span> : <span class="fn">s</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ht</span> : <span class="fn">t</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hmean</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∫</a> (<span class="fn">ω</span> : <span class="fn">Ω</span>)<a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">,</a> <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span> <a href="../../.././Mathlib/MeasureTheory/Integral/Bochner/Basic.html#MeasureTheory.integral">∂</a><span class="fn">μ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/ConcentrationInequalities/SubGaussian/Defs.html#StatLean.ConcentrationInequalities.IsSubGaussian">IsSubGaussian</a> <span class="fn">(fun (<span class="fn">ω</span> : <span class="fn">Ω</span>) =&gt; <span class="fn"><span class="fn">X</span> <span class="fn">t</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn">X</span> <span class="fn">s</span> <span class="fn">ω</span></span>)</span> (<span class="fn">3</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> (<span class="fn">K</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#NNDist.nndist">nndist</a> <span class="fn">s</span> <span class="fn">t</span></span>) <a href="../../.././Init/Prelude.html#HPow.hPow">^</a> <span class="fn">2</span>) <span class="fn">μ</span></span></div></div><p>Repackaging of <code><a href="../../.././StatLean/ConcentrationInequalities/Chaining/SubGaussianIncrements.html#StatLean.ConcentrationInequalities.SubGaussianIncrements.hasSubgaussianMGF_sub">hasSubgaussianMGF_sub</a></code> into the project carrier
+<code>IsSubGaussian</code> (the centering in <code>IsSubGaussian</code> is a no-op under <code>hmean</code>).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

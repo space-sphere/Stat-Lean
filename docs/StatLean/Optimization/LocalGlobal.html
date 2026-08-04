@@ -1,0 +1,60 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Optimization.LocalGlobal</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="StatLean.Optimization.LocalGlobal";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">LocalGlobal</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Optimization/LocalGlobal.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././Mathlib/Topology/MetricSpace/Basic.html">Mathlib.Topology.MetricSpace.Basic</a></li><li><a href="../.././Mathlib/Topology/Order/LocalExtr.html">Mathlib.Topology.Order.LocalExtr</a></li><li><a href="../.././StatLean/Optimization/Convex/Defs.html">StatLean.Optimization.Convex.Defs</a></li><li><a href="../.././Mathlib/Analysis/Normed/Module/Basic.html">Mathlib.Analysis.Normed.Module.Basic</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Optimization.LocalGlobal" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Optimization.isGlobalMin_iff_zero_mem_subdifferential"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">isGlobalMin_iff_zero_mem_subdifferential</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Optimization.forall_le_of_isLocalMin"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">forall_le_of_isLocalMin</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Local-minima-are-global-minima-first-order-optimality-for-convex-functions" class="markdown-heading">Local minima are global minima; first-order optimality for convex functions <a class="hover-link" href="#Local-minima-are-global-minima-first-order-optimality-for-convex-functions">#</a></h1><p>Let $f : E \to \mathbb{R}$ be a function on a real inner product space $E$. Two
+companion facts of unconstrained convex optimization:</p><ul><li><p><strong>(First-order optimality.)</strong> A point $x^\star$ is a global minimizer of $f$,
+i.e. $f(x^\star) \le f(y)$ for all $y$, if and only if the zero vector belongs
+to the subdifferential of $f$ at $x^\star$, written $0 \in \partial f(x^\star)$.
+Here $\partial f(x^\star) = \{\, g : \langle g,\, y - x^\star\rangle \le f(y) - f(x^\star)\ \text{for all } y \,\}$ is the set of subgradients, so the
+equivalence holds for an <em>arbitrary</em> function $f$ (no convexity needed): it is
+essentially the definition of subgradient specialized to $g = 0$.</p></li><li><p><strong>(Local $\Rightarrow$ global.)</strong> If $f$ is convex on the whole space and
+$x^\star$ is a <em>local</em> minimizer, then $x^\star$ is in fact a global minimizer:
+$f(x^\star) \le f(y)$ for every $y$.</p></li></ul><p><strong>Reference.</strong> Junwei Lu, <em>Big Data Analysis</em>, Springer Nature Switzerland, 2025
+(ISBN 978-3-032-03160-0), Chapter 12 (Convexity and Subgradient), §12.2
+(Subgradient), Proposition 12.1 (Local Minima Are Global Minima).</p><p><strong>Proof formalization notes.</strong> The first-order optimality statement is essentially
+definitional via the subdifferential: $0 \in \partial f(x^\star)$ unfolds to
+$\langle 0,\, y - x^\star\rangle \le f(y) - f(x^\star)$ for all $y$, and the left
+side is $0$, giving $f(x^\star) \le f(y)$ directly; this requires no convexity.
+The local-to-global direction argues by contradiction: if some $y$ had
+$f(y) &lt; f(x^\star)$, pick a convex-combination point
+$z = x^\star + \gamma\,(y - x^\star) = (1-\gamma)\,x^\star + \gamma\,y$ with
+$\gamma \in (0,1]$ small enough that $z$ lies in the $\varepsilon$-ball on which
+the local-minimum property holds; then $f(x^\star) \le f(z)$, while convexity
+gives $f(z) \le (1-\gamma)\,f(x^\star) + \gamma\,f(y)$, and since $\gamma &gt; 0$ and
+$f(y) &lt; f(x^\star)$ these two bounds contradict each other.</p><p><strong>Bibliographic comments.</strong> This is folklore in convex analysis with no single
+seminal origin. The canonical treatment is R. T. Rockafellar, <em>Convex
+Analysis</em>, Princeton University Press, 1970: the first-order optimality
+characterization $0 \in \partial f(x^\star)$ is Theorem 27.1 there, and &quot;every
+local minimum of a convex function is a global minimum&quot; follows from the
+convexity inequality (cf. §27). The facts are standard across convex-optimization
+references (e.g. Boyd &amp; Vandenberghe, <em>Convex Optimization</em>, Cambridge University
+Press, 2004, §4.2.3 and §3.1.7).</p></div><div class="decl" id="StatLean.Optimization.isGlobalMin_iff_zero_mem_subdifferential"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Optimization/LocalGlobal.lean#L56-L68">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././StatLean/Optimization/LocalGlobal.html#StatLean.Optimization.isGlobalMin_iff_zero_mem_subdifferential"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">isGlobalMin_iff_zero_mem_subdifferential</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">f</span> : <span class="fn"><span class="fn">E</span> → <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">xstar</span> : <span class="fn">E</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">(∀ (<span class="fn">y</span> : <span class="fn">E</span>), <span class="fn"><span class="fn">f</span> <span class="fn">xstar</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><span class="fn">f</span> <span class="fn">y</span></span>)</span> <a href="../.././Init/Core.html#Iff">↔</a> <span class="fn">0</span> <a href="../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn"><a href="../.././StatLean/Optimization/Convex/Defs.html#StatLean.Optimization.subdifferential">subdifferential</a> <span class="fn">f</span> <span class="fn">xstar</span></span></div></div><p>Lu-BDA Proposition 12.2 (First-Order Optimality Condition, unconstrained): <code>x*</code>
+is a global minimizer of <code>f</code> iff <code>0 ∈ ∂f(x*)</code>.</p></div></div><div class="decl" id="StatLean.Optimization.forall_le_of_isLocalMin"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Optimization/LocalGlobal.lean#L70-L111">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././StatLean/Optimization/LocalGlobal.html#StatLean.Optimization.forall_le_of_isLocalMin"><span class="name">StatLean</span>.<span class="name">Optimization</span>.<span class="name">forall_le_of_isLocalMin</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">E</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/Normed/Group/Defs.html#NormedAddCommGroup">NormedAddCommGroup</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Analysis/InnerProductSpace/Defs.html#InnerProductSpace">InnerProductSpace</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">E</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">E</span> → <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/Analysis/Convex/Function.html#ConvexOn">ConvexOn</a> <a href="../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <a href="../.././Mathlib/Data/Set/Defs.html#Set.univ">Set.univ</a> <span class="fn">f</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">xstar</span> : <span class="fn">E</span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hloc</span> : <span class="fn"><a href="../.././Mathlib/Topology/Order/LocalExtr.html#IsLocalMin">IsLocalMin</a> <span class="fn">f</span> <span class="fn">xstar</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">E</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">f</span> <span class="fn">xstar</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><span class="fn">f</span> <span class="fn">y</span></span></div></div><p>Lu-BDA Proposition 12.1 (Local Minima Are Global Minima): for convex <code>f</code>, any
+local minimizer is a global minimizer.</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

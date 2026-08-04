@@ -1,0 +1,170 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.Bayesian.Decision.Minimax</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.Bayesian.Decision.Minimax";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">Decision</span>.<span class="name">Minimax</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/Bayesian/Decision/Defs.html">StatLean.Bayesian.Decision.Defs</a></li><li><a href="../../.././StatLean/Bayesian/ForMathlib/KernelMixture.html">StatLean.Bayesian.ForMathlib.KernelMixture</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.Bayesian.Decision.Minimax" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.risk_mixKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">risk_mixKernel</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.avgRisk_mixKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">avgRisk_mixKernel</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_le"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isMinimaxEstimator_of_isBayesEstimator_of_risk_le</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.isLeastFavorable_of_isBayesEstimator_of_risk_le"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isLeastFavorable_of_isBayesEstimator_of_risk_le</span></a></div><div class="nav_link"><a class="break_within" href="#StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_const"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isMinimaxEstimator_of_isBayesEstimator_of_risk_const</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="The-Bayesian-route-to-minimaxity-Robert-2-4" class="markdown-heading">The Bayesian route to minimaxity (Robert §2.4) <a class="hover-link" href="#The-Bayesian-route-to-minimaxity-Robert-2-4">#</a></h1><p>The decision-theoretic bridge between Bayes optimality and minimax optimality:</p><ul><li><strong>risk linearity for randomized estimators</strong> (2G.1; Robert Theorem 2.4.2): the risk of a
+kernel mixture is the mixture of the risks;</li><li><strong>Bayes + risk domination ⇒ minimax</strong> (2G.2; Robert Lemma 2.4.13): a Bayes estimator whose
+risk never exceeds its Bayes risk is minimax — with constant risk as the classical special
+case (Robert Example 2.4.14);</li><li><strong>the associated prior is least favorable</strong> (2G.3; Robert Lemma 2.4.13's second half).</li></ul><p><strong>Reference.</strong> C. P. Robert, <em>The Bayesian Choice: From Decision-Theoretic
+Foundations to Computational Implementation</em>, 2nd ed., Springer Texts in Statistics, Springer,
+2007 (ISBN 978-0-387-71598-8). §2.4.1, Theorem 2.4.2, p. 66; §2.4.2, Definition 2.4.3, p. 67;
+§2.4.3, Lemma 2.4.10, p. 70 and <strong>Lemma 2.4.13</strong>, p. 71 (stated there with domination on the
+support of <code>π₀</code>; we state the global-domination form, of which constant risk is the textbook
+instance — the support-restricted refinement is a recorded stretch for the next batch).</p><p><strong>Proof formalization notes.</strong> 2G.1 is <code>mixKernel_comp_left</code> + <code>lintegral_add_measure</code> +
+<code>lintegral_smul_measure</code> (no measurability needed in <code>ℝ≥0∞</code>). 2G.2 is a three-step sandwich
+from the pinned <code>bayesRisk_le_minimaxRisk</code> (needs <code>IsProbabilityMeasure π</code>) and
+<code><a href="../../.././Mathlib/Order/CompleteLattice/Basic.html#iInf₂_le">iInf₂_le</a></code>-instantiation of <code>minimaxRisk</code> at <code>κ</code>; 2G.3 chains <code>bayesRisk_le_avgRisk</code> and the
+pinned <code>avgRisk_le_iSup_risk</code> into the domination hypothesis. <code>IsBayesEstimator</code> is the Batch-1
+definition; <code>risk</code>/<code>IsMinimaxEstimator</code>/<code>IsLeastFavorable</code> live in <code>Decision.Defs</code>.</p><p><strong>Bibliographic comments.</strong> The Bayes-to-minimax route is A. Wald's (<em>Statistical Decision
+Functions</em>, 1950), with the geometric risk-set picture of D. Blackwell and M. A. Girshick
+(<em>Theory of Games and Statistical Decisions</em>, Wiley, 1954). The constant-risk criterion and least
+favorable priors are the standard devices for exhibiting minimax estimators — e.g. the
+<code>Beta(√n/2, √n/2)</code> binomial example. This file complements the
+<code><a href="../../.././StatLean/Minimaxity.html">StatLean.Minimaxity</a></code> area (Wainwright ch. 15), which bounds minimax risks from below; here Bayes
+rules certify them from above.</p></div><div class="decl" id="StatLean.Bayesian.risk_mixKernel"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean#L47-L54">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.risk_mixKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">risk_mixKernel</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓨</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓨</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓨</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ℓ</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓨</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">w</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">κ₁ </span><span class="fn">κ₂</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">𝓧</span> <span class="fn">𝓨</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">θ</span> : <span class="fn">Θ</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">(<a href="../../.././StatLean/Bayesian/ForMathlib/KernelMixture.html#StatLean.Bayesian.mixKernel">mixKernel</a> <span class="fn">w</span> <span class="fn">κ₁</span> <span class="fn">κ₂</span>)</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">w</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ₁</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn">w</span>) <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ₂</span> <span class="fn">θ</span></span></div></div><p><strong>Risk linearity for randomized estimators</strong> (2G.1; Robert Theorem 2.4.2): the risk of a
+kernel mixture is the mixture of the risks.</p></div></div><div class="decl" id="StatLean.Bayesian.avgRisk_mixKernel"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean#L56-L77">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.avgRisk_mixKernel"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">avgRisk_mixKernel</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓨</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓨</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓨</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ℓ</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓨</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsSFiniteKernel">ProbabilityTheory.IsSFiniteKernel</a> <span class="fn">P</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">w</span> : <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">κ₁ </span><span class="fn">κ₂</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">𝓧</span> <span class="fn">𝓨</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsSFiniteKernel">ProbabilityTheory.IsSFiniteKernel</a> <span class="fn">κ₁</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsSFiniteKernel">ProbabilityTheory.IsSFiniteKernel</a> <span class="fn">κ₂</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hℓ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">(<a href="../../.././Init/Data/Function.html#Function.uncurry">Function.uncurry</a> <span class="fn">ℓ</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Probability/Decision/Risk/Defs.html#ProbabilityTheory.avgRisk">ProbabilityTheory.avgRisk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">(<a href="../../.././StatLean/Bayesian/ForMathlib/KernelMixture.html#StatLean.Bayesian.mixKernel">mixKernel</a> <span class="fn">w</span> <span class="fn">κ₁</span> <span class="fn">κ₂</span>)</span> <span class="fn">π</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn">w</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Probability/Decision/Risk/Defs.html#ProbabilityTheory.avgRisk">ProbabilityTheory.avgRisk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ₁</span> <span class="fn">π</span></span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn">w</span>) <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn"><a href="../../.././Mathlib/Probability/Decision/Risk/Defs.html#ProbabilityTheory.avgRisk">ProbabilityTheory.avgRisk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ₂</span> <span class="fn">π</span></span></div></div><p>Average-risk linearity for randomized estimators (Robert Theorem 2.4.2). Unlike
+<code><a href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.risk_mixKernel">risk_mixKernel</a></code>, splitting the outer <code>∫⁻ · ∂π</code> in <code>ℝ≥0∞</code> genuinely needs the risk integrand
+measurable: without <code>hℓ</code> the statement is false (inner-measure counterexample: a non-measurable
+<code>A ⊆ Θ</code>, <code>𝓨 = <a href="../../.././Init/Prelude.html#Bool">Bool</a></code>, <code>κ₁ = δ_true</code>, <code>κ₂ = δ_false</code>, <code>ℓ θ true = 𝟙_A θ</code>, <code>ℓ θ false = 𝟙_{Aᶜ} θ</code>,
+<code>w = ½</code> gives LHS <code>= ½·π(univ)</code> but RHS <code>= ½·(π_*(A) + π_*(Aᶜ)) &lt; ½·π(univ)</code>).</p></div></div><div class="decl" id="StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_le"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean#L79-L91">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_le"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isMinimaxEstimator_of_isBayesEstimator_of_risk_le</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓨</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓨</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓨</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ℓ</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓨</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">κ</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">𝓧</span> <span class="fn">𝓨</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">κ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">π</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hB</span> : <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsBayesEstimator">IsBayesEstimator</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">π</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hle</span> : <span class="fn">∀ (<span class="fn">θ</span> : <span class="fn">Θ</span>), <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Probability/Decision/Risk/Defs.html#ProbabilityTheory.bayesRisk">ProbabilityTheory.bayesRisk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">π</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsMinimaxEstimator">IsMinimaxEstimator</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span></span></div></div><p><strong>A Bayes estimator dominating its Bayes risk is minimax</strong> (2G.2; Robert Lemma 2.4.13,
+global-domination form — constant risk is the special case of Example 2.4.14).</p></div></div><div class="decl" id="StatLean.Bayesian.isLeastFavorable_of_isBayesEstimator_of_risk_le"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean#L93-L106">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.isLeastFavorable_of_isBayesEstimator_of_risk_le"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isLeastFavorable_of_isBayesEstimator_of_risk_le</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓨</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓨</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓨</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ℓ</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓨</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">κ</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">𝓧</span> <span class="fn">𝓨</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">κ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">π</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hB</span> : <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsBayesEstimator">IsBayesEstimator</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">π</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hle</span> : <span class="fn">∀ (<span class="fn">θ</span> : <span class="fn">Θ</span>), <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../../.././Mathlib/Probability/Decision/Risk/Defs.html#ProbabilityTheory.bayesRisk">ProbabilityTheory.bayesRisk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">π</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsLeastFavorable">IsLeastFavorable</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">π</span></span></div></div><p><strong>The prior of a risk-dominating Bayes estimator is least favorable</strong> (2G.3; Robert
+Lemma 2.4.13).</p></div></div><div class="decl" id="StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_const"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/Bayesian/Decision/Minimax.lean#L108-L122">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/Bayesian/Decision/Minimax.html#StatLean.Bayesian.isMinimaxEstimator_of_isBayesEstimator_of_risk_const"><span class="name">StatLean</span>.<span class="name">Bayesian</span>.<span class="name">isMinimaxEstimator_of_isBayesEstimator_of_risk_const</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Θ</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓧</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">𝓨</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">mΘ</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Θ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓧</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓧</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn">m𝓨</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">𝓨</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">ℓ</span> : <span class="fn"><span class="fn">Θ</span> → <span class="fn"><span class="fn">𝓨</span> → <a href="../../.././Mathlib/Data/ENNReal/Basic.html#ENNReal">ENNReal</a></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">P</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">Θ</span> <span class="fn">𝓧</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">κ</span> : <span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> <span class="fn">𝓧</span> <span class="fn">𝓨</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.IsMarkovKernel">ProbabilityTheory.IsMarkovKernel</a> <span class="fn">κ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">π</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Θ</span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">π</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hB</span> : <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsBayesEstimator">IsBayesEstimator</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">π</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hconst</span> : <span class="fn">∀ (<span class="fn">θ </span><span class="fn">θ'</span> : <span class="fn">Θ</span>), <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">θ</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.risk">risk</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span> <span class="fn">θ'</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/Bayesian/Decision/Defs.html#StatLean.Bayesian.IsMinimaxEstimator">IsMinimaxEstimator</a> <span class="fn">ℓ</span> <span class="fn">P</span> <span class="fn">κ</span></span></div></div><p><strong>A constant-risk Bayes estimator is minimax</strong> (Robert Example 2.4.14's principle).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

@@ -1,0 +1,54 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.MultipleTesting.Knockoff.FdpBound</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.MultipleTesting.Knockoff.FdpBound";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">Knockoff</span>.<span class="name">FdpBound</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/Knockoff/FdpBound.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././StatLean/MultipleTesting/FDP/Defs.html">StatLean.MultipleTesting.FDP.Defs</a></li><li><a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html">StatLean.MultipleTesting.Knockoff.Procedure</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.MultipleTesting.Knockoff.FdpBound" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#StatLean.MultipleTesting.knockoff_fdp_le"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">knockoff_fdp_le</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Knock-off-deterministic-FDP-bound" class="markdown-heading">Knock-off deterministic FDP bound <a class="hover-link" href="#Knock-off-deterministic-FDP-bound">#</a></h1><p>Let $W_1,\dots,W_d$ be knock-off scores for testing the hypotheses $\{H_{0j}\}_{j=1}^d$, and let
+$\alpha &gt; 0$ be the target FDR level. For a threshold $t$ write
+$S^+(t) = \{j : W_j \ge t\}$ for the rejected set and
+$S^-(t) = \{j : W_j \le -t\}$ for its negative counterpart, and let
+$V_+(t) = \#\{j \in H_0 : W_j \ge t\}$ and $V_-(t) = \#\{j \in H_0 : W_j \le -t\}$ count the
+null indices on each side. The conservative FDP estimate is
+$\widehat{\mathrm{FDP}}(t) = \bigl(1 + \#S^-(t)\bigr)\big/\bigl(\#S^+(t) \vee 1\bigr)$,
+and the knock-off threshold is $t^* = \arg\min_t \{\, \widehat{\mathrm{FDP}}(t) \le \alpha \,\}$,
+with the procedure rejecting $H_{0j}$ exactly when $j \in S^+(t^*)$.</p><p>This file proves the <strong>first display</strong> in the proof of FDR control: the purely deterministic
+(per-sample, counting-and-algebra) bound
+$$\mathrm{FDP}(t^*) \;=\; \frac{V_+(t^*)}{\#S^+(t^*) \vee 1} \;\le\; \alpha \cdot \frac{V_+(t^*)}{1 + V_-(t^*)}.$$
+It is a pointwise inequality holding for every outcome $\omega$ — no probabilistic hypotheses are
+needed; the subsequent (super)martingale / optional-stopping argument that turns this into the
+FDR bound $\mathbb{E}[\mathrm{FDP}(t^*)] \le \alpha$ is <strong>not</strong> part of this result.</p><p>The constant matches the book exactly (target level $\alpha$, denominator $1 + V_-(t^*)$ from the
+&quot;knock-off+&quot; estimate with the extra $+1$).</p><p><strong>Reference.</strong> Junwei Lu, <em>Big Data Analysis</em>, Springer Nature Switzerland, 2025
+(ISBN 978-3-032-03160-0), Chapter 21 (Knock-Off), §21.3, Theorem 21.2 (Knock-Off), first display
+of the proof. Dual citation: E. J. Candès, <em>STAT 300C:
+Theory of Statistics</em>, Lecture Notes, Stanford University, 2023, Lecture 11, equation (11.1) and
+the FDP chain in the proof deferred to §11.5.</p><p><strong>Proof formalization notes.</strong> The bound is purely deterministic (counting + algebra), proved by
+<code>fdp_le_core</code>: $V \le |S|$ (here <code>Vplus</code>/<code>Vminus</code> are subsets of the rejected/negative sets, so
+<code><a href="../../.././Mathlib/Data/Finset/Card.html#Finset.card_le_card">Finset.card_le_card</a> <a href="../../.././Mathlib/Data/Finset/Lattice/Basic.html#Finset.inter_subset_left">Finset.inter_subset_left</a></code> gives $V_- \le \#S^-$), the threshold property
+$\widehat{\mathrm{FDP}}(t^*) \le \alpha$ extracted from <code>tStar</code>'s defining <code>min'</code> over the filtered
+candidate set, and the definitional identity
+$\mathrm{FDP} = V_+(t^*)/(\#S^+(t^*) \vee 1)$ for the knock-off rejection set. The empty-candidate
+branch (no threshold meets the level, so the rejection set is empty) gives $\mathrm{FDP} = 0$,
+bounded by the non-negative right-hand side.</p><p><strong>Bibliographic comments.</strong> The knock-off filter and this deterministic FDP step originate with
+R. F. Barber and E. J. Candès, &quot;Controlling the false discovery rate via knockoffs,&quot; <em>Annals of
+Statistics</em> 43(5):2055–2085, 2015 — the inequality here is the opening identity of their FDR-control
+proof (Theorem 1; the &quot;+1&quot; in the denominator is the knockoff+ variant). The model-X generalization
+that the Candès lecture notes follow is E. Candès, Y. Fan, L. Janson, and J. Lv, &quot;Panning for gold:
+'model-X' knockoffs for high dimensional controlled variable selection,&quot; <em>Journal of the Royal
+Statistical Society: Series B</em> 80(3):551–577, 2018. The underlying conservative SeqStep estimate of
+the FDP is due to R. F. Barber and E. J. Candès, &quot;A knockoff filter for high-dimensional selective
+inference,&quot; <em>Annals of Statistics</em> 47(5):2504–2537, 2019.</p></div><div class="decl" id="StatLean.MultipleTesting.knockoff_fdp_le"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/MultipleTesting/Knockoff/FdpBound.lean#L79-L96">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/MultipleTesting/Knockoff/FdpBound.html#StatLean.MultipleTesting.knockoff_fdp_le"><span class="name">StatLean</span>.<span class="name">MultipleTesting</span>.<span class="name">knockoff_fdp_le</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">d</span> : <a href="../../.././Init/Prelude.html#Nat">ℕ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">α</span> : <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hα</span> : <span class="fn">0</span> <a href="../../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">α</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">W</span> : <span class="fn"><span class="fn"><a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">d</span></span> → <span class="fn"><span class="fn">Ω</span> → <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">H₀</span> : <span class="fn"><a href="../../.././Mathlib/Data/Finset/Defs.html#Finset">Finset</a> <span class="fn">(<a href="../../.././Init/Prelude.html#Fin">Fin</a> <span class="fn">d</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ω</span> : <span class="fn">Ω</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/MultipleTesting/FDP/Defs.html#StatLean.MultipleTesting.FDP">FDP</a> <span class="fn">H₀</span> <span class="fn">(<a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html#StatLean.MultipleTesting.knockoffRejects">knockoffRejects</a> <span class="fn">W</span> <span class="fn">α</span>)</span> <span class="fn">ω</span></span> <a href="../../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">α</span> <a href="../../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">↑<span class="fn">(<a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html#StatLean.MultipleTesting.Vplus">Vplus</a> <span class="fn">W</span> <span class="fn">H₀</span> <span class="fn">(<a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html#StatLean.MultipleTesting.tStar">tStar</a> <span class="fn">W</span> <span class="fn">α</span> <span class="fn">ω</span>)</span> <span class="fn">ω</span>)</span></span> <a href="../../.././Init/Prelude.html#HDiv.hDiv">/</a> (<span class="fn">1</span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">↑<span class="fn">(<a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html#StatLean.MultipleTesting.Vminus">Vminus</a> <span class="fn">W</span> <span class="fn">H₀</span> <span class="fn">(<a href="../../.././StatLean/MultipleTesting/Knockoff/Procedure.html#StatLean.MultipleTesting.tStar">tStar</a> <span class="fn">W</span> <span class="fn">α</span> <span class="fn">ω</span>)</span> <span class="fn">ω</span>)</span></span>)</div></div><p>Deterministic FDP bound (Lu-BDA Ch. 21 (Knock-Off) §21.3, Theorem 21.2 (Knock-Off), first display of the proof):
+<code>FDP(t*) ≤ α · V₊(t*)/(1 + V₋(t*))</code>.
+<strong>Reference.</strong> Lu-BDA Ch. 21 (Knock-Off) §21.3, Theorem 21.2 (Knock-Off), first display of the proof;
+Candès STAT 300C Lecture 11, eq. (11.1).</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

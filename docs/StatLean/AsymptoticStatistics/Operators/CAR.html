@@ -1,0 +1,526 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../../.././style.css"></link><link rel="icon" href="../../.././favicon.svg"></link><link rel="mask-icon" href="../../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../../.././/declarations/declaration-data.bmp" as="image"></link><title>StatLean.AsymptoticStatistics.Operators.CAR</title><script defer="true" src="../../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../../.././";</script><script>const MODULE_NAME="StatLean.AsymptoticStatistics.Operators.CAR";</script><script type="module" src="../../.././jump-src.js"></script><script type="module" src="../../.././search.js"></script><script type="module" src="../../.././expand-nav.js"></script><script type="module" src="../../.././how-about.js"></script><script type="module" src="../../.././instances.js"></script><script type="module" src="../../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">StatLean</span>.<span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../../.././Init.html">Init</a></li><li><a href="../../.././Mathlib/Probability/Kernel/CondDistrib.html">Mathlib.Probability.Kernel.CondDistrib</a></li><li><a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html">StatLean.AsymptoticStatistics.Operators.InformationLoss</a></li><li><a href="../../.././Mathlib/Probability/Kernel/Composition/CompNotation.html">Mathlib.Probability.Kernel.Composition.CompNotation</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-StatLean.AsymptoticStatistics.Operators.CAR" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">IsCoarseningAtRandom</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.observedTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.mem_observedTangent_iff"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">mem_observedTangent_iff</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.informationLossOperator_mem_observedTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">informationLossOperator_mem_observedTangent</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_piece</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.coarseningLift"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningLift</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.nonparametricYTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">nonparametricYTangent</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningScoreSpace</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.mem_coarseningScoreSpace_iff"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">mem_coarseningScoreSpace_iff</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningLift"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_coarseningLift</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace_eq_observedTangent_orthogonal"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningScoreSpace_eq_observedTangent_orthogonal</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningScore_eq_zero"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_coarseningScore_eq_zero</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.observedTangent_carScore_factors"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent_carScore_factors</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.observedTangent_decomp"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent_decomp</span></a></div><div class="nav_link"><a class="break_within" href="#AsymptoticStatistics.Operators.CAR.observedData_influence_subtract_proj"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedData_influence_subtract_proj</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Coarsening-At-Random-CAR" class="markdown-heading">Coarsening At Random (CAR) <a class="hover-link" href="#Coarsening-At-Random-CAR">#</a></h1><p>We observe not the full data $X$ but a coarsened version $Y = M(X)$, where the
+coarsening map $M$ is <em>at random</em>: conditionally on the observed level $Y = y$,
+the full datum $X$ is distributed over the fibre $\{x : M(x) = y\}$ by a law that
+does not further depend on the (unobserved) value of $X$. Equivalently, the full
+law $P_{\mathrm{full}}$ disintegrates over the observed marginal
+$P_{\mathrm{full}} \circ M^{-1}$ through a Markov kernel concentrated on the
+$M$-fibres.</p><p>This file collects the three observed-data semiparametric results under CAR,
+all built on the information-loss (orthogonal projection / conditional
+expectation) operator $\Pi = \Pi_{M, P_{\mathrm{full}}}$ from
+<code><a href="../../.././Operators/InformationLoss.html">Operators/InformationLoss.lean</a></code>:</p><ul><li><strong>Observed tangent space (Theorem 25.40).</strong> Under CAR, the tangent space of
+the observed-data model equals the image $\Pi(\dot{\mathcal P})$ of the
+full-data tangent space $\dot{\mathcal P}$ under $\Pi$.</li><li><strong>Influence-function lift (Lemma 25.41).</strong> If $\varphi_{\mathrm{full}}$ is an
+influence function for the parameter in the full-data model, then its
+projection $\Pi\,\varphi_{\mathrm{full}}$ is an influence function for the
+same parameter in the observed-data model.</li><li><strong>Efficiency-loss decomposition (Corollary 25.42).</strong> The efficient influence
+function of the observed-data problem decomposes so that the asymptotic
+variance increases by an explicit nonnegative <em>information-loss</em> term
+measuring the part of $\varphi_{\mathrm{full}}$ annihilated by passing to the
+observed data.</li></ul><p><strong>Reference.</strong> A. W. van der Vaart, <em>Asymptotic Statistics</em>, Cambridge Series in
+Statistical and Probabilistic Mathematics, Cambridge University Press, 1998,
+Chapter 25 (Semiparametric Models), §25.6, Theorem 25.40, Lemma 25.41,
+Corollary 25.42.</p><p><strong>Proof formalization notes.</strong> Builds on the information-loss operator
+<code>Π = informationLossOperator M hM P_full</code> from <code><a href="../../.././Operators/InformationLoss.html">Operators/InformationLoss.lean</a></code>.
+The CAR predicate <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom">IsCoarseningAtRandom</a></code> uses the kernel-disintegration form: an
+existential of a <code><a href="../../.././Mathlib/Probability/Kernel/Defs.html#ProbabilityTheory.Kernel">ProbabilityTheory.Kernel</a> Ω_obs Ω_full</code> disintegrating
+<code>P_full</code> over <code>P_full.map M</code>, together with the regularity clause that the
+kernel is concentrated on the <code>M</code>-fibre (<code>κ y</code> lives on <code>{x | M x = y}</code>, a.e.).
+For deterministic coarsenings on standard Borel spaces, CAR is essentially
+automatic via Mathlib's <code>ProbabilityTheory.Kernel.condDistrib</code> disintegration;
+the substantive content of CAR appears at the <em>family</em> level (independence of
+the kernel from the unobserved coordinate across submodels), so theorems
+requiring CAR list it as an explicit hypothesis.</p><p><strong>Bibliographic comments.</strong> The term <em>coarsening at random</em> was coined by
+D. F. Heitjan and D. B. Rubin, &quot;Ignorability and coarse data&quot;, <em>The Annals of
+Statistics</em> <strong>19</strong> (1991), no. 4, 2244–2253, generalizing Rubin's
+missing-at-random condition to grouped, censored, and rounded data. The
+continuous-data theory underlying van der Vaart's §25.6 treatment is developed
+in R. D. Gill, M. J. van der Laan and J. M. Robins, &quot;Coarsening at random:
+characterizations, conjectures, counter-examples&quot;, in <em>Proceedings of the First
+Seattle Symposium in Biostatistics</em> (D.-Y. Lin and T. R. Fleming, eds.),
+Springer Lecture Notes in Statistics <strong>123</strong>, 1997, pp. 255–294, which gives
+the disintegration characterization used here and the semiparametric
+information calculus for the observed-data model.</p></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L82-L103">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">IsCoarseningAtRandom</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../../.././foundational_types.html">Prop</a></div></div><p><em>Coarsening At Random.</em> The coarsening map <code>M : Ω_full → Ω_obs</code> is
+<em>at random</em> under <code>P_full</code> if <code>P_full</code> factors as the bind
+<code>(P_full.map M).bind κ</code> for some kernel <code>κ : Ω_obs → Measure Ω_full</code>
+that is concentrated on the <code>M</code>-fibres (<code>κ y</code> lives on <code>{x | M x = y}</code>,
+a.e.).</p><p>Reference: vdV §25.6 (definition leading to thm:25.40).</p><p>CAR is a genuine restriction: many real-world coarsenings are <strong>not</strong>
+CAR (e.g. outcome-dependent missingness in medical trials), so theorems
+requiring CAR list it as an explicit hypothesis.</p><p>For deterministic coarsenings on standard Borel spaces, CAR is
+essentially automatic via Mathlib's <code>ProbabilityTheory.Kernel.condDistrib</code>
+disintegration; the substantive content of CAR appears at the <em>family</em>
+level: independence of the kernel from the unobserved coordinate across
+submodels.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="mod_doc"><h2 id="The-observed-data-tangent-space-vdV-thm-25-40" class="markdown-heading">The observed-data tangent space (vdV thm:25.40) <a class="hover-link" href="#The-observed-data-tangent-space-vdV-thm-25-40">#</a></h2><p>vdV §25.6, thm:25.40. Under CAR, the observed-data tangent set
+<code>Ṗ_{P_{Q,R}}</code> for the model of <code>X</code> is obtained from the full-data tangent
+set by taking conditional expectations under the coarsening σ-algebra
+<code>M⁻¹(σ_obs)</code>, i.e. by applying the information-loss operator
+<code>Π = informationLossOperator hM P_full</code>. We <em>define</em> the observed-data
+tangent space as the <code>Π</code>-image of a supplied full-data tangent space; this
+is the constructive content of the &quot;⊆&quot; half of the theorem, and <code>Π a</code> for a
+full-data score <code>a</code> is the conditional expectation <code>E_{Q,R}(a(Y) | X = x)</code>.</p></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.observedTangent"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L117-L141">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">fullTangent</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span></span></div></div><p><em>Observed-data tangent space</em> (vdV thm:25.40).</p><p>Given the full-data tangent space <code>fullTangent : <a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> ℝ ↥(L²₀(P_full))</code>
+and a measurable coarsening map <code>M</code>, the observed-data tangent space is the
+image of <code>fullTangent</code> under the information-loss operator
+<code>Π = informationLossOperator hM P_full</code>, i.e. <code>Π '' fullTangent</code>, viewed as a
+submodule of <code>↥(L²₀(P_full.map M))</code>.</p><p>This is the book-faithful definition under CAR: thm:25.40 states that the
+observed tangent set is obtained from the full-data tangent set &quot;by taking
+conditional expectations&quot; (lem:25.34), which is exactly the action of <code>Π</code>.
+The element <code>Π a = E_{Q,R}(a(Y) | X = x)</code> is the conditional-expectation
+piece of the orthogonal decomposition in the theorem.</p><p>We take the bare algebraic <code><a href="../../.././Mathlib/Algebra/Module/Submodule/Map.html#Submodule.map">Submodule.map</a></code> (not its <code>topologicalClosure</code>):
+thm:25.40 distinguishes the <em>tangent set</em> <code>Ṗ_{P_{Q,R}}</code> from its closure, and
+downstream consumers (lem:25.41, cor:25.42) work with the image directly. The
+closed tangent space is <code>(observedTangent …).topologicalClosure</code> when needed,
+matching <code>Core.TangentAbstract.tangentSpace</code>.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">AsymptoticStatistics.Operators.CAR.observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">fullTangent</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Map.html#Submodule.map">Submodule.map</a> <span class="fn">(↑<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">AsymptoticStatistics.Operators.InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span>)</span> <span class="fn">fullTangent</span></span></li></ul></details><details id="instances-for-list-AsymptoticStatistics.Operators.CAR.observedTangent" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.mem_observedTangent_iff"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L144-L156">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.mem_observedTangent_iff"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">mem_observedTangent_iff</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">fullTangent</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">g</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">fullTangent</span></span> <a href="../../.././Init/Core.html#Iff">↔</a> <span class="fn">∃ <span class="fn">a</span> ∈ <span class="fn">fullTangent</span>, <span class="fn"><span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">g</span></span></div></div><p><em>Π-image characterization of <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a></code></em> (the constructive &quot;⊆&quot; half
+of vdV thm:25.40). An observed score <code>g</code> lies in the observed
+tangent space iff it is <code>Π a</code> for some full-data score <code>a ∈ fullTangent</code>. This
+is true by definition of <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a></code> as <code><a href="../../.././Mathlib/Algebra/Module/Submodule/Map.html#Submodule.map">Submodule.map</a> Π fullTangent</code>,
+and is used in the formalizations of lem:25.41 and cor:25.42.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.informationLossOperator_mem_observedTangent"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L159-L167">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.informationLossOperator_mem_observedTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">informationLossOperator_mem_observedTangent</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">fullTangent</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">a</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">ha</span> : <span class="fn">a</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">fullTangent</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span></span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">fullTangent</span></span></div></div><p><em><code>Π</code> maps full-data scores into the observed tangent space</em> (vdV thm:25.40,
+the forward inclusion <code>Π a ∈ Ṗ_X</code> for <code>a ∈ Ṗ_full</code>).</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L170-L191">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_piece</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">a</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">t</span> : <span class="fn">↥<span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Function/LpSpace/Basic.html#MeasureTheory.Lp">MeasureTheory.Lp</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">2</span> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(↑<span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span>)</span>)</span> <span class="fn">t</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↑<span class="fn">a</span></span> <span class="fn">↑<span class="fn">(<span class="fn"><span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/ForMathlib/CondExpL2.html#AsymptoticStatistics.ForMathlib.CondExpL2.doobL2Equiv">ForMathlib.CondExpL2.doobL2Equiv</a> <span class="fn">hM</span>)</span>.<a href="../../.././Mathlib/Analysis/Normed/Operator/LinearIsometry.html#LinearIsometryEquiv.symm">symm</a></span> <span class="fn">t</span>)</span></span></span></div></div><p><em>Tower identity for the observed tangent piece</em> (vdV §25.6, lem:25.34 +
+thm:25.40). For a full-data score <code>a</code> and any observed test function <code>t</code>, the
+<code>L²(P_obs)</code>-inner product of the conditional-expectation piece <code>Π a</code> against
+<code>t</code> equals the <code>L²(P_full)</code>-inner product of <code>a</code> against the <code>M</code>-measurable
+Doob pullback of <code>t</code>. This is the self-adjointness of the information-loss
+operator transported through the Doob isometry; it is the orthogonality
+engine behind the decomposition <code>g = Π a + b</code> (the <code>b</code> piece pairs to zero
+against any <code>Π a</code> once <code>E_R(b | Y) = 0</code>). It is
+<code>inner_informationLossRaw</code> lifted to the mean-zero subspaces via the clean
+defining identity <code>informationLossOperator_coe_eq</code>.</p></div></div><div class="mod_doc"><h3 id="The-observed-tangent-Hilbert-decomposition-vdV-thm-25-40" class="markdown-heading">The observed-tangent Hilbert decomposition (vdV thm:25.40) <a class="hover-link" href="#The-observed-tangent-Hilbert-decomposition-vdV-thm-25-40">#</a></h3><p>The CAR-free geometry underlying thm:25.40. The book decomposes any mean-zero
+observed score <code>g ∈ L²₀(P_obs)</code> orthogonally as <code>g = Π a + b</code>, where <code>Π a</code> is
+the conditional-expectation image of a full-data score of <code>Y</code> and <code>b</code> is a
+<em>coarsening score</em> satisfying <code>E_R(b(X) | Y) = 0</code>, and asserts the join is
+dense (<code><a href="../../.././Mathlib/Topology/Defs/Basic.html#closure">closure</a> = all mean-zero observed functions</code>). We render this
+<em>conclusion</em> faithfully by the abstract-Hilbert route:</p><ul><li>the observed Y-tangent is <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> … (nonparametricYTangent …)</code>,
+the <code>Π</code>-image of the maximal nonparametric mean-zero <code>σ(πY)</code>-measurable
+scores of the full observation <code>Y = πY</code>;</li><li>the coarsening-score space <code>Ṙ = <a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> …</code> is <code>{b : E(doobSymm b | Y) = 0}</code>, the kernel of <code>b ↦ E(·|Y)</code> composed with the
+Doob pullback;</li><li>the organizing fact <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> = (observedTangent …)ᗮ</code>
+(<code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace_eq_observedTangent_orthogonal">coarseningScoreSpace_eq_observedTangent_orthogonal</a></code>): <code>⊆</code> is
+orthogonality via the adjoint identity <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece">inner_observedTangent_piece</a></code>, <code>⊇</code>
+is density via <code>condExpL2</code> self-adjointness. Everything (orthogonality +
+<code><a href="../../.././Mathlib/Topology/Defs/Basic.html#closure">closure</a> = ⊤</code>) follows.</li></ul><p>CAR is <em>not</em> a hypothesis of the Hilbert-geometric statements below. Its
+constructive role is instead to identify <code>Ṙ = <a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a></code> with the
+actual <code>R</code>-model conditional-density scores through the
+score-of-conditional-density-submodel argument of vdV p.380. Such an
+identification requires conditional-density QMD paths <code>t ↦ rₜ(· | y)</code>, whereas
+the definitions here concern full-data laws <code>t ↦ Pₜ</code>. The
+<code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.IsCoarseningAtRandom">IsCoarseningAtRandom</a></code> predicate records the family-level condition needed for
+that separate identification.</p></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.coarseningLift"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L224-L235">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningLift</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span> <a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">→L[</a><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a><a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">]</a> <span class="fn">↥<span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Function/LpSpace/Basic.html#MeasureTheory.Lp">MeasureTheory.Lp</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">2</span> <span class="fn">P_full</span>)</span></span></div></div><p><em>Coarsening lift</em> of an observed function <code>b ∈ L²₀(P_obs)</code>: the Doob
+pullback <code>(doobL2Equiv hM).<a href="../../.././Mathlib/Order/Defs/Unbundled.html#symm">symm</a> b</code>, viewed as an <code>M</code>-measurable element of
+<code>Lp ℝ 2 P_full</code>. This is the <code>doobSymm</code> map: it is the inverse of the Doob
+isometry that <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece">inner_observedTangent_piece</a></code> pairs against, packaged as a
+continuous linear map so its kernel below is a submodule.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Operators.CAR.coarseningLift" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.nonparametricYTangent"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L238-L258">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">nonparametricYTangent</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span></span></div></div><p><em>Nonparametric observed Y-tangent</em> (vdV §25.5.3 / thm:25.40).</p><p>The mean-zero <code>σ(πY)</code>-measurable full-data scores, i.e. the intersection of
+<code>L²₀(P_full)</code> with the <code>σ(πY)</code>-measurable subspace
+<code>lpMeas ℝ ℝ (comap πY) 2 P_full</code>, pulled back to <code>↥(L²₀(P_full))</code> along the
+subtype embedding.</p><p>Constitutive (vdV §25.5.3, p.379): when the distribution <code>Q</code> of the full
+observation <code>Y = πY</code> is left &quot;completely unspecified&quot;, the <code>Y</code>-tangent set is
+the maximal nonparametric set of mean-zero functions of <code>Y</code>; taking <code>E(·|X)</code> of
+it (<code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a></code>) produces the observed conditional-expectation piece
+<code>Π a = E_{Q,R}(a(Y) | X = x)</code> of thm:25.40. The observed-Y coordinate is encoded
+by the measurable projection <code>πY : Ω_full → Ω_Y</code>; its σ-algebra
+<code>σ(πY) = <a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Basic.html#MeasurableSpace.comap">MeasurableSpace.comap</a> πY _</code> is a genuine sub-σ-algebra of the ambient
+one (<code>hπY.comap_le</code>).</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Operators.CAR.nonparametricYTangent" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.coarseningScoreSpace"><div class="def"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L261-L283">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningScoreSpace</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span></span></div></div><p><em>Coarsening-score space <code>Ṙ</code></em> (vdV thm:25.40 conclusion).</p><p>The kernel of the continuous linear map <code>b ↦ E(doobSymm b | Y)</code>, where
+<code>doobSymm b = <a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a> hM P_full b</code> is the <code>M</code>-measurable Doob lift and
+<code>E(· | Y) = condExpL2 ℝ ℝ hπY.comap_le</code> is the conditional expectation onto
+<code>σ(πY)</code>. So <code>b ∈ <a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> ↔ E_R(doobSymm b | Y) = 0</code>.</p><p>Constitutive (vdV thm:25.40, p.380): the theorem's coarsening scores are the
+<code>b ∈ L²(P_{Q,R})</code> with <code>E_R(b(X) | Y) = 0</code>. Here <code>E_R(b(X) | Y) = 0</code> is
+rendered as <code>condExpL2 ℝ ℝ hπY.comap_le (doobSymm b) = 0</code>.</p><p>Identifying this abstract Hilbert space with the actual <code>R</code>-model
+conditional-density scores requires a conditional-density QMD model; that
+identification, rather than this definition, is where CAR does its constructive
+work.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-AsymptoticStatistics.Operators.CAR.coarseningScoreSpace" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.mem_coarseningScoreSpace_iff"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L285-L295">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.mem_coarseningScoreSpace_iff"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">mem_coarseningScoreSpace_iff</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">b</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">b</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span> <a href="../../.././Init/Core.html#Iff">↔</a> <span class="fn">↑<span class="fn">(<span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Function/ConditionalExpectation/CondexpL2.html#MeasureTheory.condExpL2">MeasureTheory.condExpL2</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">⋯</span>)</span> <span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">b</span>)</span>)</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></div></div><p>Membership in the coarsening-score space unfolds to
+<code>E_R(doobSymm b | Y) = 0</code> at the <code>Lp</code> level.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningLift"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L298-L311">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningLift"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_coarseningLift</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">a</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">b</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↑<span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span>)</span></span> <span class="fn">↑<span class="fn">b</span></span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">(↑<span class="fn">a</span>)</span> <span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">b</span>)</span></span></div></div><p><em>Adjoint identity in <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a></code> form.</em> The <code>L²(P_obs)</code>-pairing of the
+conditional-expectation piece <code>Π a</code> against an observed function <code>b</code> equals the
+<code>L²(P_full)</code>-pairing of <code>a</code> against the Doob lift <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a> hM P_full b</code>.
+This is <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_piece">inner_observedTangent_piece</a></code> folded through the definition of
+<code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningLift">coarseningLift</a></code>.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.coarseningScoreSpace_eq_observedTangent_orthogonal"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L314-L402">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace_eq_observedTangent_orthogonal"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">coarseningScoreSpace_eq_observedTangent_orthogonal</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent">nonparametricYTangent</a> <span class="fn">hπY</span> <span class="fn">P_full</span>)</span>)</span><a href="../../.././Mathlib/Analysis/InnerProductSpace/Orthogonal.html#Submodule.orthogonal">ᗮ</a></div></div><p><em>The central organizing fact of vdV thm:25.40 (CAR-free).</em></p><p>The coarsening-score space equals the orthogonal complement of the observed
+Y-tangent:
+<code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> = (observedTangent hM P_full (nonparametricYTangent hπY P_full))ᗮ</code>.</p><p><code>⊆</code> is the orthogonality <code>⟪Π a, b⟫ = ⟪E(doobSymm b | Y), a⟫ = 0</code> (adjoint
+identity <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningLift">inner_observedTangent_coarseningLift</a></code> + <code>condExpL2</code> self-adjointness
+<code>inner_condExpL2_eq_inner_fun</code>); <code>⊇</code> is density: if <code>b ⊥ Π a</code> for all <code>a</code>,
+taking <code>a = E(doobSymm b | Y)</code> (mean-zero, <code>σ(πY)</code>-measurable) forces
+<code>⟪E(doobSymm b | Y), E(doobSymm b | Y)⟫ = 0</code>, hence <code>E(doobSymm b | Y) = 0</code>.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningScore_eq_zero"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L405-L421">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.inner_observedTangent_coarseningScore_eq_zero"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">inner_observedTangent_coarseningScore_eq_zero</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">a</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">P_full</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">a</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent">nonparametricYTangent</a> <span class="fn">hπY</span> <span class="fn">P_full</span></span> →
+  <span class="fn">∀ <span class="fn">b</span> ∈ <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span>, <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↑<span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span>)</span></span> <span class="fn">↑<span class="fn">b</span></span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span></span></div></div><p><em>Orthogonality half of vdV thm:25.40.</em> The observed conditional-expectation
+pieces <code>Π a</code> (<code>a</code> a nonparametric Y-score) are orthogonal to every coarsening
+score. Derived from the central identity via <code><a href="../../.././Mathlib/Analysis/InnerProductSpace/Orthogonal.html#Submodule.mem_orthogonal">Submodule.mem_orthogonal</a></code>.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.observedTangent_carScore_factors"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L424-L464">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent_carScore_factors"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent_carScore_factors</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args"> :</span><div class="decl_type"><span class="fn">(∀ <span class="fn">a</span> ∈ <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent">nonparametricYTangent</a> <span class="fn">hπY</span> <span class="fn">P_full</span></span>,
+    <span class="fn">∀ <span class="fn">b</span> ∈ <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span>, <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↑<span class="fn">(<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/InformationLoss.html#AsymptoticStatistics.Operators.InformationLoss.informationLossOperator">InformationLoss.informationLossOperator</a> <span class="fn">hM</span> <span class="fn">P_full</span>)</span> <span class="fn">a</span>)</span></span> <span class="fn">↑<span class="fn">b</span></span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span>)</span> <a href="../../.././Init/Prelude.html#And">∧</a>   <span class="fn"><span class="fn">(<span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent">nonparametricYTangent</a> <span class="fn">hπY</span> <span class="fn">P_full</span>)</span></span> ⊔
+        <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span>)</span>.<a href="../../.././Mathlib/Topology/Algebra/Module/Basic.html#Submodule.topologicalClosure">topologicalClosure</a></span> <a href="../../.././Init/Prelude.html#Eq">=</a>     <a href="../../.././Mathlib/Order/Notation.html#Top.top">⊤</a></div></div><p><em>vdV thm:25.40 — observed-tangent orthogonal decomposition + density (CAR-free).</em></p><p>The content of thm:25.40 at the Hilbert-closure level:</p><ol><li><strong>Orthogonality.</strong> Every observed conditional-expectation piece <code>Π a</code>
+(<code>a</code> a nonparametric Y-score) is orthogonal to every coarsening score <code>b</code>
+(<code>E_R(doobSymm b | Y) = 0</code>).</li><li><strong>Density.</strong> The join of the observed Y-tangent and the coarsening-score
+space is dense: its topological closure is all of <code>L²₀(P_obs)</code> (vdV's
+&quot;the closure consists of all mean-zero functions&quot;). This is automatic from
+the central fact <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> = (observedTangent …)ᗮ</code>, since
+<code>V ⊔ Vᗮ</code> is dense in a Hilbert space.</li></ol><p>The Hilbert geometry is CAR-free, so no CAR hypothesis is needed. CAR's
+constructive content is the separate identification of <code><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a></code>
+with actual <code>R</code>-model conditional-density scores. The observed-Y coordinate
+<code>πY : Ω_full → Ω_Y</code> (with
+<code>hπY : <a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> πY</code>) is a genuine model-structure input: <code>σ(πY)</code> is the &quot;full
+observation <code>Y</code>&quot; σ-algebra.</p></div></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.observedTangent_decomp"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L467-L524">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent_decomp"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedTangent_decomp</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_Y</span> : <a href="../../.././foundational_types.html">Type</a> u_3}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">πY</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hπY</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">πY</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">g</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">∃ <span class="fn">p</span> ∈ <span class="fn"><span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedTangent">observedTangent</a> <span class="fn">hM</span> <span class="fn">P_full</span> <span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.nonparametricYTangent">nonparametricYTangent</a> <span class="fn">hπY</span> <span class="fn">P_full</span>)</span>)</span>.<a href="../../.././Mathlib/Topology/Algebra/Module/Basic.html#Submodule.topologicalClosure">topologicalClosure</a></span>,
+  <span class="fn">∃ <span class="fn">b</span> ∈ <span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.coarseningScoreSpace">coarseningScoreSpace</a> <span class="fn">hM</span> <span class="fn">hπY</span> <span class="fn">P_full</span></span>, <span class="fn">g</span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">p</span> <a href="../../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">b</span> <a href="../../.././Init/Prelude.html#And">∧</a> <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↑<span class="fn">p</span></span> <span class="fn">↑<span class="fn">b</span></span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span></span></div></div><p><em>Explicit per-<code>g</code> orthogonal decomposition</em> (vdV thm:25.40, closure
+form). Every observed score <code>g ∈ L²₀(P_obs)</code> splits as <code>g = p + b</code> with <code>p</code> in
+the closure of the observed Y-tangent, <code>b</code> a coarsening score, and <code>p ⊥ b</code>.</p><p><code>p</code> is <code>g</code> minus its orthogonal projection onto the (closed) coarsening-score
+space <code>Ṙ = Vᗮ</code>; then <code>p ∈ Vᗮᗮ = <a href="../../.././Mathlib/Topology/Defs/Basic.html#closure">closure</a> V</code>.</p></div></div><div class="mod_doc"><h2 id="Observed-data-efficient-influence-decomposition-vdV-cor-25-42" class="markdown-heading">Observed-data efficient-influence decomposition (vdV cor:25.42) <a class="hover-link" href="#Observed-data-efficient-influence-decomposition-vdV-cor-25-42">#</a></h2><p>vdV §25.6, cor:25.42 (book p.382). In the observed-data problem under CAR, any
+observed-data influence function equals (the IPW form, lem:25.41) minus its
+orthogonal projection onto the nuisance coarsening-score space <code>lin Ṙ_{Q,R}</code>.
+The Hilbert content is the abstract subtract-projection-onto-observed-nuisance engine
+(<code>Core.EIF.influence_on_sup_of_subtract_proj_nuisance</code>) instantiated at the
+<em>observed</em> measure <code>P_full.map M</code> and the <em>observed</em> tangent spaces: the observed
+main tangent <code>T_main_obs</code> and the observed nuisance (coarsening-score) tangent
+<code>T_nuis_obs</code>. The IPW-specific influence form (lem:25.41) and the explicit
+variance-loss term of cor:25.42 additionally require conditional-density-score
+machinery.</p></div><div class="decl" id="AsymptoticStatistics.Operators.CAR.observedData_influence_subtract_proj"><div class="theorem"><div class="gh_link"><a href="https://github.com/space-sphere/Stat-Lean/blob/ea7929f69b0371a56fc3e53ffcdcfa05c5b0e4a4/StatLean/AsymptoticStatistics/Operators/CAR.lean#L540-L591">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../../.././StatLean/AsymptoticStatistics/Operators/CAR.html#AsymptoticStatistics.Operators.CAR.observedData_influence_subtract_proj"><span class="name">AsymptoticStatistics</span>.<span class="name">Operators</span>.<span class="name">CAR</span>.<span class="name">observedData_influence_subtract_proj</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_full</span> : <a href="../../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Ω_obs</span> : <a href="../../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Ω_obs</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">M</span> : <span class="fn"><span class="fn">Ω_full</span> → <span class="fn">Ω_obs</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hM</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">M</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">P_full</span> : <span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Ω_full</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">P_full</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">T_main_obs </span><span class="fn">T_nuis_obs</span> : <span class="fn"><a href="../../.././Mathlib/Algebra/Module/Submodule/Defs.html#Submodule">Submodule</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span></span>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><span class="fn">T_nuis_obs</span>.<a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.HasOrthogonalProjection">HasOrthogonalProjection</a></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">dψ_obs</span> : <span class="fn">↥<span class="fn">(<span class="fn">T_main_obs</span> ⊔ <span class="fn">T_nuis_obs</span>)</span></span> <a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">→L[</a><a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a><a href="../../.././Mathlib/Topology/Algebra/Module/LinearMap.html#ContinuousLinearMap">]</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">φ₀_obs</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hOrth</span> : <span class="fn">∀ <span class="fn">u</span> ∈ <span class="fn">T_main_obs</span>, <span class="fn">∀ <span class="fn">v</span> ∈ <span class="fn">T_nuis_obs</span>, <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">u</span> <span class="fn">v</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hMain</span> :
+  <span class="fn">∀ (<span class="fn">u</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>) (<span class="fn">hu</span> : <span class="fn">u</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T_main_obs</span>),
+    <span class="fn"><a href="../../.././Mathlib/Analysis/InnerProductSpace/Defs.html#Inner.inner">inner</a> <a href="../../.././Mathlib/Data/Real/Basic.html#Real">ℝ</a> <span class="fn">φ₀_obs</span> <span class="fn">u</span></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn">dψ_obs</span> <a href="../../.././Init/Prelude.html#Subtype.mk">⟨</a><span class="fn">u</span>, <span class="fn">⋯</span><a href="../../.././Init/Prelude.html#Subtype.mk">⟩</a></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hZero</span> :
+  <span class="fn">∀ (<span class="fn">v</span> : <span class="fn">↥<span class="fn">(<a href="../../.././StatLean/AsymptoticStatistics/Core/Hilbert.html#AsymptoticStatistics.Core.Hilbert.L2ZeroMean">Core.Hilbert.L2ZeroMean</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span>)</span></span>) (<span class="fn">hv</span> : <span class="fn">v</span> <a href="../../.././Init/Prelude.html#Membership.mem">∈</a> <span class="fn">T_nuis_obs</span>), <span class="fn"><span class="fn">dψ_obs</span> <a href="../../.././Init/Prelude.html#Subtype.mk">⟨</a><span class="fn">v</span>, <span class="fn">⋯</span><a href="../../.././Init/Prelude.html#Subtype.mk">⟩</a></span> <a href="../../.././Init/Prelude.html#Eq">=</a> <span class="fn">0</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../../.././StatLean/AsymptoticStatistics/Core/Pathwise.html#AsymptoticStatistics.Core.Pathwise.IsInfluenceFunction">Core.Pathwise.IsInfluenceFunction</a> <span class="fn">(<a href="../../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">M</span> <span class="fn">P_full</span>)</span> <span class="fn">(<span class="fn">T_main_obs</span> ⊔ <span class="fn">T_nuis_obs</span>)</span> <span class="fn">dψ_obs</span>
+  (<span class="fn">φ₀_obs</span> <a href="../../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><span class="fn"><span class="fn">T_nuis_obs</span>.<a href="../../.././Mathlib/Analysis/InnerProductSpace/Projection/Basic.html#Submodule.starProjection">starProjection</a></span> <span class="fn">φ₀_obs</span></span>)</span></div></div><p><em>Observed-data efficient-influence decomposition</em> (vdV cor:25.42, observed-data
+Hilbert form).</p><p>Work in the observed <code>L²₀(P_obs)</code> with <code>P_obs = P_full.map M</code>. Suppose the observed
+tangent splits as <code>T_main_obs ⊔ T_nuis_obs</code>, where <code>T_nuis_obs</code> is the observed
+<em>nuisance</em> (coarsening-score) space <code>lin Ṙ_{Q,R}</code> and <code>T_main_obs ⊥ T_nuis_obs</code>. If
+the observed representer <code>φ₀_obs</code> represents the observed derivative <code>dψ_obs</code> on
+<code>T_main_obs</code>, and <code>dψ_obs</code> vanishes on <code>T_nuis_obs</code>, then subtracting the
+projection of <code>φ₀_obs</code> onto the nuisance space yields an influence function for
+<code>dψ_obs</code> on the whole observed tangent <code>T_main_obs ⊔ T_nuis_obs</code>:</p><p><code>φ₀_obs - T_nuis_obs.starProjection φ₀_obs</code>  is an influence function.</p><p>This is <code>Core.EIF.influence_on_sup_of_subtract_proj_nuisance</code> instantiated at the
+observed measure <code>P_full.map M</code>. It ties the abstract subtract-projection engine to
+the CAR observed-data setting and captures cor:25.42's Hilbert content.</p><p>The IPW-specific form of the influence function (lem:25.41, identifying
+<code>φ₀_obs</code> with <code>Π φ_full</code> for a full-data influence function <code>φ_full</code>), and the
+explicit variance-loss term of cor:25.42 (<code>‖projection onto Ṙ_{Q,R}‖²</code>), require
+the additional conditional-density-score theory.</p><p>The <code>[T_nuis_obs.HasOrthogonalProjection]</code> hypothesis is the standard
+orthogonal-projection side-condition (automatic when <code>T_nuis_obs</code> is closed in the
+complete space <code>↥(L²₀(P_obs))</code>); the observed measure <code>P_full.map M</code> is a
+probability measure by <code>Measure.isProbabilityMeasure_map</code>.</p></div></div></main>
+<nav class="nav"><iframe src="../../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>
